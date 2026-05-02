@@ -1,0 +1,68 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Sarah",
+      "role": "CEO, TechFlow",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      "comment": "Pawan transformed our online presence completely. His attention to detail and modern design approach took our website to the next level. Highly recommended!",
+      "rating": 5
+    },
+    {
+      "id": 2,
+      "name": "Michael Chen",
+      "role": "Product Manager, StartupHub",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+      "comment": "Working with Pawan was seamless. He understood our vision immediately and delivered a stunning UI that our users love. Great communication throughout.",
+      "rating": 5
+    },
+    {
+      "id": 3,
+      "name": "Emily Rodriguez",
+      "role": "Marketing Director, DigitalMax",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
+      "comment": "The website Pawan built for us has increased our conversions by 40%. The design is beautiful, and the performance is incredible. Best investment we made!",
+      "rating": 5
+    },
+    {
+      "id": 4,
+      "name": "David Thompson",
+      "role": "Founder, CreativeStudio",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+      "comment": "Professional, talented, and reliable. Pawan delivered everything on time and exceeded our expectations. We're already planning our next project with him.",
+      "rating": 5
+    },
+    {
+      "id": 5,
+      "name": "Lisa Wang",
+      "role": "Business Owner, Fashion Forward",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+      "comment": "Pawan's design skills are exceptional. He created a website that perfectly represents our brand and engages our customers. Couldn't ask for better!",
+      "rating": 5
+    },
+    {
+      "id": 6,
+      "name": "James Wilson",
+      "role": "CTO, TechVision",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
+      "comment": "Excellent developer with a keen eye for design. Pawan's work on our platform improved user engagement significantly. Definitely working with him again!",
+      "rating": 5
+    },
+    {
+      "id": 7,
+      "name": "Sophia Martinez",
+      "role": "Founder, GrowthLabs",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sophia",
+      "comment": "From concept to launch, Pawan was involved every step of the way. His expertise in modern web technologies is unmatched. Highly skilled professional!",
+      "rating": 5
+    },
+    {
+      "id": 8,
+      "name": "Alex Kumar",
+      "role": "Product Lead, InnovateTech",
+      "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+      "comment": "Pawan brings creativity and technical excellence together perfectly. He delivered a product that exceeded all our expectations. Truly outstanding work!",
+      "rating": 5
+    }
+  ]
+}
