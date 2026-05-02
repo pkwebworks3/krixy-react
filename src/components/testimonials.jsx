@@ -8,7 +8,7 @@ function Testimonials() {
     {
       id: 1,
       name: "Vignesh",
-      role: "Yellow Flash Studios",
+      role: "CEO, YellowFlash",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
       comment: "Pawan transformed our online presence completely. His attention to detail and modern design approach took our website to the next level. Highly recommended!",
       rating: 5

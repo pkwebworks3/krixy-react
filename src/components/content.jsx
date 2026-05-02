@@ -43,7 +43,7 @@ function Content() {
           <div className="hero-left">
             <div className="hero-content">
               <span className="hero-greeting">Hey, I'm</span>
-              <h1 className="hero-name">Kirubhananthan <span className="name-highlight"></span></h1>
+              <h1 className="hero-name">Kirubhssss <span className="name-highlight"></span></h1>
               
               <div className="hero-role">
                 <span className="role-text">Web Developer</span>
