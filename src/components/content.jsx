@@ -232,19 +232,21 @@ function Content() {
           </Box>
 
           <Card sx={{ 
-            minHeight: 500, 
+            minHeight: { xs: 'auto', md: 500 }, 
             position: 'relative',
             display: 'flex',
             alignItems: 'flex-end',
-            p: 4,
-            backgroundImage: `url(${projects[currentSlide]?.project_thumb})`,
+            p: { xs: 2, md: 4 },
+            backgroundImage: { xs: 'none', md: `url(${projects[currentSlide]?.project_thumb})` },
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            borderRadius: 4
+            borderRadius: 4,
+            backgroundColor: theme.palette.background.paper,
           }}>
-            <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)', borderRadius: 4 }} />
+            {/* Gradient overlay — desktop only */}
+            <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)', borderRadius: 4 }} />
             
-            <Box sx={{ position: 'relative', zIndex: 1, ml: 'auto', maxWidth: 480, width: '100%' }}>
+            <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0, md: 'auto' }, maxWidth: { xs: '100%', md: 480 }, width: '100%' }}>
               <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
                 <Box sx={{ width: 80, height: 80, mb: 2, borderRadius: 2, overflow: 'hidden' }}>
                   <img src={projects[currentSlide]?.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
