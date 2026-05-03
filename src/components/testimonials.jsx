@@ -10,8 +10,8 @@ const testimonials = [
     id: 1,
     name: "Vignesh",
     role: "CEO, YellowFlash",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    comment: "Pawan transformed our online presence completely. His attention to detail and modern design approach took our website to the next level. Highly recommended!",
+    image: "/reviews_profile/vignesh.jpg",
+    comment: "Working with PK Webworks was an excellent experience. Kirubha is a true professional who understands client requirements and delivers high-quality work. His attention to detail and commitment to excellence are commendable. Highly recommended!",
     rating: 5
   },
   {
@@ -19,7 +19,7 @@ const testimonials = [
     name: "Michael Chen",
     role: "Product Manager, StartupHub",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-    comment: "Working with Pawan was seamless. He understood our vision immediately and delivered a stunning UI that our users love. Great communication throughout.",
+    comment: "Working with Kirubha was seamless. He understood our vision immediately and delivered a stunning UI that our users love. Great communication throughout.",
     rating: 5
   },
   {
@@ -27,7 +27,7 @@ const testimonials = [
     name: "Emily Rodriguez",
     role: "Marketing Director, DigitalMax",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
-    comment: "The website Pawan built for us has increased our conversions by 40%. The design is beautiful, and the performance is incredible. Best investment we made!",
+    comment: "The website Kirubha built for us has increased our conversions by 40%. The design is beautiful, and the performance is incredible. Best investment we made!",
     rating: 5
   },
 ];
@@ -35,6 +35,19 @@ const testimonials = [
 function Testimonials() {
   const theme = useTheme();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: -1000, y: -1000 });
+  };
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -45,14 +58,34 @@ function Testimonials() {
   };
 
   return (
-    <Box sx={{ py: 12, backgroundColor: theme.palette.background.default }}>
-      <Container 
+    <Box
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      sx={{
+        py: 12,
+        backgroundColor: theme.palette.background.default,
+        position: 'relative',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: `radial-gradient(circle 600px at ${mousePos.x}px ${mousePos.y}px, ${alpha(theme.palette.primary.main, 0.08)}, transparent 80%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+          transition: 'opacity 0.3s ease',
+          opacity: mousePos.x === -1000 ? 0 : 1,
+        }
+      }}
+    >
+      <Container
         maxWidth="lg"
         component={motion.div}
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
+        sx={{ position: 'relative', zIndex: 1 }}
       >
         <Box sx={{ mb: 8, textAlign: 'center' }}>
           <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
@@ -64,25 +97,25 @@ function Testimonials() {
         </Box>
 
         <Box sx={{ maxWidth: 800, mx: 'auto', position: 'relative' }}>
-          <Card sx={{ 
-            p: { xs: 4, md: 6 }, 
-            backgroundColor: theme.palette.background.paper, 
+          <Card sx={{
+            p: { xs: 4, md: 6 },
+            backgroundColor: theme.palette.background.paper,
             position: 'relative',
             overflow: 'visible',
             mb: 4
           }}>
-            <FormatQuoteIcon sx={{ 
-              position: 'absolute', 
-              top: -20, 
-              right: 40, 
-              fontSize: 80, 
+            <FormatQuoteIcon sx={{
+              position: 'absolute',
+              top: -20,
+              right: 40,
+              fontSize: 80,
               color: alpha(theme.palette.primary.main, 0.2),
               transform: 'rotate(180deg)'
             }} />
-            
+
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 3 }}>
-              <Avatar 
-                src={testimonials[currentTestimonial].image} 
+              <Avatar
+                src={testimonials[currentTestimonial].image}
                 alt={testimonials[currentTestimonial].name}
                 sx={{ width: 80, height: 80, border: `2px solid ${theme.palette.primary.main}` }}
               />
@@ -106,16 +139,16 @@ function Testimonials() {
             <IconButton onClick={prevTestimonial} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main }}>
               <ChevronLeftIcon />
             </IconButton>
-            
+
             <Box sx={{ display: 'flex', gap: 1 }}>
               {testimonials.map((_, index) => (
-                <Box 
+                <Box
                   key={index}
                   onClick={() => setCurrentTestimonial(index)}
-                  sx={{ 
-                    width: index === currentTestimonial ? 24 : 12, 
-                    height: 12, 
-                    borderRadius: 6, 
+                  sx={{
+                    width: index === currentTestimonial ? 24 : 12,
+                    height: 12,
+                    borderRadius: 6,
                     backgroundColor: index === currentTestimonial ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.3),
                     cursor: 'pointer',
                     transition: 'all 0.3s'

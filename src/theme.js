@@ -1,8 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+export const getDesignTokens = (mode) => ({
   palette: {
-    mode: 'light',
+    mode,
     primary: {
       main: '#7c3aed',
     },
@@ -10,12 +10,12 @@ const theme = createTheme({
       main: '#6d28d9',
     },
     background: {
-      default: '#f8fafc',
-      paper: '#ffffff',
+      default: mode === 'light' ? '#f8fafc' : '#0f172a',
+      paper: mode === 'light' ? '#ffffff' : '#1e293b',
     },
     text: {
-      primary: '#0f172a',
-      secondary: '#475569',
+      primary: mode === 'light' ? '#0f172a' : '#f8fafc',
+      secondary: mode === 'light' ? '#475569' : '#94a3b8',
     },
   },
   typography: {
@@ -48,12 +48,12 @@ const theme = createTheme({
         root: {
           borderRadius: 24,
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(124, 58, 237, 0.1)',
-          boxShadow: '0 10px 40px rgba(124, 58, 237, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)',
+          border: mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.2)',
+          boxShadow: mode === 'light' 
+            ? '0 10px 40px rgba(124, 58, 237, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+            : '0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
         },
       },
     },
   },
 });
-
-export default theme;

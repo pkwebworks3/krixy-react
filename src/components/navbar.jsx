@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -11,6 +11,10 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from '@mui/material/styles';
+import { ColorModeContext } from '../ThemeContext';
 import { motion } from 'framer-motion';
 
 const iconVariants = {
@@ -31,6 +35,9 @@ const pages = [
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -40,10 +47,45 @@ function Navbar() {
     setAnchorElNav(null);
   };
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: -1000, y: -1000 });
+  };
+
   return (
-    <AppBar position="sticky" sx={{ background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(124, 58, 237, 0.1)', boxShadow: 'none' }}>
-      <Container maxWidth="xl">
+    <AppBar 
+      position="sticky" 
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      sx={{ 
+        position: 'sticky',
+        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)', 
+        backdropFilter: 'blur(20px)', 
+        borderBottom: theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.3)', 
+        boxShadow: 'none',
+        overflow: 'hidden',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0, left: 0, right: 0, bottom: 0,
+          background: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, rgba(124, 58, 237, 0.15), transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+          transition: 'opacity 0.3s ease',
+          opacity: mousePos.x === -1000 ? 0 : 1,
+        }
+      }}
+    >
+      <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
         <Toolbar disableGutters>
+          {/* Desktop Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '30px' }} />
@@ -53,6 +95,7 @@ function Navbar() {
             </Box>
           </Box>
 
+          {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '24px' }} />
@@ -62,14 +105,18 @@ function Navbar() {
             </Box>
           </Box>
           
-          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
+          {/* Mobile Menu & Toggle */}
+          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+            <IconButton onClick={colorMode.toggleColorMode} sx={{ ml: 1, color: theme.palette.text.primary }}>
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
             <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              sx={{ color: '#0f172a' }}
+              sx={{ color: theme.palette.text.primary }}
             >
               <MenuIcon />
             </IconButton>
@@ -107,7 +154,8 @@ function Navbar() {
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+          {/* Desktop Links */}
+          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center', mr: 2 }}>
             {pages.map((page) => (
               page.isLink ? (
                 <Button
@@ -115,7 +163,7 @@ function Navbar() {
                   component={Link}
                   to={page.path}
                   startIcon={page.icon}
-                  sx={{ my: 2, color: '#0f172a', display: 'flex', '&:hover': { color: '#7c3aed' } }}
+                  sx={{ my: 2, color: theme.palette.text.primary, display: 'flex', '&:hover': { color: '#7c3aed' } }}
                 >
                   {page.title}
                 </Button>
@@ -124,13 +172,21 @@ function Navbar() {
                   key={page.title}
                   href={page.path}
                   startIcon={page.icon}
-                  sx={{ my: 2, color: '#0f172a', display: 'flex', '&:hover': { color: '#7c3aed' } }}
+                  sx={{ my: 2, color: theme.palette.text.primary, display: 'flex', '&:hover': { color: '#7c3aed' } }}
                 >
                   {page.title}
                 </Button>
               )
             ))}
           </Box>
+
+          {/* Desktop Theme Toggle (Rightmost Corner) */}
+          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+            <IconButton onClick={colorMode.toggleColorMode} sx={{ color: theme.palette.text.primary }}>
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Box>
+
         </Toolbar>
       </Container>
     </AppBar>

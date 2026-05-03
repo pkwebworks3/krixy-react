@@ -30,7 +30,7 @@ function ParticleCanvas() {
       canvas.width = width;
       canvas.height = height;
 
-      const spacing = 70; // Distance between flowers
+      const spacing = 45; // Distance between flowers
       const cols = Math.ceil(width / spacing) + 1;
       const rows = Math.ceil(height / spacing) + 1;
 
@@ -146,6 +146,19 @@ function ParticleCanvas() {
 function Content() {
   const theme = useTheme();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [mousePosProj, setMousePosProj] = useState({ x: -1000, y: -1000 });
+
+  const handleMouseMoveProjects = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosProj({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseLeaveProjects = () => {
+    setMousePosProj({ x: -1000, y: -1000 });
+  };
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % projects.length);
@@ -236,7 +249,27 @@ function Content() {
       </Box>
 
       {/* Featured Projects Section */}
-      <Box id="projects" sx={{ py: 10, backgroundColor: theme.palette.background.paper }}>
+      <Box 
+        id="projects" 
+        onMouseMove={handleMouseMoveProjects}
+        onMouseLeave={handleMouseLeaveProjects}
+        sx={{ 
+          py: 10, 
+          backgroundColor: theme.palette.background.paper,
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: `radial-gradient(circle 600px at ${mousePosProj.x}px ${mousePosProj.y}px, ${alpha(theme.palette.primary.main, 0.15)}, transparent 80%)`,
+            pointerEvents: 'none',
+            zIndex: 0,
+            transition: 'opacity 0.3s ease',
+            opacity: mousePosProj.x === -1000 ? 0 : 1,
+          }
+        }}
+      >
         <Container 
           maxWidth="lg" 
           component={motion.div} 
@@ -244,6 +277,7 @@ function Content() {
           whileInView={{ y: 0, opacity: 1 }} 
           transition={{ duration: 0.8, ease: "easeOut" }} 
           viewport={{ once: true, amount: 0.2 }}
+          sx={{ position: 'relative', zIndex: 1 }}
         >
           <Box sx={{ mb: 8, textAlign: 'center' }}>
             <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
