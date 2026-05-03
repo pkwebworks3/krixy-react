@@ -9,7 +9,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import projects from "../data/projects.json";
 import { TypeAnimation } from 'react-type-animation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function ParticleCanvas() {
   const canvasRef = useRef(null);
@@ -288,47 +288,57 @@ function Content() {
             </Typography>
           </Box>
 
-          <Card sx={{ 
-            minHeight: { xs: 'auto', md: 500 }, 
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'flex-end',
-            p: { xs: 2, md: 4 },
-            backgroundImage: { xs: 'none', md: `url(${projects[currentSlide]?.project_thumb})` },
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            borderRadius: 4,
-            backgroundColor: theme.palette.background.paper,
-          }}>
-            {/* Gradient overlay — desktop only */}
-            <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)', borderRadius: 4 }} />
-            
-            <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0, md: 'auto' }, maxWidth: { xs: '100%', md: 480 }, width: '100%' }}>
-              <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
-                <Box sx={{ width: 80, height: 80, mb: 2, borderRadius: 2, overflow: 'hidden' }}>
-                  <img src={projects[currentSlide]?.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </Box>
-                <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 500 }}>
-                  {projects[currentSlide]?.title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 3, lineHeight: 1.6 }}>
-                  {projects[currentSlide]?.description}
-                </Typography>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: "easeIn" }}
+            >
+              <Card sx={{ 
+                minHeight: { xs: 'auto', md: 500 }, 
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'flex-end',
+                p: { xs: 2, md: 4 },
+                backgroundImage: { xs: 'none', md: `url(${projects[currentSlide]?.project_thumb})` },
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: 4,
+                backgroundColor: theme.palette.background.paper,
+              }}>
+                {/* Gradient overlay — desktop only */}
+                <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: theme.palette.mode === 'light' ? 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)' : 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.2) 100%)', borderRadius: 4 }} />
                 
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                  <IconButton onClick={prevSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
-                    <ChevronLeftIcon />
-                  </IconButton>
-                  <Button variant="contained" href={projects[currentSlide]?.link} sx={{ flex: 1 }}>
-                    Open Project
-                  </Button>
-                  <IconButton onClick={nextSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
-                    <ChevronRightIcon />
-                  </IconButton>
+                <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0, md: 'auto' }, maxWidth: { xs: '100%', md: 480 }, width: '100%' }}>
+                  <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
+                    <Box sx={{ width: 80, height: 80, mb: 2, borderRadius: 2, overflow: 'hidden' }}>
+                      <img src={projects[currentSlide]?.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </Box>
+                    <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 500 }}>
+                      {projects[currentSlide]?.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 3, lineHeight: 1.6 }}>
+                      {projects[currentSlide]?.description}
+                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                      <IconButton onClick={prevSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
+                        <ChevronLeftIcon />
+                      </IconButton>
+                      <Button variant="contained" href={projects[currentSlide]?.link} sx={{ flex: 1 }}>
+                        Open Project
+                      </Button>
+                      <IconButton onClick={nextSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
+                        <ChevronRightIcon />
+                      </IconButton>
+                    </Box>
+                  </Card>
                 </Box>
               </Card>
-            </Box>
-          </Card>
+            </motion.div>
+          </AnimatePresence>
         </Container>
       </Box>
     </Box>

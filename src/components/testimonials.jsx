@@ -3,7 +3,7 @@ import { Box, Container, Typography, Card, Avatar, Rating, IconButton, useTheme,
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const testimonials = [
   {
@@ -113,26 +113,36 @@ function Testimonials() {
               transform: 'rotate(180deg)'
             }} />
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 3 }}>
-              <Avatar
-                src={testimonials[currentTestimonial].image}
-                alt={testimonials[currentTestimonial].name}
-                sx={{ width: 80, height: 80, border: `2px solid ${theme.palette.primary.main}` }}
-              />
-              <Box>
-                <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
-                  {testimonials[currentTestimonial].name}
-                </Typography>
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 1 }}>
-                  {testimonials[currentTestimonial].role}
-                </Typography>
-                <Rating value={testimonials[currentTestimonial].rating} readOnly size="small" sx={{ color: theme.palette.primary.main }} />
-              </Box>
-            </Box>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentTestimonial}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3, ease: "easeIn" }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 3 }}>
+                  <Avatar
+                    src={testimonials[currentTestimonial].image}
+                    alt={testimonials[currentTestimonial].name}
+                    sx={{ width: 80, height: 80, border: `2px solid ${theme.palette.primary.main}` }}
+                  />
+                  <Box>
+                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                      {testimonials[currentTestimonial].name}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 1 }}>
+                      {testimonials[currentTestimonial].role}
+                    </Typography>
+                    <Rating value={testimonials[currentTestimonial].rating} readOnly size="small" sx={{ color: theme.palette.primary.main }} />
+                  </Box>
+                </Box>
 
-            <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontStyle: 'italic', lineHeight: 1.8, fontWeight: 400 }}>
-              "{testimonials[currentTestimonial].comment}"
-            </Typography>
+                <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontStyle: 'italic', lineHeight: 1.8, fontWeight: 400 }}>
+                  "{testimonials[currentTestimonial].comment}"
+                </Typography>
+              </motion.div>
+            </AnimatePresence>
           </Card>
 
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}>
