@@ -1,7 +1,7 @@
 import './content.css'
 import projects from "../data/projects.json";
 import { useEffect, useState } from "react";
-import Navbar from './navbar'
+
 
 function Content() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -36,8 +36,6 @@ function Content() {
 
   return (
     <>
-      <Navbar />
-
       <div className="hero-section" id="home">
         <div className="hero-container">
           <div className="hero-left">

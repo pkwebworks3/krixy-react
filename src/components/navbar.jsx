@@ -1,5 +1,6 @@
 import './navbar.css'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -13,17 +14,17 @@ function Navbar() {
       <div className="navbar-container">
         <div className="navbar-content">
           <div className="navbar-logo">
-            <a href="#home">
+            <Link to="/">
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" className="logo-icon" />
-            </a>
+            </Link>
           </div>
 
           <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
             <ul className="navbar-list">
-              <li><a href="#home" className="nav-link">Home</a></li>
-              <li><a href="#projects" className="nav-link">Projects</a></li>
-              <li><a href="#about" className="nav-link">About</a></li>
-              <li><a href="#contact" className="nav-link">Contact</a></li>
+              <li><Link to="/" className="nav-link">Home</Link></li>
+              <li><Link to="/projects" className="nav-link">Projects</Link></li>
+              <li><a href="/#about" className="nav-link">About</a></li>
+              <li><a href="/#contact" className="nav-link">Contact</a></li>
             </ul>
           </div>
         </div>
