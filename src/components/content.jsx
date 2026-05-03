@@ -1,13 +1,124 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, alpha } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SendIcon from '@mui/icons-material/Send';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import projects from "../data/projects.json";
+import { TypeAnimation } from 'react-type-animation';
+import { motion } from 'framer-motion';
+
+function ParticleCanvas() {
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animationId;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const handleMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const m = mouseRef.current;
+      const dx = x - m.x;
+      const dy = y - m.y;
+      // speed = distance moved this frame, clamped to a useful range
+      const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 40);
+      mouseRef.current = { x, y, px: m.x, py: m.y, active: true, speed };
+    };
+    const handleMouseLeave = () => { mouseRef.current.active = false; mouseRef.current.speed = 0; };
+    canvas.parentElement.addEventListener('mousemove', handleMouseMove);
+    canvas.parentElement.addEventListener('mouseleave', handleMouseLeave);
+
+    const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
+    let particles = [];
+
+    const spawnParticle = () => {
+      const m = mouseRef.current;
+      if (!m.active || m.speed < 1) return;
+
+      // Circle radius grows with mouse speed: slow=2px, fast=14px
+      const radius = 2 + (m.speed / 40) * 12;
+
+      // Gentle drift in random direction (slightly biased away from direction of travel)
+      const angle = Math.random() * Math.PI * 2;
+      const driftSpeed = Math.random() * 0.8 + 0.2;
+
+      particles.push({
+        x: m.x + (Math.random() - 0.5) * 6,
+        y: m.y + (Math.random() - 0.5) * 6,
+        vx: Math.cos(angle) * driftSpeed,
+        vy: Math.sin(angle) * driftSpeed,
+        radius,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        life: 1.0,
+        decay: Math.random() * 0.018 + 0.01,
+      });
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Spawn 2–4 particles per frame depending on speed
+      const m = mouseRef.current;
+      const count = Math.ceil((m.speed / 40) * 4);
+      for (let i = 0; i < count; i++) spawnParticle();
+
+      particles = particles.filter(p => p.life > 0);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        p.life -= p.decay;
+
+        // Radius shrinks as particle fades out
+        const r = p.radius * p.life;
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(0.5, r), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      animationId = requestAnimationFrame(draw);
+    };
+    draw();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'absolute', top: 0, left: 0,
+        width: '100%', height: '100%',
+        pointerEvents: 'none',
+        zIndex: 0,
+      }}
+    />
+  );
+}
 
 function Content() {
   const theme = useTheme();
@@ -30,57 +141,68 @@ function Content() {
         alignItems: 'center',
         pt: { xs: 12, md: 15 },
         pb: 8,
+        position: 'relative',
+        overflow: 'hidden',
         background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 50%, ${theme.palette.background.default} 100%)`
       }}>
-        <Container maxWidth="lg">
+        <ParticleCanvas />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
-            {/* Hero Left Content */}
-            <Grid item xs={12} md={8}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase' }}>
+            {/* Hero Centered Content */}
+            <Grid item xs={12} md={10} lg={8} sx={{ mx: 'auto' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 3 }}>
+                <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
                   Hey, I'm
                 </Typography>
                 
-                <Typography variant="h1" sx={{ fontSize: { xs: '3rem', md: '4.5rem' }, color: theme.palette.text.primary, lineHeight: 1.1 }}>
-                  Kirubhssss
+                <Typography variant="h1" sx={{ fontSize: { xs: '3.5rem', md: '5rem' }, color: theme.palette.text.primary, lineHeight: 1.1, fontWeight: 900, minHeight: { xs: '4rem', md: '5.5rem' } }}>
+                  <TypeAnimation
+                    sequence={[
+                      'Kirubhssss',
+                      1000,
+                    ]}
+                    wrapper="span"
+                    speed={20}
+                    cursor={true}
+                  />
                 </Typography>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 2, py: 1, border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, backgroundColor: alpha(theme.palette.primary.main, 0.08) }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, flexWrap: 'wrap', mt: 1 }}>
+                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 3, py: 1, border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`, borderRadius: 8, backgroundColor: alpha(theme.palette.primary.main, 0.05), fontWeight: 600 }}>
                     Web Developer
                   </Typography>
-                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, fontWeight: 700 }}>&</Typography>
-                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 2, py: 1, border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, backgroundColor: alpha(theme.palette.primary.main, 0.08) }}>
+                  <Typography variant="h6" sx={{ color: theme.palette.text.secondary, fontWeight: 400 }}>&</Typography>
+                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 3, py: 1, border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`, borderRadius: 8, backgroundColor: alpha(theme.palette.primary.main, 0.05), fontWeight: 600 }}>
                     UI Designer
                   </Typography>
                 </Box>
 
-                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, fontSize: '1.125rem', lineHeight: 1.8, maxWidth: 500 }}>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, fontSize: '1.2rem', lineHeight: 1.8, maxWidth: 650, mt: 2 }}>
                   I craft digital experiences that blend stunning design with clean, efficient code. Specializing in modern web technologies and user-centered design.
                 </Typography>
 
-                <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap' }}>
-                  <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{ px: 4, py: 1.5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4, flexWrap: 'wrap' }}>
+                  <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{ px: 5, py: 1.5, borderRadius: 8, fontSize: '1.1rem', boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.4)}` }}>
                     View My Work
                   </Button>
-                  <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{ px: 4, py: 1.5, borderColor: theme.palette.primary.main, color: theme.palette.primary.main }}>
+                  <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{ px: 5, py: 1.5, borderRadius: 8, fontSize: '1.1rem', borderColor: alpha(theme.palette.primary.main, 0.5), color: theme.palette.primary.main, '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: alpha(theme.palette.primary.main, 0.05) } }}>
                     Get in Touch
                   </Button>
                 </Box>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
-                  <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, mt: 6 }}>
+                  <Typography variant="subtitle2" sx={{ color: theme.palette.text.secondary, textTransform: 'uppercase', letterSpacing: 2, fontWeight: 600 }}>
                     Connect with me
                   </Typography>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <IconButton href="https://github.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
-                      <GitHubIcon />
+                  <Box sx={{ display: 'flex', gap: 2 }}>
+                    <IconButton href="https://www.instagram.com/kirubha.exe/" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
+                      <InstagramIcon />
                     </IconButton>
-                    <IconButton href="https://linkedin.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
-                      <LinkedInIcon />
-                    </IconButton>
-                    <IconButton href="https://twitter.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
+                    <IconButton href="#" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
                       <TwitterIcon />
+                    </IconButton>
+                    <IconButton href="https://github.com/pkwebworks3" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
+                      <GitHubIcon />
                     </IconButton>
                   </Box>
                 </Box>
@@ -92,7 +214,14 @@ function Content() {
 
       {/* Featured Projects Section */}
       <Box id="projects" sx={{ py: 10, backgroundColor: theme.palette.background.paper }}>
-        <Container maxWidth="lg">
+        <Container 
+          maxWidth="lg" 
+          component={motion.div} 
+          initial={{ y: 50, opacity: 0 }} 
+          whileInView={{ y: 0, opacity: 1 }} 
+          transition={{ duration: 0.8, ease: "easeOut" }} 
+          viewport={{ once: true, amount: 0.2 }}
+        >
           <Box sx={{ mb: 8, textAlign: 'center' }}>
             <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
               Featured Projects

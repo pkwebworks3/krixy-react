@@ -1,7 +1,7 @@
 [
   {
     "title": "Calculator 4",
-    "description": "A powerful calculator application built with React. Features include basic arithmetic operations, memory functions, and a clean, intuitive interface.",
+    "description": "",
     "project_thumb": "/pro_img/proj_thumb1.jpg",
     "project_ico": "/pro_img/proj_ico1.jpg",
     "link": "#"
@@ -15,6 +15,13 @@
   },
   {
     "title": "Switch Case",
+    "description": "A comprehensive project demonstrating advanced JavaScript concepts. Features dynamic state management and real-time data processing capabilities.",
+    "project_thumb": "/pro_img/proj_thumb11.jpg",
+    "project_ico": "/pro_img/proj_ico3.jpg",
+    "link": "#"
+  },
+  {
+    "title": "calc 2",
     "description": "A comprehensive project demonstrating advanced JavaScript concepts. Features dynamic state management and real-time data processing capabilities.",
     "project_thumb": "/pro_img/proj_thumb11.jpg",
     "project_ico": "/pro_img/proj_ico3.jpg",

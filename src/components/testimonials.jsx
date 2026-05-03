@@ -3,6 +3,7 @@ import { Box, Container, Typography, Card, Avatar, Rating, IconButton, useTheme,
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
@@ -45,7 +46,14 @@ function Testimonials() {
 
   return (
     <Box sx={{ py: 12, backgroundColor: theme.palette.background.default }}>
-      <Container maxWidth="lg">
+      <Container 
+        maxWidth="lg"
+        component={motion.div}
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <Box sx={{ mb: 8, textAlign: 'center' }}>
           <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
             Client Testimonials

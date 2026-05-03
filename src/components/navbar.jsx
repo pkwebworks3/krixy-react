@@ -9,12 +9,24 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import { motion } from 'framer-motion';
+
+const iconVariants = {
+  animate: {
+    scale: [1, 1.2, 1],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut"
+    }
+  }
+};
 
 const pages = [
-  { title: 'Home', path: '/', isLink: true },
-  { title: 'Projects', path: '/projects', isLink: true },
-  { title: 'About', path: '/#about', isLink: false },
-  { title: 'Contact', path: '/#contact', isLink: false }
+  { title: 'Home', path: '/', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><HomeIcon /></motion.div> },
+  { title: 'Projects', path: '/projects', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><DashboardIcon /></motion.div> }
 ];
 
 function Navbar() {
@@ -32,16 +44,22 @@ function Navbar() {
     <AppBar position="sticky" sx={{ background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(124, 58, 237, 0.1)', boxShadow: 'none' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '30px' }} />
             </Link>
+            <Box component="span" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#7c3aed', bgcolor: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '4px', px: '5px', py: '2px', letterSpacing: 1, textTransform: 'uppercase', lineHeight: 1 }}>
+              beta
+            </Box>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '24px' }} />
             </Link>
+            <Box component="span" sx={{ fontSize: '0.55rem', fontWeight: 700, color: '#7c3aed', bgcolor: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '4px', px: '4px', py: '1px', letterSpacing: 1, textTransform: 'uppercase', lineHeight: 1 }}>
+              beta
+            </Box>
           </Box>
           
           <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
@@ -76,9 +94,13 @@ function Navbar() {
               {pages.map((page) => (
                 <MenuItem key={page.title} onClick={handleCloseNavMenu}>
                   {page.isLink ? (
-                    <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>{page.title}</Link>
+                    <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit', width: '100%', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {page.icon} {page.title}
+                    </Link>
                   ) : (
-                    <a href={page.path} style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}>{page.title}</a>
+                    <a href={page.path} style={{ textDecoration: 'none', color: 'inherit', width: '100%', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {page.icon} {page.title}
+                    </a>
                   )}
                 </MenuItem>
               ))}
@@ -92,7 +114,8 @@ function Navbar() {
                   key={page.title}
                   component={Link}
                   to={page.path}
-                  sx={{ my: 2, color: '#0f172a', display: 'block', '&:hover': { color: '#7c3aed' } }}
+                  startIcon={page.icon}
+                  sx={{ my: 2, color: '#0f172a', display: 'flex', '&:hover': { color: '#7c3aed' } }}
                 >
                   {page.title}
                 </Button>
@@ -100,7 +123,8 @@ function Navbar() {
                 <Button
                   key={page.title}
                   href={page.path}
-                  sx={{ my: 2, color: '#0f172a', display: 'block', '&:hover': { color: '#7c3aed' } }}
+                  startIcon={page.icon}
+                  sx={{ my: 2, color: '#0f172a', display: 'flex', '&:hover': { color: '#7c3aed' } }}
                 >
                   {page.title}
                 </Button>
