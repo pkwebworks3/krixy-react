@@ -82,33 +82,35 @@ function ParticleCanvas() {
         f.life += f.decay;
         f.rotation += f.rotSpeed;
 
-        // Sine wave for smooth scale up and down
-        f.size = f.maxSize * Math.sin(f.life);
+        // Sine wave for smooth scale up and down. Clamp to 0 to prevent negative radius error.
+        f.size = Math.max(0, f.maxSize * Math.sin(f.life));
         
         // Calculate opacity (fade out as it reaches the end of its life)
-        const opacity = Math.sin(f.life);
+        const opacity = Math.max(0, Math.sin(f.life));
 
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, opacity);
-        ctx.translate(f.x, f.y);
-        ctx.rotate(f.rotation);
+        if (f.size > 0.1 && opacity > 0.01) {
+          ctx.save();
+          ctx.globalAlpha = opacity;
+          ctx.translate(f.x, f.y);
+          ctx.rotate(f.rotation);
 
-        // Draw Petals
-        ctx.fillStyle = f.color;
-        for (let i = 0; i < 5; i++) {
+          // Draw Petals
+          ctx.fillStyle = f.color;
+          for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.ellipse(0, f.size * 0.6, f.size * 0.3, f.size * 0.8, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.rotate((Math.PI * 2) / 5);
+          }
+          
+          // Draw Flower Center
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.beginPath();
-          ctx.ellipse(0, f.size * 0.6, f.size * 0.3, f.size * 0.8, 0, 0, Math.PI * 2);
+          ctx.arc(0, 0, f.size * 0.25, 0, Math.PI * 2);
           ctx.fill();
-          ctx.rotate((Math.PI * 2) / 5);
-        }
-        
-        // Draw Flower Center
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.beginPath();
-        ctx.arc(0, 0, f.size * 0.25, 0, Math.PI * 2);
-        ctx.fill();
 
-        ctx.restore();
+          ctx.restore();
+        }
       });
 
       animationId = requestAnimationFrame(draw);
