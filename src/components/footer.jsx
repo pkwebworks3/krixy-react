@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, IconButton, useTheme, Divider } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -31,11 +32,12 @@ function Footer() {
               Quick Links
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {['Home', 'Projects', 'About', 'Contact'].map((link) => (
-                <Typography key={link} component="a" href={`#${link.toLowerCase()}`} sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.primary.main } }}>
-                  {link}
-                </Typography>
-              ))}
+              <Typography component={Link} to="/" sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.primary.main } }}>
+                Home
+              </Typography>
+              <Typography component={Link} to="/projects" sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.primary.main } }}>
+                Projects
+              </Typography>
             </Box>
           </Grid>
 
