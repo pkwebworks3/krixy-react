@@ -25,32 +25,52 @@ function ParticleCanvas() {
 
     const initGrid = () => {
       flowers = [];
+      const width = canvas.offsetWidth || window.innerWidth;
+      const height = canvas.offsetHeight || window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+
       const spacing = 70; // Distance between flowers
-      const cols = Math.ceil(canvas.width / spacing) + 1;
-      const rows = Math.ceil(canvas.height / spacing) + 1;
+      const cols = Math.ceil(width / spacing) + 1;
+      const rows = Math.ceil(height / spacing) + 1;
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
           flowers.push({
-            x: i * spacing + (Math.random() - 0.5) * 40, // Organic random offset
+            x: i * spacing + (Math.random() - 0.5) * 40,
             y: j * spacing + (Math.random() - 0.5) * 40,
-            baseSize: Math.random() * 8 + 12, // Random sizes
-            bloomLevel: 0, // 0 (hidden) to 1 (fully bloomed)
+            baseSize: Math.random() * 8 + 12,
+            bloomLevel: 0,
             rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.015, // Slow rotation
+            rotSpeed: (Math.random() - 0.5) * 0.015,
             color: COLORS[Math.floor(Math.random() * COLORS.length)],
           });
         }
       }
     };
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      initGrid();
+    initGrid();
+
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(initGrid, 200);
     };
-    resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', handleResize);
+
+    const handlePointerMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      if (x >= -50 && x <= canvas.width + 50 && y >= -50 && y <= canvas.height + 50) {
+        mouseRef.current = { x, y, active: true };
+      } else {
+        mouseRef.current.active = false;
+      }
+    };
+    
+    window.addEventListener('pointermove', handlePointerMove);
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -59,34 +79,28 @@ function ParticleCanvas() {
       flowers.forEach((f) => {
         f.rotation += f.rotSpeed;
 
-        // Check distance to mouse
         let dist = Infinity;
         if (m.active) {
           dist = Math.hypot(m.x - f.x, m.y - f.y);
         }
 
-        // Bloom when near cursor, wilt when far
         if (dist < 120) {
-          f.bloomLevel += 0.08; // Bloom speed
+          f.bloomLevel += 0.08;
         } else {
-          f.bloomLevel -= 0.015; // Wilt speed
+          f.bloomLevel -= 0.015;
         }
 
-        // Clamp bloomLevel between 0 and 1
         f.bloomLevel = Math.max(0, Math.min(1, f.bloomLevel));
 
         if (f.bloomLevel > 0.01) {
-          // Smooth easing using Math.sin
-          const ease = Math.sin((f.bloomLevel * Math.PI) / 2); // Eases from 0 to 1
+          const ease = Math.sin((f.bloomLevel * Math.PI) / 2);
           const currentSize = f.baseSize * ease;
-          const opacity = ease;
 
           ctx.save();
-          ctx.globalAlpha = opacity;
+          ctx.globalAlpha = ease;
           ctx.translate(f.x, f.y);
           ctx.rotate(f.rotation);
 
-          // Draw Petals
           ctx.fillStyle = f.color;
           for (let i = 0; i < 5; i++) {
             ctx.beginPath();
@@ -95,7 +109,6 @@ function ParticleCanvas() {
             ctx.rotate((Math.PI * 2) / 5);
           }
           
-          // Draw Flower Center
           ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.beginPath();
           ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
@@ -111,7 +124,9 @@ function ParticleCanvas() {
 
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('pointermove', handlePointerMove);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
