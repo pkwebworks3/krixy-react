@@ -34,7 +34,6 @@ function ParticleCanvas() {
       const m = mouseRef.current;
       const dx = x - m.x;
       const dy = y - m.y;
-      // speed = distance moved this frame, clamped to a useful range
       const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 40);
       mouseRef.current = { x, y, px: m.x, py: m.y, active: true, speed };
     };
@@ -43,57 +42,72 @@ function ParticleCanvas() {
     canvas.parentElement.addEventListener('mouseleave', handleMouseLeave);
 
     const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
-    let particles = [];
+    let flowers = [];
+    let lastSpawn = { x: -999, y: -999 };
 
-    const spawnParticle = () => {
+    const spawnFlower = () => {
       const m = mouseRef.current;
       if (!m.active || m.speed < 1) return;
 
-      // Circle radius grows with mouse speed: slow=2px, fast=14px
-      const radius = 2 + (m.speed / 40) * 12;
-
-      // Gentle drift in random direction (slightly biased away from direction of travel)
-      const angle = Math.random() * Math.PI * 2;
-      const driftSpeed = Math.random() * 0.8 + 0.2;
-
-      particles.push({
-        x: m.x + (Math.random() - 0.5) * 6,
-        y: m.y + (Math.random() - 0.5) * 6,
-        vx: Math.cos(angle) * driftSpeed,
-        vy: Math.sin(angle) * driftSpeed,
-        radius,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        life: 1.0,
-        decay: Math.random() * 0.018 + 0.01,
-      });
+      const dist = Math.hypot(m.x - lastSpawn.x, m.y - lastSpawn.y);
+      // Spawn a flower every 30 pixels of movement
+      if (dist > 30) {
+        lastSpawn = { x: m.x, y: m.y };
+        const maxSize = 8 + (m.speed / 40) * 12; // Base size + speed bonus
+        
+        flowers.push({
+          x: m.x + (Math.random() - 0.5) * 10,
+          y: m.y + (Math.random() - 0.5) * 10,
+          size: 0,
+          maxSize: maxSize,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          life: 0,
+          decay: Math.random() * 0.015 + 0.015, // How fast it blooms and fades
+        });
+      }
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Spawn 2–4 particles per frame depending on speed
-      const m = mouseRef.current;
-      const count = Math.ceil((m.speed / 40) * 4);
-      for (let i = 0; i < count; i++) spawnParticle();
+      spawnFlower();
 
-      particles = particles.filter(p => p.life > 0);
+      // Filter out dead flowers
+      flowers = flowers.filter(f => f.life < Math.PI);
 
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.97;
-        p.vy *= 0.97;
-        p.life -= p.decay;
+      flowers.forEach((f) => {
+        // Life goes from 0 to PI for a complete sine wave cycle (bloom and shrink)
+        f.life += f.decay;
+        f.rotation += f.rotSpeed;
 
-        // Radius shrinks as particle fades out
-        const r = p.radius * p.life;
+        // Sine wave for smooth scale up and down
+        f.size = f.maxSize * Math.sin(f.life);
+        
+        // Calculate opacity (fade out as it reaches the end of its life)
+        const opacity = Math.sin(f.life);
 
         ctx.save();
-        ctx.globalAlpha = Math.max(0, p.life);
-        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, opacity);
+        ctx.translate(f.x, f.y);
+        ctx.rotate(f.rotation);
+
+        // Draw Petals
+        ctx.fillStyle = f.color;
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.ellipse(0, f.size * 0.6, f.size * 0.3, f.size * 0.8, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.rotate((Math.PI * 2) / 5);
+        }
+        
+        // Draw Flower Center
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
         ctx.beginPath();
-        ctx.arc(p.x, p.y, Math.max(0.5, r), 0, Math.PI * 2);
+        ctx.arc(0, 0, f.size * 0.25, 0, Math.PI * 2);
         ctx.fill();
+
         ctx.restore();
       });
 
