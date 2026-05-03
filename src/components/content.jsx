@@ -1,30 +1,17 @@
-import './content.css'
+import { useState } from 'react';
+import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, alpha } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import SendIcon from '@mui/icons-material/Send';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import projects from "../data/projects.json";
-import { useEffect, useState } from "react";
-
 
 function Content() {
+  const theme = useTheme();
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const reveals = document.querySelectorAll(".reveal");
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          } else {
-            entry.target.classList.remove("active");
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    reveals.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % projects.length);
@@ -35,246 +22,128 @@ function Content() {
   };
 
   return (
-    <>
-      <div className="hero-section" id="home">
-        <div className="hero-container">
-          <div className="hero-left">
-            <div className="hero-content">
-              <span className="hero-greeting">Hey, I'm</span>
-              <h1 className="hero-name">Kirubhssss <span className="name-highlight"></span></h1>
+    <Box sx={{ width: '100%', overflow: 'hidden' }}>
+      {/* Hero Section */}
+      <Box id="home" sx={{ 
+        minHeight: '100vh', 
+        display: 'flex', 
+        alignItems: 'center',
+        pt: { xs: 12, md: 15 },
+        pb: 8,
+        background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 50%, ${theme.palette.background.default} 100%)`
+      }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={8} alignItems="center">
+            {/* Hero Left Content */}
+            <Grid item xs={12} md={8}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main, fontWeight: 600, letterSpacing: 2, textTransform: 'uppercase' }}>
+                  Hey, I'm
+                </Typography>
+                
+                <Typography variant="h1" sx={{ fontSize: { xs: '3rem', md: '4.5rem' }, color: theme.palette.text.primary, lineHeight: 1.1 }}>
+                  Kirubhssss
+                </Typography>
 
-              <div className="hero-role">
-                <span className="role-text">Web Developer</span>
-                <span className="role-divider">&</span>
-                <span className="role-text">UI Designer</span>
-              </div>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 2, py: 1, border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, backgroundColor: alpha(theme.palette.primary.main, 0.08) }}>
+                    Web Developer
+                  </Typography>
+                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, fontWeight: 700 }}>&</Typography>
+                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 2, py: 1, border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, backgroundColor: alpha(theme.palette.primary.main, 0.08) }}>
+                    UI Designer
+                  </Typography>
+                </Box>
 
-              <p className="hero-bio">
-                I craft digital experiences that blend stunning design with clean, efficient code.
-                Specializing in modern web technologies and user-centered design.
-              </p>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, fontSize: '1.125rem', lineHeight: 1.8, maxWidth: 500 }}>
+                  I craft digital experiences that blend stunning design with clean, efficient code. Specializing in modern web technologies and user-centered design.
+                </Typography>
 
-              <div className="hero-cta">
-                <a href="#projects" className="cta-button primary">
-                  <span>View My Work</span>
-                  <i className="bi bi-arrow-right"></i>
-                </a>
-                <a href="#contact" className="cta-button secondary">
-                  <i className="bi bi-send"></i>
-                  <span>Get in Touch</span>
-                </a>
-              </div>
+                <Box sx={{ display: 'flex', gap: 2, mt: 2, flexWrap: 'wrap' }}>
+                  <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{ px: 4, py: 1.5 }}>
+                    View My Work
+                  </Button>
+                  <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{ px: 4, py: 1.5, borderColor: theme.palette.primary.main, color: theme.palette.primary.main }}>
+                    Get in Touch
+                  </Button>
+                </Box>
 
-              <div className="hero-social">
-                <span className="social-label">Connect with me</span>
-                <div className="social-icons">
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                    <i className="bi bi-github"></i>
-                  </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                    <i className="bi bi-linkedin"></i>
-                  </a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                    <i className="bi bi-twitter"></i>
-                  </a>
-                  <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                    <i className="bi bi-dribbble"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 2 }}>
+                  <Typography variant="subtitle2" sx={{ color: theme.palette.primary.main, textTransform: 'uppercase', letterSpacing: 1, fontWeight: 600 }}>
+                    Connect with me
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <IconButton href="https://github.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
+                      <GitHubIcon />
+                    </IconButton>
+                    <IconButton href="https://linkedin.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
+                      <LinkedInIcon />
+                    </IconButton>
+                    <IconButton href="https://twitter.com" target="_blank" sx={{ border: `2px solid ${theme.palette.primary.main}`, borderRadius: 2, color: theme.palette.primary.main }}>
+                      <TwitterIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
-            <div className="hero-stats-row">
-              <div className="stat-box">
-                <h3 className="stat-value">50+</h3>
-                <p className="stat-name">Projects</p>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-box">
-                <h3 className="stat-value">30+</h3>
-                <p className="stat-name">Clients</p>
-              </div>
-              <div className="stat-divider"></div>
-              <div className="stat-box">
-                <h3 className="stat-value">5+</h3>
-                <p className="stat-name">Years</p>
-              </div>
-            </div>
-          </div>
+      {/* Featured Projects Section */}
+      <Box id="projects" sx={{ py: 10, backgroundColor: theme.palette.background.paper }}>
+        <Container maxWidth="lg">
+          <Box sx={{ mb: 8, textAlign: 'center' }}>
+            <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
+              Featured Projects
+            </Typography>
+            <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
+              A selection of recent work
+            </Typography>
+          </Box>
 
-          <div className="hero-right">
-            <div className="hero-showcase">
-              <div className="showcase-card skill-card-1">
-                <div className="card-icon">
-                  <i className="bi bi-lightning-charge"></i>
-                </div>
-                <h3>React</h3>
-                <p>Modern UI Libraries</p>
-              </div>
-
-              <div className="showcase-card skill-card-2">
-                <div className="card-icon">
-                  <i className="bi bi-palette-fill"></i>
-                </div>
-                <h3>Design</h3>
-                <p>UI/UX Focused</p>
-              </div>
-
-              <div className="showcase-card skill-card-3">
-                <div className="card-icon">
-                  <i className="bi bi-code-slash"></i>
-                </div>
-                <h3>JavaScript</h3>
-                <p>Clean Code</p>
-              </div>
-
-              <div className="showcase-card skill-card-4">
-                <div className="card-icon">
-                  <i className="bi bi-rocket-fill"></i>
-                </div>
-                <h3>Performance</h3>
-                <p>Speed Optimized</p>
-              </div>
-
-              <div className="floating-element element-1"></div>
-              <div className="floating-element element-2"></div>
-              <div className="floating-element element-3"></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="hero-scroll">
-          <p>Scroll to explore</p>
-          <div className="scroll-indicator">
-            <span></span>
-          </div>
-        </div>
-      </div>
-
-      <div className="projects-section" id="projects">
-        <div className="section-title">
-          <h2>Featured Projects</h2>
-          <p className="section-subtitle">A selection of recent work</p>
-        </div>
-
-        <div className="carousel-container reveal">
-          <div
-            className="carousel-layout"
-            style={{
-              backgroundImage: `url(${projects[currentSlide]?.project_thumb})`,
-            }}
-          >
-            {/* Details Card */}
-            <div className="carousel-details-section">
-              <div className="details-card">
-                <div className="icon-container">
-                  <img
-                    src={projects[currentSlide]?.project_ico}
-                    alt="icon"
-                    className="icon-image"
-                  />
-                </div>
-
-                <h3 className="project-name">
+          <Card sx={{ 
+            minHeight: 500, 
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'flex-end',
+            p: 4,
+            backgroundImage: `url(${projects[currentSlide]?.project_thumb})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            borderRadius: 4
+          }}>
+            <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)', borderRadius: 4 }} />
+            
+            <Box sx={{ position: 'relative', zIndex: 1, ml: 'auto', maxWidth: 480, width: '100%' }}>
+              <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
+                <Box sx={{ width: 80, height: 80, mb: 2, borderRadius: 2, overflow: 'hidden' }}>
+                  <img src={projects[currentSlide]?.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </Box>
+                <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 500 }}>
                   {projects[currentSlide]?.title}
-                </h3>
-
-                <p className="project-desc">
+                </Typography>
+                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 3, lineHeight: 1.6 }}>
                   {projects[currentSlide]?.description}
-                </p>
-
-                <div className="action-buttons">
-                  <button
-                    className="icon-button"
-                    onClick={prevSlide}
-                    aria-label="Previous"
-                  >
-                    <i className="bi bi-chevron-left"></i>
-                  </button>
-
-                  <a
-                    href={projects[currentSlide]?.link}
-                    className="primary-button"
-                  >
-                    Open
-                  </a>
-
-                  <button
-                    className="icon-button"
-                    onClick={nextSlide}
-                    aria-label="Next"
-                  >
-                    <i className="bi bi-chevron-right"></i>
-                  </button>
-                </div>
-
-                <div className="page-indicators">
-                  {projects.map((_, idx) => (
-                    <button
-                      key={idx}
-                      className={`page-dot ${idx === currentSlide ? "active" : ""}`}
-                      onClick={() => setCurrentSlide(idx)}
-                    ></button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <script>{`
-        const canvas = document.getElementById('matrix-canvas');
-        if (canvas) {
-          const ctx = canvas.getContext('2d');
-          
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-          
-          const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-          const charArray = chars.split('');
-          const fontSize = 20;
-          const columns = canvas.width / fontSize;
-          
-          const drops = [];
-          for (let i = 0; i < columns; i++) {
-            drops[i] = Math.random() * canvas.height;
-          }
-          
-          function draw() {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = '#2702c2';
-            ctx.font = fontSize + 'px monospace';
-            ctx.fontWeight = '300';
-            
-            for (let i = 0; i < drops.length; i++) {
-              const text = charArray[Math.floor(Math.random() * charArray.length)];
-              ctx.fillText(text, i * fontSize, drops[i]);
-              
-              if (drops[i] * Math.random() > 0.975) {
-                drops[i] = 0;
-              }
-              
-              drops[i] += fontSize;
-            }
-          }
-          
-          function animate() {
-            draw();
-            requestAnimationFrame(animate);
-          }
-          
-          animate();
-          
-          window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-          });
-        }
-      `}</script>
-    </>
+                </Typography>
+                
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                  <IconButton onClick={prevSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
+                    <ChevronLeftIcon />
+                  </IconButton>
+                  <Button variant="contained" href={projects[currentSlide]?.link} sx={{ flex: 1 }}>
+                    Open Project
+                  </Button>
+                  <IconButton onClick={nextSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
+                    <ChevronRightIcon />
+                  </IconButton>
+                </Box>
+              </Card>
+            </Box>
+          </Card>
+        </Container>
+      </Box>
+    </Box>
   );
 }
 
