@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Box, Container, Grid, Typography, IconButton, useTheme, Divider } from '@mui/material';
+import { Box, Container, Grid, Typography, IconButton, Button, useTheme, Divider } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
+import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 function Footer() {
   const theme = useTheme();
@@ -31,13 +33,23 @@ function Footer() {
             <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 600, mb: 3 }}>
               Quick Links
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Typography component={Link} to="/" sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.primary.main } }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Button
+                component={Link}
+                to="/"
+                startIcon={<HomeIcon />}
+                sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
+              >
                 Home
-              </Typography>
-              <Typography component={Link} to="/projects" sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.primary.main } }}>
+              </Button>
+              <Button
+                component={Link}
+                to="/projects"
+                startIcon={<DashboardIcon />}
+                sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
+              >
                 Projects
-              </Typography>
+              </Button>
             </Box>
           </Grid>
 
@@ -58,17 +70,10 @@ function Footer() {
 
         <Divider sx={{ borderColor: 'rgba(124, 58, 237, 0.1)', my: 4 }} />
 
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
             &copy; {currentYear} PK Webworks. All rights reserved.
           </Typography>
-          <Box sx={{ display: 'flex', gap: 3 }}>
-            {['Privacy Policy', 'Terms of Service', 'Sitemap'].map((link) => (
-              <Typography key={link} component="a" href={`#${link.toLowerCase().replace(' ', '-')}`} variant="body2" sx={{ color: theme.palette.text.secondary, textDecoration: 'none', '&:hover': { color: theme.palette.text.primary } }}>
-                {link}
-              </Typography>
-            ))}
-          </Box>
         </Box>
       </Container>
     </Box>

@@ -56,7 +56,7 @@ function Testimonials() {
       >
         <Box sx={{ mb: 8, textAlign: 'center' }}>
           <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
-            Client Testimonials
+            Client Reviews
           </Typography>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
             What my clients say about working with me
