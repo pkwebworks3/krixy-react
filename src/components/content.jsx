@@ -37,14 +37,14 @@ function Content() {
   return (
     <>
       <Navbar />
-      
+
       <div className="hero-section" id="home">
         <div className="hero-container">
           <div className="hero-left">
             <div className="hero-content">
               <span className="hero-greeting">Hey, I'm</span>
               <h1 className="hero-name">Kirubhssss <span className="name-highlight"></span></h1>
-              
+
               <div className="hero-role">
                 <span className="role-text">Web Developer</span>
                 <span className="role-divider">&</span>
@@ -52,7 +52,7 @@ function Content() {
               </div>
 
               <p className="hero-bio">
-                I craft digital experiences that blend stunning design with clean, efficient code. 
+                I craft digital experiences that blend stunning design with clean, efficient code.
                 Specializing in modern web technologies and user-centered design.
               </p>
 
@@ -160,7 +160,7 @@ function Content() {
         </div>
 
         <div className="carousel-container reveal">
-          <div 
+          <div
             className="carousel-layout"
             style={{
               backgroundImage: `url(${projects[currentSlide]?.project_thumb})`,
