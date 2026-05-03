@@ -20,75 +20,67 @@ function ParticleCanvas() {
     const ctx = canvas.getContext('2d');
     let animationId;
 
+    const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
+    let flowers = [];
+
+    const initGrid = () => {
+      flowers = [];
+      const spacing = 70; // Distance between flowers
+      const cols = Math.ceil(canvas.width / spacing) + 1;
+      const rows = Math.ceil(canvas.height / spacing) + 1;
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          flowers.push({
+            x: i * spacing + (Math.random() - 0.5) * 40, // Organic random offset
+            y: j * spacing + (Math.random() - 0.5) * 40,
+            baseSize: Math.random() * 8 + 12, // Random sizes
+            bloomLevel: 0, // 0 (hidden) to 1 (fully bloomed)
+            rotation: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.015, // Slow rotation
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          });
+        }
+      }
+    };
+
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
+      initGrid();
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const handleMouseMove = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const m = mouseRef.current;
-      const dx = x - m.x;
-      const dy = y - m.y;
-      const speed = Math.min(Math.sqrt(dx * dx + dy * dy), 40);
-      mouseRef.current = { x, y, px: m.x, py: m.y, active: true, speed };
-    };
-    const handleMouseLeave = () => { mouseRef.current.active = false; mouseRef.current.speed = 0; };
-    canvas.parentElement.addEventListener('mousemove', handleMouseMove);
-    canvas.parentElement.addEventListener('mouseleave', handleMouseLeave);
-
-    const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
-    let flowers = [];
-    let lastSpawn = { x: -999, y: -999 };
-
-    const spawnFlower = () => {
-      const m = mouseRef.current;
-      if (!m.active || m.speed < 1) return;
-
-      const dist = Math.hypot(m.x - lastSpawn.x, m.y - lastSpawn.y);
-      // Spawn a flower every 30 pixels of movement
-      if (dist > 30) {
-        lastSpawn = { x: m.x, y: m.y };
-        const maxSize = 8 + (m.speed / 40) * 12; // Base size + speed bonus
-        
-        flowers.push({
-          x: m.x + (Math.random() - 0.5) * 10,
-          y: m.y + (Math.random() - 0.5) * 10,
-          size: 0,
-          maxSize: maxSize,
-          rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.04,
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          life: 0,
-          decay: Math.random() * 0.015 + 0.015, // How fast it blooms and fades
-        });
-      }
-    };
-
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      spawnFlower();
-
-      // Filter out dead flowers
-      flowers = flowers.filter(f => f.life < Math.PI);
+      const m = mouseRef.current;
 
       flowers.forEach((f) => {
-        // Life goes from 0 to PI for a complete sine wave cycle (bloom and shrink)
-        f.life += f.decay;
         f.rotation += f.rotSpeed;
 
-        // Sine wave for smooth scale up and down. Clamp to 0 to prevent negative radius error.
-        f.size = Math.max(0, f.maxSize * Math.sin(f.life));
-        
-        // Calculate opacity (fade out as it reaches the end of its life)
-        const opacity = Math.max(0, Math.sin(f.life));
+        // Check distance to mouse
+        let dist = Infinity;
+        if (m.active) {
+          dist = Math.hypot(m.x - f.x, m.y - f.y);
+        }
 
-        if (f.size > 0.1 && opacity > 0.01) {
+        // Bloom when near cursor, wilt when far
+        if (dist < 120) {
+          f.bloomLevel += 0.08; // Bloom speed
+        } else {
+          f.bloomLevel -= 0.015; // Wilt speed
+        }
+
+        // Clamp bloomLevel between 0 and 1
+        f.bloomLevel = Math.max(0, Math.min(1, f.bloomLevel));
+
+        if (f.bloomLevel > 0.01) {
+          // Smooth easing using Math.sin
+          const ease = Math.sin((f.bloomLevel * Math.PI) / 2); // Eases from 0 to 1
+          const currentSize = f.baseSize * ease;
+          const opacity = ease;
+
           ctx.save();
           ctx.globalAlpha = opacity;
           ctx.translate(f.x, f.y);
@@ -98,7 +90,7 @@ function ParticleCanvas() {
           ctx.fillStyle = f.color;
           for (let i = 0; i < 5; i++) {
             ctx.beginPath();
-            ctx.ellipse(0, f.size * 0.6, f.size * 0.3, f.size * 0.8, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, currentSize * 0.6, Math.max(0.1, currentSize * 0.3), Math.max(0.1, currentSize * 0.8), 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.rotate((Math.PI * 2) / 5);
           }
@@ -106,7 +98,7 @@ function ParticleCanvas() {
           // Draw Flower Center
           ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.beginPath();
-          ctx.arc(0, 0, f.size * 0.25, 0, Math.PI * 2);
+          ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
           ctx.fill();
 
           ctx.restore();
