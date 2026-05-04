@@ -1,14 +1,20 @@
 [
   {
-    "title": "Calculator 4",
-    "description": "A powerful calculator application built with React. Features include basic arithmetic operations, memory functions, and a clean, intuitive interface.",
+    "title": "Calculator v4",
+    "description": "a simple calulator website using glassmoprism effect",
     "project_thumb": "/pro_img/proj_thumb1.jpg",
-    "link": "#"
+    "link": "https://pkwwprojects.vercel.app/calc%204/"
   },
   {
     "title": "Read My Comic",
-    "description": "An innovative web project showcasing modern design principles and interactive user experience. Built with cutting-edge technologies and best practices.",
+    "description": "a simple website for reading comics ",
     "project_thumb": "/pro_img/proj_thumb2.jpg",
-    "link": "#"
+    "link": "https://pkwwprojects.vercel.app/readmycomic/"
+  },
+  {
+    "title": "Switch Case",
+    "description": "a simple website that changes the cases of text",
+    "project_thumb": "/pro_img/proj_thumb11.jpg",
+    "link": "https://pkwwprojects.vercel.app/switch%20case/"
   }
 ]
