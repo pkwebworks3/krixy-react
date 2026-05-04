@@ -3,14 +3,12 @@
     "title": "Calculator 4",
     "description": "A powerful calculator application built with React. Features include basic arithmetic operations, memory functions, and a clean, intuitive interface.",
     "project_thumb": "/pro_img/proj_thumb1.jpg",
-    "project_ico": "/pro_img/proj_ico1.jpg",
     "link": "#"
   },
   {
     "title": "Read My Comic",
     "description": "An innovative web project showcasing modern design principles and interactive user experience. Built with cutting-edge technologies and best practices.",
     "project_thumb": "/pro_img/proj_thumb2.jpg",
-    "project_ico": "/ico/4x/Artboard 2.png",
     "link": "#"
   }
 ]

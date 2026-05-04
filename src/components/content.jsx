@@ -313,9 +313,6 @@ function Content() {
                 
                 <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0, md: 'auto' }, maxWidth: { xs: '100%', md: 480 }, width: '100%' }}>
                   <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
-                    <Box sx={{ width: 80, height: 80, mb: 2, borderRadius: 2, overflow: 'hidden' }}>
-                      <img src={projects[currentSlide]?.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </Box>
                     <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 500 }}>
                       {projects[currentSlide]?.title}
                     </Typography>

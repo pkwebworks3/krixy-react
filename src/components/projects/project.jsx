@@ -101,9 +101,6 @@ function Projects() {
               
               <CardContent sx={{ flexGrow: 1, p: 4 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Box sx={{ width: 48, height: 48, borderRadius: 2, overflow: 'hidden', p: 1, border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`, bgcolor: alpha(theme.palette.primary.main, 0.05) }}>
-                    <img src={project.project_ico} alt="icon" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                  </Box>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
                     {project.title}
                   </Typography>
