@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, alpha } from '@mui/material';
+import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, useMediaQuery, alpha } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SendIcon from '@mui/icons-material/Send';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -11,9 +11,10 @@ import projects from "../data/projects.json";
 import { TypeAnimation } from 'react-type-animation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-function ParticleCanvas() {
+function ParticleCanvas({ isMobile }) {
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
+  const burstsRef = useRef([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,6 +23,8 @@ function ParticleCanvas() {
 
     const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
     let flowers = [];
+    const startTime = performance.now();
+    const BLOOM_RADIUS = 150;
 
     const initGrid = () => {
       flowers = [];
@@ -30,20 +33,29 @@ function ParticleCanvas() {
       canvas.width = width;
       canvas.height = height;
 
-      const spacing = 45; // Distance between flowers
+      const spacing = 45;
       const cols = Math.ceil(width / spacing) + 1;
       const rows = Math.ceil(height / spacing) + 1;
 
+      const NUM_GROUPS = 8;
+      const GROUP_INTERVAL = 3000;
+
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
+          const x = i * spacing + (Math.random() - 0.5) * 40;
+          const y = j * spacing + (Math.random() - 0.5) * 40;
+          const groupIndex = Math.floor(Math.random() * NUM_GROUPS);
+
           flowers.push({
-            x: i * spacing + (Math.random() - 0.5) * 40,
-            y: j * spacing + (Math.random() - 0.5) * 40,
+            x, y,
             baseSize: Math.random() * 8 + 12,
             bloomLevel: 0,
             rotation: Math.random() * Math.PI * 2,
             rotSpeed: (Math.random() - 0.5) * 0.015,
             color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            bloomDelay: groupIndex * GROUP_INTERVAL + Math.random() * 600,
+            bloomDuration: 1800 + Math.random() * 800,
+            phase: Math.random() * Math.PI * 2,
           });
         }
       }
@@ -58,36 +70,72 @@ function ParticleCanvas() {
     };
     window.addEventListener('resize', handleResize);
 
-    const handlePointerMove = (e) => {
+    const getCanvasPos = (e) => {
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    };
+
+    const handlePointerMove = (e) => {
+      if (isMobile) return;
+      const { x, y } = getCanvasPos(e);
       if (x >= -50 && x <= canvas.width + 50 && y >= -50 && y <= canvas.height + 50) {
         mouseRef.current = { x, y, active: true };
       } else {
         mouseRef.current.active = false;
       }
     };
-    
+
+    const handlePointerDown = (e) => {
+      if (!isMobile) return;
+      const { x, y } = getCanvasPos(e);
+      if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
+        burstsRef.current.push({ x, y, time: performance.now() });
+      }
+    };
+
     window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerdown', handlePointerDown);
+
+    const applyCircularBloom = (f, cx, cy, now) => {
+      const dist = Math.hypot(f.x - cx, f.y - cy);
+      if (dist < BLOOM_RADIUS) {
+        const intensity = 1 - (dist / BLOOM_RADIUS);
+        f.bloomLevel += 0.1 * (0.2 + 0.8 * intensity);
+      }
+    };
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const m = mouseRef.current;
+      const now = performance.now();
+
+      burstsRef.current = burstsRef.current.filter(b => now - b.time < 2000);
 
       flowers.forEach((f) => {
         f.rotation += f.rotSpeed;
 
-        let dist = Infinity;
-        if (m.active) {
-          dist = Math.hypot(m.x - f.x, m.y - f.y);
-        }
+        if (isMobile) {
+          const elapsed = now - startTime;
+          const progress = (elapsed - f.bloomDelay) / f.bloomDuration;
 
-        if (dist < 120) {
-          f.bloomLevel += 0.08;
+          if (progress <= 0) {
+            f.bloomLevel = 0;
+          } else if (progress < 1) {
+            f.bloomLevel = progress * progress;
+          } else {
+            f.bloomLevel = 0.85 + 0.15 * Math.sin(now * 0.0015 + f.phase);
+          }
+
+          burstsRef.current.forEach((burst) => {
+            applyCircularBloom(f, burst.x, burst.y, now);
+          });
         } else {
-          f.bloomLevel -= 0.015;
+          if (m.active) {
+            applyCircularBloom(f, m.x, m.y, now);
+            f.bloomLevel -= 0.008;
+          } else {
+            f.bloomLevel -= 0.015;
+          }
         }
 
         f.bloomLevel = Math.max(0, Math.min(1, f.bloomLevel));
@@ -108,7 +156,7 @@ function ParticleCanvas() {
             ctx.fill();
             ctx.rotate((Math.PI * 2) / 5);
           }
-          
+
           ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
           ctx.beginPath();
           ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
@@ -126,9 +174,10 @@ function ParticleCanvas() {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerdown', handlePointerDown);
       clearTimeout(resizeTimeout);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas
@@ -145,6 +194,7 @@ function ParticleCanvas() {
 
 function Content() {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mousePosProj, setMousePosProj] = useState({ x: -1000, y: -1000 });
 
@@ -175,17 +225,27 @@ function Content() {
         minHeight: '100vh', 
         display: 'flex', 
         alignItems: 'center',
-        pt: { xs: 12, md: 15 },
-        pb: 8,
         position: 'relative',
         overflow: 'hidden',
         background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 50%, ${theme.palette.background.default} 100%)`
       }}>
-        <ParticleCanvas />
+        <ParticleCanvas isMobile={isMobile} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <Grid container spacing={8} alignItems="center">
             {/* Hero Centered Content */}
             <Grid item xs={12} md={10} lg={8} sx={{ mx: 'auto' }}>
+              <Box sx={{
+                pt: { xs: 10, md: 12 },
+                pb: { xs: 4, md: 6 },
+                pl: { xs: 3, md: 6 },
+                pr: { xs: 3, md: 6 },
+                borderRadius: 4,
+                background: alpha(theme.palette.background.paper, 0.08),
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
+                boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.08)}`,
+              }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 3 }}>
                 <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
                   Hey, I'm
@@ -242,6 +302,7 @@ function Content() {
                     </IconButton>
                   </Box>
                 </Box>
+              </Box>
               </Box>
             </Grid>
           </Grid>
