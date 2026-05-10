@@ -12,6 +12,8 @@ import { TypeAnimation } from 'react-type-animation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function ParticleCanvas({ isMobile }) {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === 'dark';
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
   const burstsRef = useRef([]);
@@ -159,18 +161,54 @@ function ParticleCanvas({ isMobile }) {
           ctx.translate(f.x, f.y);
           ctx.rotate(f.rotation);
 
-          ctx.fillStyle = f.color;
-          for (let i = 0; i < 5; i++) {
-            ctx.beginPath();
-            ctx.ellipse(0, currentSize * 0.6, Math.max(0.1, currentSize * 0.3), Math.max(0.1, currentSize * 0.8), 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.rotate((Math.PI * 2) / 5);
-          }
+          if (isDarkMode) {
+            // Draw Star with Sparkle Effect
+            const sparkle = 1 + (Math.sin(now * 0.012 + f.x) * 0.2 * f.bloomLevel);
+            const twinkle = 0.8 + (Math.random() * 0.4 * f.bloomLevel); // High freq twinkle
 
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-          ctx.beginPath();
-          ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
-          ctx.fill();
+            ctx.globalAlpha = ease * twinkle;
+            ctx.fillStyle = f.color;
+            const points = 5;
+            const outerRadius = currentSize * 1.1 * sparkle;
+            const innerRadius = currentSize * 0.45 * sparkle;
+
+            ctx.beginPath();
+            for (let i = 0; i < points * 2; i++) {
+              const radius = i % 2 === 0 ? outerRadius : innerRadius;
+              const angle = (Math.PI * i) / points - Math.PI / 2;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius;
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            // Sparkling center for the star
+            const corePulse = 0.8 + Math.sin(now * 0.02 + f.y) * 0.2;
+            ctx.fillStyle = `rgba(255, 255, 255, ${0.9 * corePulse})`;
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25 * sparkle), 0, Math.PI * 2);
+            ctx.fill();
+
+            // Dynamic outer glow
+            ctx.shadowBlur = (15 + Math.sin(now * 0.01) * 5) * f.bloomLevel;
+            ctx.shadowColor = f.color;
+          } else {
+            // Original Flower Logic
+            ctx.fillStyle = f.color;
+            for (let i = 0; i < 5; i++) {
+              ctx.beginPath();
+              ctx.ellipse(0, currentSize * 0.6, Math.max(0.1, currentSize * 0.3), Math.max(0.1, currentSize * 0.8), 0, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.rotate((Math.PI * 2) / 5);
+            }
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
+            ctx.fill();
+          }
 
           ctx.restore();
         }
@@ -218,7 +256,7 @@ const stacks = [
 
 function StackCard({ stack, index }) {
   const theme = useTheme();
-  
+
   return (
     <Grid item xs={6} sm={4} md={3} lg={2.4}>
       <motion.div
@@ -259,8 +297,8 @@ function StackCard({ stack, index }) {
           }}
         >
           {/* Gradient Glow Effect */}
-          <Box 
-            className="glow" 
+          <Box
+            className="glow"
             sx={{
               position: 'absolute',
               top: '50%',
@@ -274,29 +312,29 @@ function StackCard({ stack, index }) {
               transition: 'all 0.6s ease',
               pointerEvents: 'none',
               zIndex: 0,
-            }} 
+            }}
           />
 
-          <Box 
-            component="img" 
-            src={stack.img} 
-            alt={stack.name} 
-            sx={{ 
-              width: 52, 
-              height: 52, 
-              zIndex: 1, 
+          <Box
+            component="img"
+            src={stack.img}
+            alt={stack.name}
+            sx={{
+              width: 52,
+              height: 52,
+              zIndex: 1,
               transition: 'transform 0.4s ease',
-              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))' 
-            }} 
+              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))'
+            }}
           />
-          
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: theme.palette.text.secondary, 
-              fontWeight: 700, 
+
+          <Typography
+            variant="body2"
+            sx={{
+              color: theme.palette.text.secondary,
+              fontWeight: 700,
               fontSize: '0.85rem',
-              letterSpacing: 0.5, 
+              letterSpacing: 0.5,
               zIndex: 1,
               textAlign: 'center'
             }}
@@ -334,10 +372,10 @@ function Stacks() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Typography variant="h2" sx={{ 
+            <Typography variant="h2" sx={{
               fontSize: { xs: '2.5rem', md: '3.5rem' },
-              textTransform: 'uppercase', 
-              letterSpacing: 2, 
+              textTransform: 'uppercase',
+              letterSpacing: 2,
               mb: 3,
               fontWeight: 900,
               background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
@@ -486,8 +524,8 @@ function Content() {
                         })
                       }
                     }}>
-                      <Typography variant="h5" sx={{ 
-                        fontWeight: 600, 
+                      <Typography variant="h5" sx={{
+                        fontWeight: 600,
                         color: '#1a1a1a',
                         fontSize: { xs: '1.2rem', md: '1.8rem' },
                         fontFamily: '"Outfit", sans-serif'
@@ -512,7 +550,7 @@ function Content() {
               WebkitTextFillColor: 'transparent',
             }}>
               <TypeAnimation
-                sequence={['Kirubhaaaaa!', 1000]}
+                sequence={['Kirubhaa!', 1000]}
                 wrapper="span"
                 speed={20}
                 cursor={true}
