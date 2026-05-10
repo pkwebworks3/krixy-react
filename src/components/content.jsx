@@ -26,6 +26,9 @@ function ParticleCanvas({ isMobile }) {
     const startTime = performance.now();
     const BLOOM_RADIUS = 150;
 
+    const NUM_GROUPS = 12;
+    const CYCLE = 5000;
+
     const initGrid = () => {
       flowers = [];
       const width = canvas.offsetWidth || window.innerWidth;
@@ -37,14 +40,10 @@ function ParticleCanvas({ isMobile }) {
       const cols = Math.ceil(width / spacing) + 1;
       const rows = Math.ceil(height / spacing) + 1;
 
-      const NUM_GROUPS = 8;
-      const GROUP_INTERVAL = 3000;
-
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
           const x = i * spacing + (Math.random() - 0.5) * 40;
           const y = j * spacing + (Math.random() - 0.5) * 40;
-          const groupIndex = Math.floor(Math.random() * NUM_GROUPS);
 
           flowers.push({
             x, y,
@@ -53,9 +52,7 @@ function ParticleCanvas({ isMobile }) {
             rotation: Math.random() * Math.PI * 2,
             rotSpeed: (Math.random() - 0.5) * 0.015,
             color: COLORS[Math.floor(Math.random() * COLORS.length)],
-            bloomDelay: groupIndex * GROUP_INTERVAL + Math.random() * 600,
-            bloomDuration: 1800 + Math.random() * 800,
-            phase: Math.random() * Math.PI * 2,
+            groupIndex: Math.floor(Math.random() * NUM_GROUPS),
           });
         }
       }
@@ -115,19 +112,32 @@ function ParticleCanvas({ isMobile }) {
         f.rotation += f.rotSpeed;
 
         if (isMobile) {
-          const elapsed = now - startTime;
-          const progress = (elapsed - f.bloomDelay) / f.bloomDuration;
+          const FADE_IN = 1000;
+          const HOLD = 3000;
+          const totalCycle = NUM_GROUPS * CYCLE;
+          const groupStart = f.groupIndex * CYCLE;
+          let raw = (now - startTime - groupStart) % totalCycle;
+          if (raw < 0) raw += totalCycle;
 
-          if (progress <= 0) {
-            f.bloomLevel = 0;
-          } else if (progress < 1) {
-            f.bloomLevel = progress * progress;
-          } else {
-            f.bloomLevel = 0.85 + 0.15 * Math.sin(now * 0.0015 + f.phase);
+          let base = 0;
+          if (raw < FADE_IN) {
+            const p = raw / FADE_IN;
+            base = p * p;
+          } else if (raw < FADE_IN + HOLD) {
+            base = 1;
+          } else if (raw < CYCLE) {
+            const p = (raw - FADE_IN - HOLD) / (CYCLE - FADE_IN - HOLD);
+            base = 1 - (p * p);
           }
 
+          f.bloomLevel = base;
+
           burstsRef.current.forEach((burst) => {
-            applyCircularBloom(f, burst.x, burst.y, now);
+            const dist = Math.hypot(f.x - burst.x, f.y - burst.y);
+            if (dist < BLOOM_RADIUS) {
+              const intensity = (1 - dist / BLOOM_RADIUS) * Math.max(0, 1 - (now - burst.time) / 2000);
+              f.bloomLevel = Math.min(1, f.bloomLevel + intensity * 0.6);
+            }
           });
         } else {
           if (m.active) {
@@ -192,10 +202,171 @@ function ParticleCanvas({ isMobile }) {
   );
 }
 
+const stacks = [
+  { name: 'VS Code', img: '/ico/vscode.png' },
+  { name: 'Antigravity', img: '/ico/antigravity.png' },
+  { name: 'OpenCode', img: '/ico/opencode.png' },
+  { name: 'GitHub', img: '/ico/github.png' },
+  { name: 'Git', img: '/ico/git.png' },
+  { name: 'Chrome', img: '/ico/chrome.png' },
+  { name: 'ChatGPT', img: '/ico/chatgpt.png' },
+  { name: 'Arc', img: '/ico/arc.png' },
+  { name: 'Vercel', img: '/ico/vercel.png' },
+  { name: 'Photoshop', img: '/ico/photoshop.png' },
+  { name: 'Illustrator', img: '/ico/illustrator.png' },
+];
+
+function StackCard({ stack, index }) {
+  const theme = useTheme();
+  
+  return (
+    <Grid item xs={6} sm={4} md={3} lg={2.4}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.05 }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            p: 3,
+            height: '100%',
+            borderRadius: 4,
+            background: alpha(theme.palette.background.paper, 0.03),
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            backdropFilter: 'blur(10px)',
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            overflow: 'hidden',
+            cursor: 'default',
+            '&:hover': {
+              transform: 'translateY(-8px)',
+              background: alpha(theme.palette.background.paper, 0.08),
+              borderColor: alpha(theme.palette.primary.main, 0.3),
+              boxShadow: `0 20px 40px ${alpha(theme.palette.common.black, 0.2)}`,
+              '& .glow': {
+                opacity: 1,
+                transform: 'translate(-50%, -50%) scale(1.5)',
+              },
+              '& img': {
+                transform: 'scale(1.1) rotate(5deg)',
+              }
+            },
+          }}
+        >
+          {/* Gradient Glow Effect */}
+          <Box 
+            className="glow" 
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              width: '140px',
+              height: '140px',
+              background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.25)} 0%, transparent 70%)`,
+              borderRadius: '50%',
+              transform: 'translate(-50%, -50%) scale(0)',
+              opacity: 0,
+              transition: 'all 0.6s ease',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }} 
+          />
+
+          <Box 
+            component="img" 
+            src={stack.img} 
+            alt={stack.name} 
+            sx={{ 
+              width: 52, 
+              height: 52, 
+              zIndex: 1, 
+              transition: 'transform 0.4s ease',
+              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))' 
+            }} 
+          />
+          
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: theme.palette.text.secondary, 
+              fontWeight: 700, 
+              fontSize: '0.85rem',
+              letterSpacing: 0.5, 
+              zIndex: 1,
+              textAlign: 'center'
+            }}
+          >
+            {stack.name}
+          </Typography>
+        </Box>
+      </motion.div>
+    </Grid>
+  );
+}
+
+function Stacks() {
+  const theme = useTheme();
+
+  return (
+    <Box id="stacks" sx={{ py: 15, position: 'relative', backgroundColor: theme.palette.background.default }}>
+      {/* Background Decorative Element */}
+      <Box sx={{
+        position: 'absolute',
+        top: '20%',
+        left: '10%',
+        width: '300px',
+        height: '300px',
+        background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.05)} 0%, transparent 70%)`,
+        filter: 'blur(60px)',
+        zIndex: 0,
+      }} />
+
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Box sx={{ mb: 10, textAlign: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Typography variant="h2" sx={{ 
+              fontSize: { xs: '2.5rem', md: '3.5rem' },
+              textTransform: 'uppercase', 
+              letterSpacing: 2, 
+              mb: 3,
+              fontWeight: 900,
+              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>
+              My Stacks
+            </Typography>
+            <Typography variant="h6" sx={{ color: theme.palette.text.secondary, maxWidth: 600, mx: 'auto', fontWeight: 400, opacity: 0.8 }}>
+              A collection of tools and technologies I use to bring ideas to life.
+            </Typography>
+          </motion.div>
+        </Box>
+
+        <Grid container spacing={4} justifyContent="center">
+          {stacks.map((stack, index) => (
+            <StackCard key={stack.name} stack={stack} index={index} />
+          ))}
+        </Grid>
+      </Container>
+    </Box>
+  );
+}
+
 function Content() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [mousePosProj, setMousePosProj] = useState({ x: -1000, y: -1000 });
 
   const handleMouseMoveProjects = (e) => {
@@ -211,111 +382,229 @@ function Content() {
   };
 
   const nextSlide = () => {
+    setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % projects.length);
   };
 
   const prevSlide = () => {
+    setDirection(-1);
     setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length);
   };
 
   return (
     <Box sx={{ width: '100%', overflow: 'hidden' }}>
       {/* Hero Section */}
-      <Box id="home" sx={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
+      <Box id="home" sx={{
+        minHeight: '100vh',
+        display: 'flex',
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
-        background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 50%, ${theme.palette.background.default} 100%)`
+        background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.06)} 50%, ${theme.palette.background.default} 100%)`
       }}>
         <ParticleCanvas isMobile={isMobile} />
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid container spacing={8} alignItems="center">
-            {/* Hero Centered Content */}
-            <Grid item xs={12} md={10} lg={8} sx={{ mx: 'auto' }}>
-              <Box sx={{
-                pt: { xs: 10, md: 12 },
-                pb: { xs: 4, md: 6 },
-                pl: { xs: 3, md: 6 },
-                pr: { xs: 3, md: 6 },
-                borderRadius: 4,
-                background: alpha(theme.palette.background.paper, 0.08),
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                border: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
-                boxShadow: `0 8px 32px ${alpha(theme.palette.common.black, 0.08)}`,
-              }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 3 }}>
-                <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main, fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
-                  Hey, I'm
-                </Typography>
-                
-                <Typography variant="h1" sx={{ fontSize: { xs: '3.5rem', md: '5rem' }, color: theme.palette.text.primary, lineHeight: 1.1, fontWeight: 900, minHeight: { xs: '4rem', md: '5.5rem' } }}>
-                  <TypeAnimation
-                    sequence={[
-                      'Kirubhssss',
-                      1000,
-                    ]}
-                    wrapper="span"
-                    speed={20}
-                    cursor={true}
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+          <style>{`@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
+          <Box sx={{ textAlign: 'center', px: { xs: 2, md: 0 } }}>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: { xs: 4, md: 5 },
+              mb: 6,
+              position: 'relative'
+            }}>
+              {/* Profile Avatar */}
+              <Box sx={{ position: 'relative' }}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+                >
+                  <Box
+                    component="img"
+                    src="/reviews_profile/kirubha.jpg"
+                    alt="Kirubha"
+                    sx={{
+                      width: { xs: 150, md: 220 },
+                      height: { xs: 150, md: 220 },
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      border: `4px solid #fff`,
+                      boxShadow: `0 20px 50px ${alpha(theme.palette.primary.main, 0.25)}`,
+                      position: 'relative',
+                      zIndex: 1,
+                    }}
                   />
-                </Typography>
+                </motion.div>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, flexWrap: 'wrap', mt: 1 }}>
-                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 3, py: 1, border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`, borderRadius: 8, backgroundColor: alpha(theme.palette.primary.main, 0.05), fontWeight: 600 }}>
-                    Web Developer
-                  </Typography>
-                  <Typography variant="h6" sx={{ color: theme.palette.text.secondary, fontWeight: 400 }}>&</Typography>
-                  <Typography variant="h6" sx={{ color: theme.palette.primary.main, px: 3, py: 1, border: `2px solid ${alpha(theme.palette.primary.main, 0.3)}`, borderRadius: 8, backgroundColor: alpha(theme.palette.primary.main, 0.05), fontWeight: 600 }}>
-                    UI Designer
-                  </Typography>
-                </Box>
-
-                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, fontSize: '1.2rem', lineHeight: 1.8, maxWidth: 650, mt: 2 }}>
-                  I craft digital experiences that blend stunning design with clean, efficient code. Specializing in modern web technologies and user-centered design.
-                </Typography>
-
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4, flexWrap: 'wrap' }}>
-                  <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{ px: 5, py: 1.5, borderRadius: 8, fontSize: '1.1rem', boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.4)}` }}>
-                    View My Work
-                  </Button>
-                  <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{ px: 5, py: 1.5, borderRadius: 8, fontSize: '1.1rem', borderColor: alpha(theme.palette.primary.main, 0.5), color: theme.palette.primary.main, '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: alpha(theme.palette.primary.main, 0.05) } }}>
-                    Get in Touch
-                  </Button>
-                </Box>
-
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, mt: 6 }}>
-                  <Typography variant="subtitle2" sx={{ color: theme.palette.text.secondary, textTransform: 'uppercase', letterSpacing: 2, fontWeight: 600 }}>
-                    Connect with me
-                  </Typography>
-                  <Box sx={{ display: 'flex', gap: 2 }}>
-                    <IconButton href="https://www.instagram.com/kirubha.exe/" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
-                      <InstagramIcon />
-                    </IconButton>
-                    <IconButton href="#" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
-                      <TwitterIcon />
-                    </IconButton>
-                    <IconButton href="https://github.com/pkwebworks3" target="_blank" sx={{ border: `1px solid ${alpha(theme.palette.text.secondary, 0.2)}`, borderRadius: '50%', color: theme.palette.text.primary, p: 1.5, '&:hover': { borderColor: theme.palette.primary.main, color: theme.palette.primary.main, transform: 'translateY(-4px)' }, transition: 'all 0.3s' }}>
-                      <GitHubIcon />
-                    </IconButton>
-                  </Box>
+                {/* Speech Bubble */}
+                <Box sx={{
+                  position: 'absolute',
+                  top: { xs: '-40px', md: '20px' },
+                  right: { xs: '50%', md: '-140px' },
+                  transform: { xs: 'translateX(50%)', md: 'none' },
+                  zIndex: 2
+                }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20, y: 10 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
+                    <Box sx={{
+                      position: 'relative',
+                      background: '#fff',
+                      color: '#000',
+                      borderRadius: '50px',
+                      px: { xs: 3, md: 5 },
+                      py: { xs: 1.5, md: 2.5 },
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+                      border: '1px solid rgba(0,0,0,0.05)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      whiteSpace: 'nowrap',
+                      // Bubble Tail
+                      '&:after': {
+                        content: '""',
+                        position: 'absolute',
+                        ...(isMobile ? {
+                          bottom: '-12px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          borderLeft: '12px solid transparent',
+                          borderRight: '12px solid transparent',
+                          borderTop: '12px solid #fff',
+                        } : {
+                          left: '-15px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          borderTop: '10px solid transparent',
+                          borderBottom: '10px solid transparent',
+                          borderRight: '16px solid #fff',
+                        })
+                      }
+                    }}>
+                      <Typography variant="h5" sx={{ 
+                        fontWeight: 600, 
+                        color: '#1a1a1a',
+                        fontSize: { xs: '1.2rem', md: '1.8rem' },
+                        fontFamily: '"Outfit", sans-serif'
+                      }}>
+                        Hey, I'm
+                      </Typography>
+                    </Box>
+                  </motion.div>
                 </Box>
               </Box>
-              </Box>
-            </Grid>
-          </Grid>
+            </Box>
+
+            <Typography variant="h1" sx={{
+              fontSize: { xs: '4rem', md: '6rem' },
+              lineHeight: 1.05,
+              fontWeight: 900,
+              mb: 1.5,
+              background: `linear-gradient(270deg, ${theme.palette.text.primary}, ${theme.palette.primary.main}, ${theme.palette.secondary.main}, ${theme.palette.primary.main}, ${theme.palette.text.primary})`,
+              backgroundSize: '400% 400%',
+              animation: 'gradientShift 6s ease infinite',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>
+              <TypeAnimation
+                sequence={['Kirubhaaaaa!', 1000]}
+                wrapper="span"
+                speed={20}
+                cursor={true}
+              />
+            </Typography>
+
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap', mb: 4 }}>
+              {['Web Developer', 'UI Designer'].map((role, i) => (
+                <Typography key={role} variant="body2" sx={{
+                  color: i === 0 ? theme.palette.primary.main : theme.palette.text.secondary,
+                  fontWeight: 600,
+                  px: 2.5, py: 0.7,
+                  borderRadius: 6,
+                  background: i === 0 ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
+                  border: i === 0 ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}` : 'none',
+                  fontSize: '0.9rem',
+                }}>
+                  {i === 1 && <>&nbsp;&</>} {role}
+                </Typography>
+              ))}
+            </Box>
+
+            <Typography variant="body1" sx={{
+              color: alpha(theme.palette.text.secondary, 0.85),
+              fontSize: { xs: '1rem', md: '1.15rem' },
+              lineHeight: 1.8,
+              maxWidth: 540,
+              mx: 'auto',
+              mb: 5,
+            }}>
+              I craft digital experiences that blend stunning design with clean, efficient code. Specializing in modern web technologies and user-centered design.
+            </Typography>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
+              <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{
+                px: 5, py: 1.6,
+                borderRadius: 8,
+                fontSize: '1rem',
+                fontWeight: 700,
+                boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
+              }}>
+                View My Work
+              </Button>
+              <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{
+                px: 5, py: 1.6,
+                borderRadius: 8,
+                fontSize: '1rem',
+                fontWeight: 600,
+                borderWidth: 2,
+                borderColor: alpha(theme.palette.primary.main, 0.3),
+                color: theme.palette.primary.main,
+                '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: alpha(theme.palette.primary.main, 0.06) },
+              }}>
+                Get in Touch
+              </Button>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+              {[
+                { icon: <InstagramIcon />, href: 'https://www.instagram.com/kirubha.exe/' },
+                { icon: <TwitterIcon />, href: '#' },
+                { icon: <GitHubIcon />, href: 'https://github.com/pkwebworks3' },
+              ].map((s, i) => (
+                <IconButton key={i} href={s.href} target="_blank" sx={{
+                  border: `1px solid ${alpha(theme.palette.text.secondary, 0.12)}`,
+                  borderRadius: '50%',
+                  color: alpha(theme.palette.text.secondary, 0.6),
+                  p: 1.3,
+                  transition: 'all 0.3s',
+                  '&:hover': {
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.primary.main,
+                    transform: 'translateY(-3px)',
+                    bgcolor: alpha(theme.palette.primary.main, 0.06),
+                    boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.15)}`,
+                  },
+                }}>
+                  {s.icon}
+                </IconButton>
+              ))}
+            </Box>
+          </Box>
         </Container>
       </Box>
 
       {/* Featured Projects Section */}
-      <Box 
-        id="projects" 
+      <Box
+        id="projects"
         onMouseMove={handleMouseMoveProjects}
         onMouseLeave={handleMouseLeaveProjects}
-        sx={{ 
-          py: 10, 
+        sx={{
+          py: 10,
           backgroundColor: theme.palette.background.paper,
           position: 'relative',
           overflow: 'hidden',
@@ -331,12 +620,12 @@ function Content() {
           }
         }}
       >
-        <Container 
-          maxWidth="lg" 
-          component={motion.div} 
-          initial={{ y: 50, opacity: 0 }} 
-          whileInView={{ y: 0, opacity: 1 }} 
-          transition={{ duration: 0.8, ease: "easeOut" }} 
+        <Container
+          maxWidth="lg"
+          component={motion.div}
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.2 }}
           sx={{ position: 'relative', zIndex: 1 }}
         >
@@ -349,56 +638,96 @@ function Content() {
             </Typography>
           </Box>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: "easeIn" }}
-            >
-              <Card sx={{ 
-                minHeight: { xs: 'auto', md: 500 }, 
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'flex-end',
-                p: { xs: 2, md: 4 },
-                backgroundImage: { xs: 'none', md: `url(${projects[currentSlide]?.project_thumb})` },
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                borderRadius: 4,
-                backgroundColor: theme.palette.background.paper,
-              }}>
-                {/* Gradient overlay — desktop only */}
-                <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: theme.palette.mode === 'light' ? 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.2) 100%)' : 'linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.2) 100%)', borderRadius: 4 }} />
-                
-                <Box sx={{ position: 'relative', zIndex: 1, ml: { xs: 0, md: 'auto' }, maxWidth: { xs: '100%', md: 480 }, width: '100%' }}>
-                  <Card sx={{ p: 4, backgroundColor: theme.palette.background.paper, borderRadius: 2, boxShadow: theme.shadows[10] }}>
-                    <Typography variant="h4" sx={{ color: theme.palette.text.primary, mb: 1, fontWeight: 500 }}>
-                      {projects[currentSlide]?.title}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 3, lineHeight: 1.6 }}>
-                      {projects[currentSlide]?.description}
-                    </Typography>
-                    
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <IconButton onClick={prevSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
-                        <ChevronLeftIcon />
-                      </IconButton>
-                      <Button variant="contained" href={projects[currentSlide]?.link} sx={{ flex: 1 }}>
-                        Open Project
-                      </Button>
-                      <IconButton onClick={nextSlide} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main, borderRadius: 2 }}>
-                        <ChevronRightIcon />
-                      </IconButton>
-                    </Box>
-                  </Card>
-                </Box>
-              </Card>
-            </motion.div>
-          </AnimatePresence>
+          <Card sx={{
+            minHeight: { xs: 400, md: 500 },
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            p: { xs: 2, md: 4 },
+            borderRadius: 4,
+            overflow: 'hidden',
+          }}>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentSlide}
+                custom={direction}
+                initial={{ opacity: 0, x: direction * 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -40 }}
+                transition={{ duration: 0.4 }}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+              >
+                <Box sx={{
+                  width: '100%', height: '100%',
+                  backgroundImage: `url(${projects[currentSlide]?.project_thumb})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }} />
+                <Box sx={{
+                  position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.05) 100%)',
+                }} />
+              </motion.div>
+            </AnimatePresence>
+
+            <Box sx={{
+              position: 'relative', zIndex: 1,
+              width: '100%',
+              maxWidth: { md: 520 },
+              p: { xs: 3, md: 5 },
+              borderRadius: 3,
+              background: { md: alpha(theme.palette.background.paper, 0.1) },
+              backdropFilter: { md: 'blur(16px)' },
+              WebkitBackdropFilter: { md: 'blur(16px)' },
+              border: { md: `1px solid ${alpha(theme.palette.common.white, 0.12)}` },
+              boxShadow: { md: `0 8px 32px ${alpha(theme.palette.common.black, 0.2)}` },
+            }}>
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentSlide}
+                  custom={direction}
+                  initial={{ opacity: 0, x: direction * 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction * -30 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Typography variant="h4" sx={{ color: '#fff', mb: 1, fontWeight: 600 }}>
+                    {projects[currentSlide]?.title}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.85)', mb: 3, lineHeight: 1.6 }}>
+                    {projects[currentSlide]?.description}
+                  </Typography>
+
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <IconButton onClick={prevSlide} sx={{
+                      border: '1px solid rgba(255,255,255,0.4)',
+                      color: '#fff',
+                      borderRadius: 2,
+                      '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                    }}>
+                      <ChevronLeftIcon />
+                    </IconButton>
+                    <Button variant="contained" href={projects[currentSlide]?.link} sx={{ flex: 1 }}>
+                      Open Project
+                    </Button>
+                    <IconButton onClick={nextSlide} sx={{
+                      border: '1px solid rgba(255,255,255,0.4)',
+                      color: '#fff',
+                      borderRadius: 2,
+                      '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' }
+                    }}>
+                      <ChevronRightIcon />
+                    </IconButton>
+                  </Box>
+                </motion.div>
+              </AnimatePresence>
+            </Box>
+          </Card>
         </Container>
       </Box>
+      <Stacks />
     </Box>
   );
 }
