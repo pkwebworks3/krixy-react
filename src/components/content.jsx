@@ -248,6 +248,7 @@ const stacks = [
   { name: 'Git', img: '/ico/git.png' },
   { name: 'Chrome', img: '/ico/chrome.png' },
   { name: 'ChatGPT', img: '/ico/chatgpt.png' },
+  { name: 'Gemini', img: '/ico/gemini.png' },
   { name: 'Arc', img: '/ico/arc.png' },
   { name: 'Vercel', img: '/ico/vercel.png' },
   { name: 'Photoshop', img: '/ico/photoshop.png' },
@@ -258,12 +259,17 @@ function StackCard({ stack, index }) {
   const theme = useTheme();
 
   return (
-    <Grid item xs={6} sm={4} md={3} lg={2.4}>
+    <Grid item xs={4} sm={3} md={2.4} lg={2}>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: index * 0.05 }}
+        transition={{ 
+          duration: 0.5, 
+          delay: index * 0.03,
+          type: "spring",
+          stiffness: 100
+        }}
       >
         <Box
           sx={{
@@ -271,45 +277,63 @@ function StackCard({ stack, index }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 2,
-            p: 3,
+            justifyContent: 'center',
+            gap: { xs: 1.5, md: 2 },
+            p: { xs: 2, md: 3 },
             height: '100%',
-            borderRadius: 4,
-            background: alpha(theme.palette.background.paper, 0.03),
-            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            backdropFilter: 'blur(10px)',
-            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            borderRadius: { xs: 3, md: 4 },
+            background: alpha(theme.palette.background.paper, 0.05),
+            border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+            backdropFilter: 'blur(12px)',
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
             overflow: 'hidden',
-            cursor: 'default',
+            cursor: 'pointer',
             '&:hover': {
-              transform: 'translateY(-8px)',
-              background: alpha(theme.palette.background.paper, 0.08),
-              borderColor: alpha(theme.palette.primary.main, 0.3),
-              boxShadow: `0 20px 40px ${alpha(theme.palette.common.black, 0.2)}`,
+              transform: 'translateY(-10px) scale(1.05)',
+              background: alpha(theme.palette.background.paper, 0.12),
+              borderColor: alpha(theme.palette.primary.main, 0.4),
+              boxShadow: `0 30px 60px ${alpha(theme.palette.common.black, 0.3)}`,
               '& .glow': {
-                opacity: 1,
-                transform: 'translate(-50%, -50%) scale(1.5)',
+                opacity: 0.8,
+                transform: 'translate(-50%, -50%) scale(1.8)',
               },
               '& img': {
-                transform: 'scale(1.1) rotate(5deg)',
+                transform: 'scale(1.2) rotate(8deg)',
+                filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.4))'
+              },
+              '& .stack-name': {
+                color: theme.palette.primary.main,
+                transform: 'translateY(-2px)'
               }
             },
           }}
         >
-          {/* Gradient Glow Effect */}
+          {/* Decorative Corner Glow */}
+          <Box sx={{
+            position: 'absolute',
+            top: -10,
+            right: -10,
+            width: 40,
+            height: 40,
+            background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 70%)`,
+            filter: 'blur(10px)',
+            zIndex: 0
+          }} />
+
+          {/* Interactive Glow Effect */}
           <Box
             className="glow"
             sx={{
               position: 'absolute',
               top: '50%',
               left: '50%',
-              width: '140px',
-              height: '140px',
-              background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.25)} 0%, transparent 70%)`,
+              width: '120px',
+              height: '120px',
+              background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.3)} 0%, transparent 70%)`,
               borderRadius: '50%',
               transform: 'translate(-50%, -50%) scale(0)',
               opacity: 0,
-              transition: 'all 0.6s ease',
+              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
               pointerEvents: 'none',
               zIndex: 0,
             }}
@@ -320,23 +344,26 @@ function StackCard({ stack, index }) {
             src={stack.img}
             alt={stack.name}
             sx={{
-              width: 52,
-              height: 52,
+              width: { xs: 40, md: 56 },
+              height: { xs: 40, md: 56 },
               zIndex: 1,
-              transition: 'transform 0.4s ease',
-              filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.2))'
+              transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
             }}
           />
 
           <Typography
             variant="body2"
+            className="stack-name"
             sx={{
               color: theme.palette.text.secondary,
-              fontWeight: 700,
-              fontSize: '0.85rem',
-              letterSpacing: 0.5,
+              fontWeight: 800,
+              fontSize: { xs: '0.7rem', md: '0.85rem' },
+              textTransform: 'uppercase',
+              letterSpacing: { xs: 0.5, md: 1 },
               zIndex: 1,
-              textAlign: 'center'
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
             }}
           >
             {stack.name}
@@ -390,7 +417,7 @@ function Stacks() {
           </motion.div>
         </Box>
 
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={{ xs: 2, md: 4 }} justifyContent="center">
           {stacks.map((stack, index) => (
             <StackCard key={stack.name} stack={stack} index={index} />
           ))}
