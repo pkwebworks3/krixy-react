@@ -463,7 +463,7 @@ function Content() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        pt: { xs: '100px', md: 0 }, // Add padding for fixed navbar on mobile
+        pt: { xs: '100px', md: '120px' }, // Increased padding for both mobile and PC
         position: 'relative',
         overflow: 'hidden',
         background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.06)} 50%, ${theme.palette.background.default} 100%)`
@@ -471,7 +471,15 @@ function Content() {
         <ParticleCanvas isMobile={isMobile} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
           <style>{`@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
-          <Box sx={{ textAlign: 'center', px: { xs: 2, md: 0 } }}>
+          <Box sx={{ 
+            textAlign: 'center', 
+            px: { xs: 3, md: 8 }, 
+            py: { xs: 6, md: 10 },
+            borderRadius: { xs: 8, md: 12 },
+            background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.15)',
+            backdropFilter: 'blur(20px)',
+            // No border as requested
+          }}>
             <Box sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },

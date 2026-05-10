@@ -80,11 +80,11 @@ function Navbar() {
         width: isScrolled ? '100%' : 'auto',
         borderRadius: isScrolled ? 0 : { xs: '16px', md: '24px' },
         background: isScrolled 
-          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)')
-          : 'transparent', 
-        backdropFilter: isScrolled ? 'blur(20px)' : 'none', 
+          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(15, 23, 42, 0.85)')
+          : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.15)'), 
+        backdropFilter: 'blur(20px)', // Consistent blur to differentiate from background particles
         borderBottom: isScrolled 
-          ? (theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.3)')
+          ? (theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.15)' : '1px solid rgba(124, 58, 237, 0.3)')
           : 'none',
         border: !isScrolled ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
         boxShadow: isScrolled ? `0 10px 40px ${alpha(theme.palette.common.black, 0.1)}` : 'none',

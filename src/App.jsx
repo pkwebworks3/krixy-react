@@ -37,6 +37,7 @@ function App() {
   const location = useLocation();
   const prevPath = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   // Track previous path BEFORE it changes
   const isFromProjects = prevPath.current === '/projects';
@@ -54,20 +55,31 @@ function App() {
     ];
 
     const cacheImages = async (srcArray) => {
+      let loaded = 0;
+      const total = srcArray.length;
+
       const promises = srcArray.map((src) => {
         return new Promise((resolve) => {
           const img = new Image();
           img.src = src;
-          img.onload = resolve;
-          img.onerror = resolve;
+          img.onload = () => {
+            loaded++;
+            setProgress(Math.round((loaded / total) * 100));
+            resolve();
+          };
+          img.onerror = () => {
+            loaded++;
+            setProgress(Math.round((loaded / total) * 100));
+            resolve();
+          };
         });
       });
 
       await Promise.all(promises);
-      // Artificial delay for smoother transition
+      // Small delay for smooth exit
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 800);
     };
 
     cacheImages(criticalImages);
@@ -87,7 +99,7 @@ function App() {
             transition={{ duration: 0.6 }}
             style={{ position: 'fixed', zIndex: 9999, width: '100%' }}
           >
-            <LoadingScreen />
+            <LoadingScreen progress={progress} />
           </motion.div>
         )}
       </AnimatePresence>
