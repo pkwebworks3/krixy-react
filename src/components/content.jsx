@@ -259,7 +259,7 @@ function StackCard({ stack, index }) {
   const theme = useTheme();
 
   return (
-    <Grid item xs={4} sm={3} md={2.4} lg={2}>
+    <Grid size={{ xs: 4, sm: 3, md: 2.4, lg: 2 }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -417,7 +417,7 @@ function Stacks() {
           </motion.div>
         </Box>
 
-        <Grid container spacing={{ xs: 2, md: 4 }} justifyContent="center">
+        <Grid container spacing={{ xs: 2, md: 4 }} sx={{ justifyContent: 'center' }}>
           {stacks.map((stack, index) => (
             <StackCard key={stack.name} stack={stack} index={index} />
           ))}
@@ -463,6 +463,7 @@ function Content() {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
+        pt: { xs: '100px', md: 0 }, // Add padding for fixed navbar on mobile
         position: 'relative',
         overflow: 'hidden',
         background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.06)} 50%, ${theme.palette.background.default} 100%)`

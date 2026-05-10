@@ -15,7 +15,7 @@ function Footer() {
     <Box component="footer" sx={{ bgcolor: theme.palette.background.paper, pt: 10, pb: 4, borderTop: `1px solid rgba(124, 58, 237, 0.1)` }}>
       <Container maxWidth="lg">
         <Grid container spacing={6}>
-          <Grid item xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <Typography variant="h5" sx={{ color: theme.palette.primary.main, fontWeight: 700, mb: 3 }}>
               PK Webworks
             </Typography>
@@ -29,7 +29,7 @@ function Footer() {
             </Box>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 600, mb: 3 }}>
               Quick Links
             </Typography>
@@ -53,7 +53,7 @@ function Footer() {
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 600, mb: 3 }}>
               Contact Info
             </Typography>

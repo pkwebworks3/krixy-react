@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,7 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, alpha } from '@mui/material/styles';
 import { ColorModeContext } from '../ThemeContext';
 import { motion } from 'framer-motion';
 
@@ -34,10 +34,19 @@ const pages = [
 ];
 
 function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -61,16 +70,27 @@ function Navbar() {
 
   return (
     <AppBar 
-      position="sticky" 
+      position="fixed" 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       sx={{ 
-        position: 'sticky',
-        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)', 
-        backdropFilter: 'blur(20px)', 
-        borderBottom: theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.3)', 
-        boxShadow: 'none',
+        top: isScrolled ? 0 : { xs: 10, md: 20 },
+        left: isScrolled ? 0 : { xs: 15, md: 40 },
+        right: isScrolled ? 0 : { xs: 15, md: 40 },
+        width: isScrolled ? '100%' : 'auto',
+        borderRadius: isScrolled ? 0 : { xs: '16px', md: '24px' },
+        background: isScrolled 
+          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(15, 23, 42, 0.8)')
+          : 'transparent', 
+        backdropFilter: isScrolled ? 'blur(20px)' : 'none', 
+        borderBottom: isScrolled 
+          ? (theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.3)')
+          : 'none',
+        border: !isScrolled ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
+        boxShadow: isScrolled ? `0 10px 40px ${alpha(theme.palette.common.black, 0.1)}` : 'none',
+        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
+        zIndex: 1100,
         '&::before': {
           content: '""',
           position: 'absolute',
