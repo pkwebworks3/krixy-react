@@ -1,0 +1,373 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: consolas;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #333;
+}
+
+body.light {
+    background-color: #f8f8f8;
+}
+
+.container {
+    position: relative;
+    min-width: 300px;
+    min-height: 400px;
+    background: #333;
+    padding: 40px 30px 30px;
+    border-radius: 20px;
+    box-shadow: 25px 25px 75px rgba(0, 0, 0, 0.25),
+        10px 10px 70px rgba(0, 0, 0, 0.25),
+        inset -5px -5px 15px rgba(0, 0, 0, 0.25),
+        inset 5px 5px 15px rgba(0, 0, 0, 0.25);
+
+
+}
+
+body.light .container {
+    background: #fafafa;
+    box-shadow: 25px 25px 75px rgba(29, 33, 255, 0.15),
+        10px 10px 70px rgba(0, 0, 0, 0.15),
+        inset -5px -5px 15px rgba(0, 0, 0, 0.15),
+}
+
+.calculator {
+    position: relative;
+    display: grid;
+}
+
+.calculator .value {
+    position: relative;
+    grid-column: span 4;
+    height: 100px;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-color: #a7af7c;
+    margin-bottom: 10px;
+    box-shadow: 000 2px rgba(0, 0, 0, 0.75);
+    text-align: right;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 2em;
+
+}
+
+.calculator span {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(180deg, #2f2f2f, #3f3f3f);
+    box-shadow: inset -8px 0 8px rgba(0, 0, 0, 0.15),
+        inset 0 -8px 8px rgba(0, 0, 0, 0.25),
+        0 0 0 2px rgba(0, 0, 0, 0.75),
+        10px 20px 25px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    margin: 8px;
+    font-weight: 400;
+    user-select: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+body.light .calculator span {
+    background: linear-gradient(180deg, #fafafa, #f4f4f4);
+    box-shadow: inset -8px 0 8px rgba(0, 0, 0, 0.15),
+        inset 0 -8px 8px rgba(0, 0, 0, 0.15),
+        0 0 0 2px rgba(0, 0, 0, 0.1),
+        10px 20px 25px rgba(0, 0, 0, 0.25);
+    border: 1px black;
+}
+
+.calculator span ::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    bottom: 14px;
+    right: 12px;
+    background: linear-gradient(90deg, #2d2d2d, #4d4d4d);
+    border-radius: 10px;
+    box-shadow: -5px -5px 15px rgba(0, 0, 0, 0.1),
+        10px 5px 10px rgba(0, 0, 0, 0.15);
+    border-left: 1px solid #0004;
+    border-bottom: 1px solid #0004;
+    border-top: 1px solid #0009;
+    border: #2d2d2d;
+
+
+}
+
+body.light .calculator span ::before {
+    background: linear-gradient(90deg, #e6e6e6, #efefef);
+    border-radius: 10px;
+    box-shadow: -10px -10px 10px rgba(255, 255, 255, 0.25),
+        10px 5px 10px rgba(0, 0, 0, 0.15);
+    border-left: 1px solid #fff4;
+    border-bottom: 1px solid #fff4;
+    border-top: 1px solid #fff9;
+
+}
+
+.calculator span :active {
+    filter: brightness(10.5);
+}
+
+body.light .calculator span :active {
+    filter: brightness(0.9);
+}
+
+.calculator span i {
+    position: relative;
+    font-style: normal;
+    font-size: 1.5em;
+    text-transform: uppercase;
+}
+
+body.light .calculator span i {
+    color: #333;
+}
+
+body.light .calculator span.clear i,
+body.light .calculator span.equal i {
+    color: #fff;
+}
+
+body.light .calculator .clear,
+.calculator .clear {
+    grid-column: span 2;
+    width: 180px;
+    background: #f00;
+}
+
+body.light .calculator .clear ::before,
+.calculator .clear ::before {
+    background: linear-gradient(90deg, #d20000, #ffffff5c);
+    border-left: 1px solid #fff4;
+    border-bottom: 1px solid #fff4;
+    border-top: 1px solid #fff4;
+
+}
+
+.calculator .plus {
+    grid-row: span 2;
+    height: 180px;
+}
+
+body.light .calculator .equal,
+.calculator .equal {
+    grid-column: span 2;
+    width: 180px;
+    background: #2196f3;
+}
+
+body.light .calculator .equal ::before,
+.calculator .equal ::before {
+
+    background: linear-gradient(90deg, #1479c9, #ffffff5c);
+    border-left: 1px solid #fff4;
+    border-bottom: 1px solid #fff4;
+    border-top: 1px solid #fff4;
+}
+
+.btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 20px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25),
+        inset -2px 2px 5px rgba(0, 0, 0, 0.25, ) inset 2px 2px 5px rgba(0, 0, 0, 0.25);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.5s;
+    border: 2px solid white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+.btn:hover {
+    letter-spacing: 0.25em;
+    background-color: beige;
+    border-radius: 20px;
+    border: 10px;
+    box-shadow: 0 0 20px var(--clrc);
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+}
+
+body.light .btn:hover {
+    background-color: cornflowerblue;
+    color: white;
+
+}
+
+body.light .btn {
+    border: 2px solid black;
+    color: black
+}
+
+.btn span {
+    display: none;
+}
+
+.btn span:nth-child(1) {
+    display: block;
+}
+
+body.light .btn span:nth-child(1) {
+    display: none;
+}
+
+body.light .btn span:nth-child(2) {
+    display: block;
+}
+
+
+
+.value {
+    font-family: Digital-7;
+    font-size: 50px;
+}
+
+.simble {
+    position: absolute;
+    top: 20px;
+    left: 200px;
+    width: 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.simble strong {
+    display: none;
+}
+
+.simble strong:nth-child(1) {
+    display: block;
+}
+
+body.light .simble strong:nth-child(1) {
+    display: none;
+}
+
+body.light .simble strong:nth-child(2) {
+    display: block;
+}
+
+.simble .tittle {
+    color: #fafafa;
+    left: 200px;
+}
+
+body.light .simble .tittle {
+    color: black;
+
+}
+
+.simble .home {
+    position: absolute;
+    top: 500px;
+    left: -110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 30px;
+    padding: 10px 30px;
+    transition: 0.5s;
+    border-radius: 10px;
+}
+
+body.light .simble .home {
+    color: black;
+    border: 2px solid black;
+
+}
+
+.simble .home:hover {
+    letter-spacing: 0.25em;
+    background-color: lightgreen;
+    border-radius: 50px;
+    box-shadow: 0 0 20px var(--clr);
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+}
+
+body.light .home:hover {
+    background-color: magenta;
+    box-shadow: 0 0 20px magenta;
+}
+
+.simble .contact {
+    position: absolute;
+    top: 590px;
+    left: -110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    font-size: 30px;
+    transition: 0.5s;
+    padding: 10px 30px;
+    border-radius: 10px;
+
+}
+
+body.light .simble .contact {
+    color: black;
+    border: 2px solid black;
+
+}
+
+.simble .contact:hover {
+    letter-spacing: 0.25em;
+    background-color: aqua;
+    border-radius: 50px;
+    box-shadow: 0 0 20px var(--clra);
+    font-weight: bold;
+    font-style: italic;
+    color: black;
+}
+
+body.light .contact:hover {
+    background-color: chocolate;
+    box-shadow: 0 0 20px chocolate;
+}
+
+.simble span :active {
+    filter: brightness(10.5);
+}
+.img{
+   width: 250px;
+   height: 350px;
+ }
+ .img2{
+    width: 60px;
+    height: 60px;
+ }

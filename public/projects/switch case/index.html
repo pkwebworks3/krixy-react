@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwitchCase</title>
+    <link rel="shortcut icon" href="asset/Asset 7favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+        
+    <div class="title">
+      <img src="asset\4x\Asset 7.png" alt="logo" class="logo">
+    </div>
+    <div class="main">
+      <div class="input">
+        <textarea id="inputText" rows="2" placeholder="Enter your text here"></textarea>
+      </div>
+      <div class="result">
+        <label id="resultLabel">Result</label>
+        <div class="button">
+          <button onclick="copyToClipboard()"  id="btn">Copy</button>
+          <button onclick="reset()" id="btn">reset</button>
+        </div>
+      </div>
+    </div>
+        <div class="btns">
+          <button onclick="convertText('uppercase')" id="btn">Uppercase</button>
+          <button onclick="convertText('lowercase')"  id="btn">Lowercase</button>
+          <button onclick="convertText('sentencecase')"  id="btn">Sentence Case</button>
+          <button onclick="convertText('titlecase')"  id="btn">Title Case</button>
+          <button onclick="convertText('togglecase')"  id="btn">Toggle Case</button>
+          <button onclick="convertText('snakecase')"  id="btn">Snake Case</button>
+          <button onclick="convertText('kebabcase')"  id="btn">Kebab Case</button>
+          <button onclick="convertText('pascalcase')"  id="btn">Pascal Case</button>
+          <button onclick="convertText('camelcase')"  id="btn">Camel Case</button>
+          <button onclick="convertText('capitalizedcase')"  id="btn">capitalized case</button>
+          <button onclick="convertText('alternatingcase')"  id="btn">Alternating Case</button>
+        </div> 
+        <div class="res">
+          <p>your device is not suppoted</p>
+        </div>
+        <footer> 
+           <p><a href="pkww.netlify.app" id="btn">PK WebWorks</a> 
+            <a href="https://www.instagram.com/kirubha.exe" id="btn"><img src="asset/icon/instagram.png" alt="" id="icon"></a>
+            <a href="https://x.com/kirubha_2009" id="btn"><img src="asset/icon/twitter.png" alt="" id="icon"></a> | SwitchCase-1.0</p>
+           <h2><sup>©</sup> 2025 Kirubhananthan Prakash</h2>
+        </footer>
+      <script src="script.js"></script>
+</body>
+</html>

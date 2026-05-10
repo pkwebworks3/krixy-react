@@ -581,7 +581,7 @@ function Content() {
               mx: 'auto',
               mb: 5,
             }}>
-              I craft digital experiences that blend stunning design with clean, efficient code. Specializing in modern web technologies and user-centered design.
+              Web Developer by Code, Designer by Passion, Animator by Craft!
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
@@ -677,15 +677,16 @@ function Content() {
           </Box>
 
           <Card sx={{
-            minHeight: { xs: 400, md: 500 },
+            minHeight: { xs: 400, md: 600 },
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flex-end',
-            alignItems: 'center',
-            p: { xs: 2, md: 4 },
-            borderRadius: 4,
+            alignItems: 'flex-start',
+            p: { xs: 2, md: 6 },
+            borderRadius: 5,
             overflow: 'hidden',
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
           }}>
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div

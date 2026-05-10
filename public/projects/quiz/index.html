@@ -1,0 +1,135 @@
+<html>
+
+<head>
+  <title>
+    PKWW computer league
+  </title>
+  <link rel="shortcut icon" href="Artboard 33.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+
+<body>
+  <div class="header">
+    <img src="PNG/Artboard 1.png" class="logoimg">
+    <h1 class="logo"> pk webworks computer quiz league 2022 </h1>  
+    <ul>
+      <li>
+        <a href="output.html">more questions</a>
+        <ul>
+          <li>
+            <h6 class="txt3">based on html</h6>
+          </li>
+       </ul>
+      </li>
+    </ul>
+    <br>
+
+ </div>
+  <br>
+  <br>
+  <br>
+  <div class="question1">
+    <h3>Q1. who invented computer ?</h3>
+    <p><input type="radio" name="option1"class="checkbox" >Alan Turing</p>
+    <p><input type="radio" name="option1"class="checkbox" id="correct1">Charles Babage</p>
+    <p> <input type="radio" name="option1"class="checkbox">Lady Ala Lovelace</p>
+  </div>
+  <div class="question2">
+    <h3>Q2. 1st genration computer used in which year ?</h3>
+    <p><input type="radio" name="option2"class="checkbox">1957-1962</p>
+    <p> <input type="radio" name="option2"class="checkbox">1963-1972</p>
+    <p><input type="radio" name="option2"class="checkbox" id="correct2">1940-1956</p>
+  </div>
+  <div class="question3">
+    <h3>Q3. vaccum tubes used in which genration ?</h3>
+    <p><input type="radio" name="option3"class="checkbox">3rd</p>
+    <p> <input type="radio" name="option3"class="checkbox" id="correct3">1st</p>
+    <p><input type="radio" name="option3"class="checkbox">4th</p>
+  </div>
+  <div class="question4">
+    <h3>Q4. what is used in 3rd genration of computers ?</h3>
+    <p><input type="radio" name="option4"class="checkbox" id="correct4"> IC(intergrated circuit)</p>
+    <p> <input type="radio" name="option4"class="checkbox"> LSI & VLSI</p>
+    <p><input type="radio" name="option4"class="checkbox"> vaccum tubes</p>
+  </div>
+  <div class="question5">
+    <h3>Q5.who is father of mordern computers ?</h3>
+    <p><input type="radio" name="option5"class="checkbox">Charles Babage</p>
+    <p> <input type="radio" name="option5"class="checkbox">Lady Ala Lovelace</p>
+    <p><input type="radio" name="option5"class="checkbox" id="correct5">Alan Turing</p>
+  </div>
+  <div class="question6">
+    <h3>Q6.who is first programer ?</h3>
+    <p><input type="radio" name="option6"class="checkbox">Alan Turing</p>
+    <p><input type="radio" name="option6"class="checkbox" id="correct6">Lady Ala Lovelace</p>
+    <p><input type="radio" name="option6"class="checkbox">Charles Babage</p>
+  </div>
+  <div class="question7">
+    <h3>Q7. computer system consists of two parts that are hardware software its true ?</h3>
+    <p><input type="radio" name="option7"class="checkbox" id="correct7">true</p>
+    <p><input type="radio" name="option7"class="checkbox">false</p>
+  </div>
+  <div class="question8">
+    <h3>Q8. windows os is an </h3>
+    <p><input type="radio" name="option8"class="checkbox" id="correct8">system software</p>
+    <p><input type="radio" name="option8"class="checkbox">application software</p>
+    <p><input type="radio" name="option8"class="checkbox">both option 1 & 2</p>
+  </div>
+  <div class="question9">
+    <h3>Q9. photoshop is an </h3>
+    <p><input type="radio" name="option9"class="checkbox">system software</p>
+    <p><input type="radio" name="option9"class="checkbox" id="correct9">application software</p>
+    <p><input type="radio" name="option9"class="checkbox">both option 1 & 2</p>
+  </div>
+  <div class="question10">
+    <h3>Q10. full form of ISCII is indian standard code for infomation interchange </h3>
+    <p><input type="radio" name="option10"class="checkbox" id="correct10">true</p>
+    <p><input type="radio" name="option10"class="checkbox">false</p>
+  </div>
+  <input type="button" value="submit answer" value="submitquiz" onclick="result()" class="button">
+  <a href="answer.html"><input type="button" class="button2"></a>
+  <script>
+     
+   function result() {
+      var score = 0;
+
+      if (document.getElementById('correct1').checked) {
+        score++;
+      }
+
+      if (document.getElementById('correct2').checked) {
+        score++;
+      }
+      if (document.getElementById('correct3').checked) {
+        score++;
+      }
+      if (document.getElementById('correct4').checked) {
+        score++;
+      }
+      if (document.getElementById('correct5').checked) {
+        score++;
+      }
+      if (document.getElementById('correct6').checked) {
+        score++;
+      }
+      if (document.getElementById('correct7').checked) {
+        score++;
+      }
+      if (document.getElementById('correct8').checked) {
+        score++;
+      }
+      if (document.getElementById('correct9').checked) {
+        score++;
+      }
+      if (document.getElementById('correct10').checked) {
+        score++;
+      }
+      //window.alert("your mark is 10 out of: "+score);
+      // window.confirm("sometext");
+      //window.prompt("sometext","defaultText");
+      alert("your mark is\n 10 out of" + score);
+      }
+
+  </script>
+  </div>
+</body>
+</head>

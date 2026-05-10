@@ -1,0 +1,84 @@
+<html>
+
+<head>
+	<title>HTML Calculator</title>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+
+	</style>
+</head>
+
+<body background="wallpaper.jpg">
+	<form name="calculator" align="center">
+		<label><b> kirubha calculator 4</b></label>
+		<br>
+		<br>
+		<input type="text" name="ans" value="" class="txt"
+			style="width:90%;outline:none;border-radius:5px;font-size:25px;text-align:center-right">
+		<br>
+		<hr style="width:20%">
+		<input type="reset" value="c" onClick="document.calculator.ans.value+=''"
+			style="width:50%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:red"
+			class="cancel">
+		<br>
+		<br>
+		<input type="button" value="1" calss="btn1" onClick="document.calculator.ans.value+='1'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="2" onClick="document.calculator.ans.value+='2'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="3" onClick="document.calculator.ans.value+='3'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="+" onClick="document.calculator.ans.value+='+'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:orange"
+			class="btn">
+		<br>
+		<br>
+		<input type="button" value="4" onClick="document.calculator.ans.value+='4'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="5" onClick="document.calculator.ans.value+='5'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="6" onClick="document.calculator.ans.value+='6'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="-" onClick="document.calculator.ans.value+='-'"
+			style="width:20%;outline:none;border:none;border-radius:100px;font-size:20px;color:white;background:orange"
+			class="btn">
+		<br>
+		<br>
+		<input type="button" value="7" onClick="document.calculator.ans.value+='7'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="8" onClick="document.calculator.ans.value+='8'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="9" onClick="document.calculator.ans.value+='9'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="x" onClick="document.calculator.ans.value+='*'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:orange"
+			class="btn">
+		<br>
+		<br>
+		<input type="button" value="." onClick="document.calculator.ans.value+='.'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="0" onClick="document.calculator.ans.value+='0'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:lightblue"
+			class="btn">
+		<input type="button" value="÷" onClick="document.calculator.ans.value+='/'"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:orange"
+			class="btn">
+		<input type="button" value="=" onClick="document.calculator.ans.value=eval(document.calculator.ans.value)"
+			style="width:20%;outline:none;border:none;border-radius:20px;font-size:20px;color:white;background:green"
+			class="btn">
+		<br>
+	</form>
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+body{
+    font-family: Product Sans ;
+    background: rgb(0, 0, 0);
+    color: #FFF;
+}
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 1000;
+    background: rgb(0, 0, 0);
+    color: #fff;
+}
+
+.header .mode{
+    position:absolute;
+    left: 50%;
+    top: 15%;
+    text-align: center;
+    background-color: #323030;
+    padding: 5px;
+    font-size: 25px;
+    border-radius: 50px;
+    transition: 0.2s;
+}
+
+.header .mode span:nth-child(1){
+    background-color: #252525;
+    padding: 3px;
+    border-radius: 50px;
+}
+.header .mode span:hover{
+   background-color: #252525;
+   padding: 4px;
+   border-radius: 50px;
+   transition: 0.2s;
+}
+
+
+.header ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    cursor: pointer;
+    text-transform: lowercase;
+}
+
+.header ul li {
+    list-style: none;
+    margin: 0 20px;
+
+}
+
+.btns1 {
+    padding: 15px 20px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    transition: 0.2s;
+}
+
+.btns1:hover {
+    background-color: #323030;
+    border-radius: 10px;
+}
+.banner .bannerimg{
+    width: 100%;
+    height: 90%;
+    position: absolute;
+    top: 8%;
+    left: 0;
+}
+.banner a{
+   position: absolute;
+   top: 80%;
+   right: 5%;
+   background: #5c7dff;
+   color: #FFF;
+   border-radius: 10px;
+   padding: 20px 30px;
+   cursor: pointer;
+   text-decoration: none;
+}
+.banner a:hover{
+    background: #91a4f3;
+}
+.losbw{
+    position: absolute;
+    top: 110%;
+    left: 10%;
+}
+.item1{
+    background: #252525;
+    padding: 30px;
+    border-radius: 10px;
+}
+.losbw h4{
+    background: #5c7dff;
+    color: #FFF;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+.losbw h4:hover{
+    background: #91a4f3;
+}
+.losbw table{
+    background-color: #252525;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 5px 0px 0px rgb(33, 33, 33);
+}
+.losbw .poster{
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+}
+.losbw a{
+    background: #5c7dff;
+    color: #FFF;
+    border-radius: 10px;
+    padding: 10px 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.loscolor{
+    position: absolute;
+    top: 110%;
+    right: 10%;
+} 
+.loscolor table{
+    background-color: #252525;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 5px 0px 0px rgb(33, 33, 33);
+}
+.loscolor .poster{
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+}
+.loscolor a{
+    background: #5c7dff;
+    color: #FFF;
+    border-radius: 10px;
+    padding: 10px 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+.footer{
+    position: absolute;
+    top: 220%;
+    left: 0;
+    background-color: #323030;
+    width: 100%;
+    height: 20%;
+    border-top: 10px solid rgb(36, 36, 36);
+}
+.footer .smedia {
+    position: relative;
+    top: 60%;
+    left: 10%;
+    width: fit-content;
+}
+.footer .smedia a{
+    background: #5c7dff;
+    color: #FFF;
+    border-radius: 10px;
+    padding: 10px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 10px;
+}
+.footer .smedia a:hover{
+    background: #91a4f3;
+}
+.footer .copygiht{
+    position: relative;
+    left: 10%;
+    width: fit-content;
+}
+.footer .logos{
+    width: 200px;
+    position: absolute;
+    top: 40%;
+    left: 70%;
+}
+.footer .logos .logo{
+    width: 200px;
+}
+@media (max-width: 1280px){
+    body{
+        display: none;
+    }
+}

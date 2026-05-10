@@ -1,0 +1,95 @@
+<html>
+    <html>
+
+        <head>
+          <title>
+            PKWW computer league
+          </title>
+          <link rel="shortcut icon" href="Artboard 33.png" type="image/x-icon">
+          <link rel="stylesheet" href="style.css">
+        
+        <body>
+          <div class="header">
+            <img src="PNG/Artboard 1.png" class="logoimg">
+            <h1 class="logo"> pk webworks computer quiz league 2022 </h1>  
+            <ul>
+                <li>
+                  <a href="index.html">back</a>
+                </li>
+              </ul>
+            <br>
+        
+         </div>
+          <br>
+          <br>
+          <br>
+          <div class="question1">
+            <h3>Q1. full form of HTML ?</h3>
+            <p><input type="radio" name="option1"class="checkbox" >How To Meet Ladies</p>
+            <p><input type="radio" name="option1"class="checkbox" id="correct1">Hyper Text Markup Language</p>
+            <p> <input type="radio" name="option1"class="checkbox">Hyper Text Makeup Language</p>
+          </div>
+          <div class="question2">
+            <h3>Q2. HTML is used to make ______ of an website?</h3>
+            <p><input type="radio" name="option2"class="checkbox" id="correct2">struckchar</p>
+            <p> <input type="radio" name="option2"class="checkbox">style</p>
+            <p><input type="radio" name="option2"class="checkbox" >logic</p>
+          </div>
+          <div class="question3">
+            <h3>Q3. which Language is used styling an website ?</h3>
+            <p><input type="radio" name="option3"class="checkbox">javascript</p>
+            <p> <input type="radio" name="option3"class="checkbox" id="correct3">css(cascading styel sheet)</p>
+            <p><input type="radio" name="option3"class="checkbox">html</p>
+          </div>
+          <div class="question4">
+            <h3>Q4. which Language is used to make an website logicaly ?</h3>
+            <p><input type="radio" name="option4"class="checkbox" id="correct4">javascript </p>
+            <p> <input type="radio" name="option4"class="checkbox"> node js</p>
+            <p><input type="radio" name="option4"class="checkbox"> html</p>
+          </div>
+          <div class="question5">
+            <h3>Q5. which tag is used to make an paragraph?</h3>
+            <p><input type="radio" name="option5"class="checkbox"id="correct5"> p </p>
+            <p> <input type="radio" name="option5"class="checkbox"> h1 </p>
+            <p><input type="radio" name="option5"class="checkbox" > a</p>
+          </div>
+          <div class="question6">
+            <h3>Q6. which tag is used to link an anthor html file?</h3>
+            <p><input type="radio" name="option6"class="checkbox"> p </p>
+            <p> <input type="radio" name="option6"class="checkbox"> h1 </p>
+            <p><input type="radio" name="option6"class="checkbox" id="correct6"> a</p>
+          </div>
+          <input type="button" value="submit answer" value="submitquiz" onclick="result()" class="button">
+          <a href="answer.html"><input type="button" class="button2"></a>
+          <script>
+             
+           function result() {
+              var score = 0;
+        
+              if (document.getElementById('correct1').checked) {
+                score++;
+              }
+        
+              if (document.getElementById('correct2').checked) {
+                score++;
+              }
+              if (document.getElementById('correct3').checked) {
+                score++;
+              }
+              if (document.getElementById('correct4').checked) {
+                score++;
+              }
+              if (document.getElementById('correct5').checked) {
+                score++;
+              }
+              if (document.getElementById('correct6').checked) {
+                score++;
+              }
+              //window.alert("your mark is 10 out of: "+score);
+              // window.confirm("sometext");
+              //window.prompt("sometext","defaultText");
+              alert("your mark is\n 6 out of" + score);
+                }
+        
+          </script>
+</html>

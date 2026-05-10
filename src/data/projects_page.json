@@ -3,66 +3,66 @@
     "title": "Calculator v4",
     "description": "a simple calulator website using glassmoprism effect",
     "project_thumb": "/pro_img/proj_thumb1.jpg",
-    "link": "https://pkwwprojects.vercel.app/calc%204/"
+    "link": "/projects/calc%204/index.html"
   },
   {
     "title": "Read My Comic",
     "description": "a simple website for reading comics ",
     "project_thumb": "/pro_img/proj_thumb2.jpg",
-    "link": "https://pkwwprojects.vercel.app/readmycomic/"
+    "link": "/projects/readmycomic/index.html"
   },
   {
     "title": "To Do List",
     "description": "a simple to do list app using local storage",
     "project_thumb": "/pro_img/proj_thumb3.jpg",
-    "link": "https://pkwwprojects.vercel.app/todolist/"
+    "link": "/projects/todolist/index.html"
   },
   {
     "title": "Switch Case",
     "description": "a simple website that changes the cases of text",
     "project_thumb": "/pro_img/proj_thumb11.jpg",
-    "link": "https://pkwwprojects.vercel.app/switch%20case/"
+    "link": "/projects/switch%20case/index.html"
   },
   {
     "title": "Calculator v3",
     "description": "a calcualator app with 3d based ui.",
     "project_thumb": "/pro_img/proj_thumb5.jpg",
-    "link": "https://pkwwprojects.vercel.app/calc%203/"
+    "link": "/projects/calc%203/index.html"
   },
   {
     "title": "Calculator v2",
     "description": "a calcualtor using a simple ui",
     "project_thumb": "/pro_img/proj_thumb6.jpg",
-    "link": "https://pkwwprojects.vercel.app/calc%202/"
+    "link": "/projects/calc%202/index.html"
   },
   {
     "title": "Calculator",
     "description": "a pure html calculator",
     "project_thumb": "/pro_img/proj_thumb7.jpg",
-    "link": "https://pkwwprojects.vercel.app/calc%201/"
+    "link": "/projects/calc%201/index.html"
   },
   {
     "title": "Form v1",
     "description": "a simple form website using css and html ",
     "project_thumb": "/pro_img/proj_thumb9.jpg",
-    "link": "https://pkwwprojects.vercel.app/bio%20data/"
+    "link": "/projects/bio%20data/index.html"
   },
   {
     "title": "Form v2",
     "description": "a simple form website using css and html",
     "project_thumb": "/pro_img/proj_thumb10.jpg",
-    "link": "https://pkwwprojects.vercel.app/biodata%202/"
+    "link": "/projects/biodata%202/index.html"
   },
   {
     "title": "Quiz",
     "description": "a simple quiz page",
     "project_thumb": "/pro_img/proj_thumb12.jpg",
-    "link": "https://pkwwprojects.vercel.app/quiz/"
+    "link": "/projects/quiz/index.html"
   },
   {
     "title": "Rabbit Mash",
     "description": "a game to click the rabit shows in the screen to increase point",
     "project_thumb": "/pro_img/proj_thumb13.jpg",
-    "link": "https://pkwwprojects.vercel.app/rabbit%20mash/"
+    "link": "/projects/rabit%20mash/index.html"
   }
 ]

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        the calculator
+    </title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="btn">
+        <span> light</span>
+        <span> dark </span>
+    </div>
+           <div class="container">
+        <form class="calculator" name="calc">
+
+            <input type="text" class="value" readonly name="txt" placeholder="kirubha clac 3">
+            <span class="num clear" onclick="calc.txt.value='' ">
+                <p><i> C </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='/' ">
+                <p><i> / </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='*' ">
+                <p><i> * </i> </p>
+            </span>
+
+            <span class="num" onclick="calc.txt.value+='7' ">
+                <p><i> 7 </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='8' ">
+                <p><i> 8</i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='9' ">
+                <p><i> 9 </i> </p>
+            </span>
+
+            <span class="num" onclick="calc.txt.value+='-' ">
+                <p><i> - </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='4' ">
+                <p><i> 4 </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='5' ">
+                <p><i> 5 </i> </p>
+            </span>
+
+            <span class="num" onclick="calc.txt.value+='6' ">
+                <p><i> 6 </i> </p>
+            </span>
+            <span class="num plus" onclick="calc.txt.value+='+' ">
+                <p><i> + </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='1' ">
+                <p><i> 1 </i> </p>
+            </span>
+
+            <span class="num" onclick="calc.txt.value+='2' ">
+                <p><i> 2 </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='3' ">
+                <p><i> 3 </i> </p>
+            </span>
+            <span class="num" onclick="calc.txt.value+='0' ">
+                <p><i> 0 </i> </p>
+            </span>
+
+
+            <span class="num" onclick="calc.txt.value+='.' ">
+                <p><i> . </i> </p>
+            </span>
+
+            <span class="num equal" onclick="document.calc.txt.value=eval(calc.txt.value)">
+                <p><i>=</i> </p>
+            </span>
+        </form>
+    </div>
+    <script>
+        let body = document.querySelector('body');
+        let btn = document.querySelector('.btn');
+        btn.onclick = function () {
+            body.classList.toggle('light')
+        }
+    </script>
+</body>
+
+</html>
