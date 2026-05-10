@@ -16,20 +16,12 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "Michael Chen",
-    role: "Product Manager, StartupHub",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
+    name: "Prakash",
+    role: "",
+    image: "/reviews_profile/prakash.jpg",
     comment: "Working with Kirubha was seamless. He understood our vision immediately and delivered a stunning UI that our users love. Great communication throughout.",
     rating: 5
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    role: "Marketing Director, DigitalMax",
-    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
-    comment: "The website Kirubha built for us has increased our conversions by 40%. The design is beautiful, and the performance is incredible. Best investment we made!",
-    rating: 5
-  },
+  }
 ];
 
 function Testimonials() {
