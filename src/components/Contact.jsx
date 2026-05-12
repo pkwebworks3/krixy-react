@@ -7,44 +7,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-// Reusing ParticleCanvas for consistency
-const ParticleCanvas = () => {
-  const theme = useTheme();
-  return (
-    <Box sx={{
-      position: 'absolute',
-      top: 0, left: 0, right: 0, bottom: 0,
-      zIndex: 0,
-      opacity: 0.4,
-      pointerEvents: 'none'
-    }}>
-      {/* Simple animated dots for contact bg */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          animate={{
-            y: [0, -100, 0],
-            opacity: [0.2, 0.5, 0.2],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 10,
-            repeat: Infinity,
-            delay: Math.random() * 5,
-          }}
-          style={{
-            position: 'absolute',
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: '4px',
-            height: '4px',
-            borderRadius: '50%',
-            backgroundColor: theme.palette.primary.main,
-          }}
-        />
-      ))}
-    </Box>
-  );
-};
+import ParticleCanvas from './ParticleCanvas';
 
 const Contact = () => {
   const theme = useTheme();

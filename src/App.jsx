@@ -8,6 +8,7 @@ import Contact from './components/Contact';
 import Footer from './components/footer';
 import Testimonial from './components/testimonials';
 import LoadingScreen from './components/LoadingScreen';
+import ThemeAccents from './components/ThemeAccents';
 import projectsData from './data/projects_page.json';
 
 const slideInFromRight = {
@@ -111,6 +112,7 @@ function App() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
+          <ThemeAccents />
           <Navbar />
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>

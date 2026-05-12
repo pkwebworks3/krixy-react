@@ -12,234 +12,8 @@ import projects from "../data/projects.json";
 import { TypeAnimation } from 'react-type-animation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-function ParticleCanvas({ isMobile }) {
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === 'dark';
-  const canvasRef = useRef(null);
-  const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
-  const burstsRef = useRef([]);
+import ParticleCanvas from './ParticleCanvas';
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let animationId;
-
-    const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
-    let flowers = [];
-    const startTime = performance.now();
-    const BLOOM_RADIUS = 150;
-
-    const NUM_GROUPS = 12;
-    const CYCLE = 5000;
-
-    const initGrid = () => {
-      flowers = [];
-      const width = canvas.offsetWidth || window.innerWidth;
-      const height = canvas.offsetHeight || window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-
-      const spacing = 45;
-      const cols = Math.ceil(width / spacing) + 1;
-      const rows = Math.ceil(height / spacing) + 1;
-
-      for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          const x = i * spacing + (Math.random() - 0.5) * 40;
-          const y = j * spacing + (Math.random() - 0.5) * 40;
-
-          flowers.push({
-            x, y,
-            baseSize: Math.random() * 8 + 12,
-            bloomLevel: 0,
-            rotation: Math.random() * Math.PI * 2,
-            rotSpeed: (Math.random() - 0.5) * 0.015,
-            color: COLORS[Math.floor(Math.random() * COLORS.length)],
-            groupIndex: Math.floor(Math.random() * NUM_GROUPS),
-          });
-        }
-      }
-    };
-
-    initGrid();
-
-    let resizeTimeout;
-    const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(initGrid, 200);
-    };
-    window.addEventListener('resize', handleResize);
-
-    const getCanvasPos = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    };
-
-    const handlePointerMove = (e) => {
-      if (isMobile) return;
-      const { x, y } = getCanvasPos(e);
-      if (x >= -50 && x <= canvas.width + 50 && y >= -50 && y <= canvas.height + 50) {
-        mouseRef.current = { x, y, active: true };
-      } else {
-        mouseRef.current.active = false;
-      }
-    };
-
-    const handlePointerDown = (e) => {
-      if (!isMobile) return;
-      const { x, y } = getCanvasPos(e);
-      if (x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height) {
-        burstsRef.current.push({ x, y, time: performance.now() });
-      }
-    };
-
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerdown', handlePointerDown);
-
-    const applyCircularBloom = (f, cx, cy, now) => {
-      const dist = Math.hypot(f.x - cx, f.y - cy);
-      if (dist < BLOOM_RADIUS) {
-        const intensity = 1 - (dist / BLOOM_RADIUS);
-        f.bloomLevel += 0.1 * (0.2 + 0.8 * intensity);
-      }
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const m = mouseRef.current;
-      const now = performance.now();
-
-      burstsRef.current = burstsRef.current.filter(b => now - b.time < 2000);
-
-      flowers.forEach((f) => {
-        f.rotation += f.rotSpeed;
-
-        if (isMobile) {
-          const FADE_IN = 1000;
-          const HOLD = 3000;
-          const totalCycle = NUM_GROUPS * CYCLE;
-          const groupStart = f.groupIndex * CYCLE;
-          let raw = (now - startTime - groupStart) % totalCycle;
-          if (raw < 0) raw += totalCycle;
-
-          let base = 0;
-          if (raw < FADE_IN) {
-            const p = raw / FADE_IN;
-            base = p * p;
-          } else if (raw < FADE_IN + HOLD) {
-            base = 1;
-          } else if (raw < CYCLE) {
-            const p = (raw - FADE_IN - HOLD) / (CYCLE - FADE_IN - HOLD);
-            base = 1 - (p * p);
-          }
-
-          f.bloomLevel = base;
-
-          burstsRef.current.forEach((burst) => {
-            const dist = Math.hypot(f.x - burst.x, f.y - burst.y);
-            if (dist < BLOOM_RADIUS) {
-              const intensity = (1 - dist / BLOOM_RADIUS) * Math.max(0, 1 - (now - burst.time) / 2000);
-              f.bloomLevel = Math.min(1, f.bloomLevel + intensity * 0.6);
-            }
-          });
-        } else {
-          if (m.active) {
-            applyCircularBloom(f, m.x, m.y, now);
-            f.bloomLevel -= 0.008;
-          } else {
-            f.bloomLevel -= 0.015;
-          }
-        }
-
-        f.bloomLevel = Math.max(0, Math.min(1, f.bloomLevel));
-
-        if (f.bloomLevel > 0.01) {
-          const ease = Math.sin((f.bloomLevel * Math.PI) / 2);
-          const currentSize = f.baseSize * ease;
-
-          ctx.save();
-          ctx.globalAlpha = ease;
-          ctx.translate(f.x, f.y);
-          ctx.rotate(f.rotation);
-
-          if (isDarkMode) {
-            // Draw Star with Sparkle Effect
-            const sparkle = 1 + (Math.sin(now * 0.012 + f.x) * 0.2 * f.bloomLevel);
-            const twinkle = 0.8 + (Math.random() * 0.4 * f.bloomLevel); // High freq twinkle
-
-            ctx.globalAlpha = ease * twinkle;
-            ctx.fillStyle = f.color;
-            const points = 5;
-            const outerRadius = currentSize * 1.1 * sparkle;
-            const innerRadius = currentSize * 0.45 * sparkle;
-
-            ctx.beginPath();
-            for (let i = 0; i < points * 2; i++) {
-              const radius = i % 2 === 0 ? outerRadius : innerRadius;
-              const angle = (Math.PI * i) / points - Math.PI / 2;
-              const x = Math.cos(angle) * radius;
-              const y = Math.sin(angle) * radius;
-              if (i === 0) ctx.moveTo(x, y);
-              else ctx.lineTo(x, y);
-            }
-            ctx.closePath();
-            ctx.fill();
-
-            // Sparkling center for the star
-            const corePulse = 0.8 + Math.sin(now * 0.02 + f.y) * 0.2;
-            ctx.fillStyle = `rgba(255, 255, 255, ${0.9 * corePulse})`;
-            ctx.beginPath();
-            ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25 * sparkle), 0, Math.PI * 2);
-            ctx.fill();
-
-            // Dynamic outer glow
-            ctx.shadowBlur = (15 + Math.sin(now * 0.01) * 5) * f.bloomLevel;
-            ctx.shadowColor = f.color;
-          } else {
-            // Original Flower Logic
-            ctx.fillStyle = f.color;
-            for (let i = 0; i < 5; i++) {
-              ctx.beginPath();
-              ctx.ellipse(0, currentSize * 0.6, Math.max(0.1, currentSize * 0.3), Math.max(0.1, currentSize * 0.8), 0, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.rotate((Math.PI * 2) / 5);
-            }
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.beginPath();
-            ctx.arc(0, 0, Math.max(0.1, currentSize * 0.25), 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          ctx.restore();
-        }
-      });
-
-      animationId = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerdown', handlePointerDown);
-      clearTimeout(resizeTimeout);
-    };
-  }, [isMobile, theme.palette.mode]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute', top: 0, left: 0,
-        width: '100%', height: '100%',
-        pointerEvents: 'none',
-        zIndex: 0,
-      }}
-    />
-  );
-}
 
 const stacks = [
   { name: 'VS Code', img: '/ico/vscode.png' },
@@ -471,7 +245,13 @@ function Content() {
       }}>
         <ParticleCanvas isMobile={isMobile} />
         <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
-          <style>{`@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <style>{`@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
           <Box sx={{ 
             textAlign: 'center', 
             px: { xs: 3, md: 8 }, 
@@ -678,6 +458,7 @@ function Content() {
               ))}
             </Box>
           </Box>
+          </motion.div>
         </Container>
       </Box>
 

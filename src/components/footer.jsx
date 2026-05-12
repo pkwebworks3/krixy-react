@@ -6,6 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { motion } from 'framer-motion';
 
 function Footer() {
   const theme = useTheme();
@@ -14,6 +15,12 @@ function Footer() {
   return (
     <Box component="footer" sx={{ bgcolor: theme.palette.background.paper, pt: 10, pb: 4, borderTop: `1px solid rgba(124, 58, 237, 0.1)` }}>
       <Container maxWidth="lg">
+        <motion.div
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
         <Grid container spacing={6}>
           <Grid size={{ xs: 12, md: 5 }}>
             <Typography variant="h5" sx={{ color: theme.palette.primary.main, fontWeight: 700, mb: 3 }}>
@@ -78,11 +85,8 @@ function Footer() {
 
         <Divider sx={{ borderColor: 'rgba(124, 58, 237, 0.1)', my: 4 }} />
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
-            &copy; {currentYear} PK Webworks. All rights reserved.
-          </Typography>
         </Box>
+        </motion.div>
       </Container>
     </Box>
   );
