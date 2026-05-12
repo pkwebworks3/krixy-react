@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, useMediaQuery, alpha } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SendIcon from '@mui/icons-material/Send';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import projects from "../data/projects.json";
@@ -225,7 +226,7 @@ function ParticleCanvas({ isMobile }) {
       window.removeEventListener('pointerdown', handlePointerDown);
       clearTimeout(resizeTimeout);
     };
-  }, [isMobile]);
+  }, [isMobile, theme.palette.mode]);
 
   return (
     <canvas
@@ -495,7 +496,9 @@ function Content() {
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+                  style={{ position: 'relative' }}
                 >
+
                   <Box
                     component="img"
                     src="/reviews_profile/kirubha.jpg"
@@ -630,7 +633,13 @@ function Content() {
               }}>
                 View My Work
               </Button>
-              <Button variant="outlined" size="large" startIcon={<SendIcon />} href="#contact" sx={{
+              <Button 
+                variant="outlined" 
+                size="large" 
+                startIcon={<SendIcon />} 
+                component={Link}
+                to="/contact" 
+                sx={{
                 px: 5, py: 1.6,
                 borderRadius: 8,
                 fontSize: '1rem',
@@ -647,7 +656,7 @@ function Content() {
             <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
               {[
                 { icon: <InstagramIcon />, href: 'https://www.instagram.com/kirubha.exe/' },
-                { icon: <TwitterIcon />, href: '#' },
+                { icon: <FacebookIcon />, href: '#' },
                 { icon: <GitHubIcon />, href: 'https://github.com/pkwebworks3' },
               ].map((s, i) => (
                 <IconButton key={i} href={s.href} target="_blank" sx={{

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, IconButton, Button, useTheme, Divider } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
@@ -24,7 +24,7 @@ function Footer() {
             </Typography>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <IconButton href="https://www.instagram.com/kirubha.exe/" target="_blank" sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}><InstagramIcon /></IconButton>
-              <IconButton href="#" target="_blank" sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}><TwitterIcon /></IconButton>
+              <IconButton href="#" target="_blank" sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}><FacebookIcon /></IconButton>
               <IconButton href="https://github.com/pkwebworks3" target="_blank" sx={{ color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main } }}><GitHubIcon /></IconButton>
             </Box>
           </Grid>
@@ -49,6 +49,14 @@ function Footer() {
                 sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
               >
                 Projects
+              </Button>
+              <Button
+                component={Link}
+                to="/contact"
+                startIcon={<EmailIcon />}
+                sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
+              >
+                Contact
               </Button>
             </Box>
           </Grid>

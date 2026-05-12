@@ -13,6 +13,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import EmailIcon from '@mui/icons-material/Email';
 import { useTheme, alpha } from '@mui/material/styles';
 import { ColorModeContext } from '../ThemeContext';
 import { motion } from 'framer-motion';
@@ -30,7 +31,8 @@ const iconVariants = {
 
 const pages = [
   { title: 'Home', path: '/', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><HomeIcon /></motion.div> },
-  { title: 'Projects', path: '/projects', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><DashboardIcon /></motion.div> }
+  { title: 'Projects', path: '/projects', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><DashboardIcon /></motion.div> },
+  { title: 'Contact', path: '/contact', isLink: true, icon: <motion.div variants={iconVariants} animate="animate" style={{ display: 'flex' }}><EmailIcon /></motion.div> }
 ];
 
 function Navbar() {
@@ -74,11 +76,13 @@ function Navbar() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       sx={{ 
-        top: isScrolled ? 0 : { xs: 10, md: 20 },
-        left: isScrolled ? 0 : { xs: 15, md: 40 },
-        right: isScrolled ? 0 : { xs: 15, md: 40 },
+        top: isScrolled ? 0 : 20,
+        left: '50%',
+        transform: isScrolled ? 'translateX(-50%)' : 'translateX(-50%)',
+        px: { xs: 1.5, md: 3 },
+        py: isScrolled ? 0.8 : 1.2,
         width: isScrolled ? '100%' : 'auto',
-        borderRadius: isScrolled ? 0 : { xs: '16px', md: '24px' },
+        borderRadius: isScrolled ? 0 : { xs: '12px', md: '20px' },
         background: isScrolled 
           ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(15, 23, 42, 0.85)')
           : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.15)'), 
@@ -88,7 +92,7 @@ function Navbar() {
           : 'none',
         border: !isScrolled ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
         boxShadow: isScrolled ? `0 10px 40px ${alpha(theme.palette.common.black, 0.1)}` : 'none',
-        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.4s ease',
         overflow: 'hidden',
         zIndex: 1100,
         '&::before': {
@@ -104,23 +108,22 @@ function Navbar() {
       }}
     >
       <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 1 }}>
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ minHeight: { xs: '48px', md: '56px' } }}>
           {/* Desktop Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-              <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '30px' }} />
-            </Link>
-            <Box component="span" sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#7c3aed', bgcolor: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '4px', px: '5px', py: '2px', letterSpacing: 1, textTransform: 'uppercase', lineHeight: 1 }}>
-              beta
-            </Box>
-          </Box>
-
-          {/* Mobile Logo */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '24px' }} />
             </Link>
             <Box component="span" sx={{ fontSize: '0.55rem', fontWeight: 700, color: '#7c3aed', bgcolor: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '4px', px: '4px', py: '1px', letterSpacing: 1, textTransform: 'uppercase', lineHeight: 1 }}>
+              beta
+            </Box>
+          </Box>
+          {/* Mobile Logo */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1 }}>
+            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+              <img src="1x\Asset 87logowbg.png" alt="PK Webworks Logo" style={{ height: '20px' }} />
+            </Link>
+            <Box component="span" sx={{ fontSize: '0.5rem', fontWeight: 700, color: '#7c3aed', bgcolor: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', borderRadius: '4px', px: '3px', py: '1px', letterSpacing: 1, textTransform: 'uppercase', lineHeight: 1 }}>
               beta
             </Box>
           </Box>

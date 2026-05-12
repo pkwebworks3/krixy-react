@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from './components/navbar';
 import Content from './components/content';
 import Projects from './components/projects/project';
+import Contact from './components/Contact';
 import Footer from './components/footer';
 import Testimonial from './components/testimonials';
 import LoadingScreen from './components/LoadingScreen';
@@ -134,6 +135,17 @@ function App() {
                   transition={pageTransition}
                 >
                   <Projects />
+                </motion.div>
+              } />
+              <Route path="/contact" element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={slideInFromRight}
+                  transition={pageTransition}
+                >
+                  <Contact />
                 </motion.div>
               } />
             </Routes>
