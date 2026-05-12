@@ -85,6 +85,10 @@ function Footer() {
 
         <Divider sx={{ borderColor: 'rgba(124, 58, 237, 0.1)', my: 4 }} />
 
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+            &copy; {currentYear} PK Webworks. All rights reserved.
+          </Typography>
         </Box>
         </motion.div>
       </Container>
