@@ -7,8 +7,6 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-import ParticleCanvas from './ParticleCanvas';
-
 const Contact = () => {
   const theme = useTheme();
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScEhsojHcF2sIs2OmZ_2xVYV1m2dsO00z5B-jRJ7fBEBJnRuw/viewform?usp=publish-editor";
@@ -22,7 +20,6 @@ const Contact = () => {
       position: 'relative',
       overflow: 'hidden'
     }}>
-      <ParticleCanvas />
 
       {/* Decorative Blobs */}
       <Box sx={{
@@ -45,12 +42,15 @@ const Contact = () => {
             transition={{ duration: 0.6 }}
           >
             <Typography variant="h2" sx={{ 
-              fontWeight: 900, 
+              fontWeight: 950, 
               mb: 2,
-              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              fontFamily: '"Outfit", sans-serif',
+              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+              backgroundSize: '400% 400%',
+              animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '3rem', md: '4.5rem' },
+              fontSize: { xs: '3rem', md: '5rem' },
               letterSpacing: '-0.02em'
             }}>
               GET IN TOUCH.

@@ -19,15 +19,18 @@ export const getDesignTokens = (mode) => ({
     },
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '"Inter", "Outfit", "Roboto", "Helvetica", "Arial", sans-serif',
     h1: {
-      fontWeight: 800,
+      fontFamily: '"Outfit", sans-serif',
+      fontWeight: 900,
     },
     h2: {
+      fontFamily: '"Outfit", sans-serif',
       fontWeight: 800,
     },
     h3: {
-      fontWeight: 700,
+      fontFamily: '"Outfit", sans-serif',
+      fontWeight: 800,
     },
     button: {
       textTransform: 'none',

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box, Container, Typography, Card, CardMedia, CardContent, Button, useTheme, alpha, Dialog, DialogTitle, DialogContent, DialogActions, useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import projects from "../../data/projects_page.json";
@@ -52,7 +53,17 @@ function Projects() {
     }}>
       <Container maxWidth="lg">
         <Box sx={{ mb: 8, textAlign: 'center' }}>
-          <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
+          <Typography variant="h2" sx={{ 
+            fontWeight: 950, 
+            fontFamily: '"Outfit", sans-serif',
+            letterSpacing: -1.5, 
+            mb: 2,
+            background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+            backgroundSize: '400% 400%',
+            animation: 'gradientShift 8s ease infinite',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
             My Projects
           </Typography>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
@@ -60,56 +71,83 @@ function Projects() {
           </Typography>
         </Box>
 
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, 
-          gap: 4 
-        }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 8, md: 15 }, position: 'relative' }}>
           {projects.map((project, idx) => (
-            <Card key={idx} sx={{ 
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              backgroundColor: theme.palette.background.paper,
-              transition: 'transform 0.4s',
-              '&:hover': {
-                transform: 'translateY(-8px)',
-                borderColor: alpha(theme.palette.primary.main, 0.6),
-                boxShadow: `0 20px 60px ${alpha(theme.palette.primary.main, 0.3)}`
-              }
-            }}>
-              <Box sx={{ position: 'relative', height: 220, overflow: 'hidden', '&:hover .overlay': { opacity: 1 }, '&:hover .thumb': { transform: 'scale(1.08)' } }}>
-                <CardMedia 
-                  component="img" 
-                  image={project.project_thumb} 
-                  alt={project.title} 
+            <Box 
+              key={idx} 
+              component={motion.div}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              onClick={() => window.open(project.link, '_blank')}
+              sx={{ 
+                position: 'relative',
+                cursor: 'pointer',
+                p: { xs: 2, md: 4 },
+                borderRadius: 8,
+                transition: 'all 0.5s ease',
+                '&:hover': {
+                  bgcolor: alpha(theme.palette.background.paper, 0.1),
+                  backdropFilter: 'blur(20px)',
+                  boxShadow: `0 40px 100px ${alpha('#000', 0.3)}`,
+                  border: `1px solid ${alpha('#7c3aed', 0.1)}`,
+                  '& .thumb': { transform: 'scale(1.05)' }
+                },
+                display: 'flex', 
+                flexDirection: { xs: 'column', md: idx % 2 === 0 ? 'row' : 'row-reverse' },
+                alignItems: 'center',
+                gap: { xs: 4, md: 8 }
+              }}
+            >
+              {/* Project Image */}
+              <Box sx={{ 
+                flex: 1.2, 
+                width: '100%',
+                position: 'relative',
+                borderRadius: 6,
+                overflow: 'hidden',
+                boxShadow: `0 30px 60px ${alpha('#000', 0.4)}`,
+              }}>
+                <Box
+                  component="img"
+                  src={project.project_thumb}
+                  alt={project.title}
                   className="thumb"
-                  sx={{ height: '100%', transition: 'transform 0.6s' }} 
+                  sx={{ 
+                    width: '100%', 
+                    height: { xs: 300, md: 450 },
+                    objectFit: 'cover',
+                    transition: 'transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)'
+                  }}
                 />
-                <Box className="overlay" sx={{ 
-                  position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, 
-                  bgcolor: alpha(theme.palette.background.paper, 0.8), 
-                  backdropFilter: 'blur(4px)', 
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', 
-                  opacity: 0, transition: 'opacity 0.4s' 
-                }}>
-                  <Button variant="contained" href={project.link} target="_blank" endIcon={<OpenInNewIcon />}>
-                    View Project
-                  </Button>
-                </Box>
               </Box>
-              
-              <CardContent sx={{ flexGrow: 1, p: 4 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
-                    {project.title}
-                  </Typography>
-                </Box>
-                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, lineHeight: 1.7 }}>
+
+              {/* Project Info */}
+              <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' }, position: 'relative', zIndex: 1 }}>
+                <Typography variant="overline" sx={{ color: '#7c3aed', fontWeight: 900, letterSpacing: 3 }}>
+                  Project {idx + 1}
+                </Typography>
+                <Typography variant="h2" sx={{ 
+                  fontWeight: 950, 
+                  fontFamily: '"Outfit", sans-serif',
+                  mb: 3,
+                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  color: '#7c3aed'
+                }}>
+                  {project.title}
+                </Typography>
+                <Typography variant="body1" sx={{ 
+                  color: theme.palette.mode === 'light' ? theme.palette.text.secondary : alpha('#fff', 0.7), 
+                  lineHeight: 1.8, 
+                  fontSize: '1.1rem',
+                  mb: 0,
+                  maxWidth: 600
+                }}>
                   {project.description}
                 </Typography>
-              </CardContent>
-            </Card>
+              </Box>
+            </Box>
           ))}
         </Box>
       </Container>

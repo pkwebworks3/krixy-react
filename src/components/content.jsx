@@ -15,192 +15,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ParticleCanvas from './ParticleCanvas';
 
 
-const stacks = [
-  { name: 'VS Code', img: '/ico/vscode.png' },
-  { name: 'Antigravity', img: '/ico/antigravity.png' },
-  { name: 'OpenCode', img: '/ico/opencode.png' },
-  { name: 'GitHub', img: '/ico/github.png' },
-  { name: 'Git', img: '/ico/git.png' },
-  { name: 'Chrome', img: '/ico/chrome.png' },
-  { name: 'ChatGPT', img: '/ico/chatgpt.png' },
-  { name: 'Gemini', img: '/ico/gemini.png' },
-  { name: 'Arc', img: '/ico/arc.png' },
-  { name: 'Vercel', img: '/ico/vercel.png' },
-  { name: 'Photoshop', img: '/ico/photoshop.png' },
-  { name: 'Illustrator', img: '/ico/illustrator.png' },
-];
+import { stacks } from '../data/stacks';
 
-function StackCard({ stack, index }) {
-  const theme = useTheme();
-
-  return (
-    <Grid size={{ xs: 4, sm: 3, md: 2.4, lg: 2 }}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ 
-          duration: 0.5, 
-          delay: index * 0.03,
-          type: "spring",
-          stiffness: 100
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: { xs: 1.5, md: 2 },
-            p: { xs: 2, md: 3 },
-            height: '100%',
-            borderRadius: { xs: 3, md: 4 },
-            background: alpha(theme.palette.background.paper, 0.05),
-            border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-            backdropFilter: 'blur(12px)',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            '&:hover': {
-              transform: 'translateY(-10px) scale(1.05)',
-              background: alpha(theme.palette.background.paper, 0.12),
-              borderColor: alpha(theme.palette.primary.main, 0.4),
-              boxShadow: `0 30px 60px ${alpha(theme.palette.common.black, 0.3)}`,
-              '& .glow': {
-                opacity: 0.8,
-                transform: 'translate(-50%, -50%) scale(1.8)',
-              },
-              '& img': {
-                transform: 'scale(1.2) rotate(8deg)',
-                filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.4))'
-              },
-              '& .stack-name': {
-                color: theme.palette.primary.main,
-                transform: 'translateY(-2px)'
-              }
-            },
-          }}
-        >
-          {/* Decorative Corner Glow */}
-          <Box sx={{
-            position: 'absolute',
-            top: -10,
-            right: -10,
-            width: 40,
-            height: 40,
-            background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.1)} 0%, transparent 70%)`,
-            filter: 'blur(10px)',
-            zIndex: 0
-          }} />
-
-          {/* Interactive Glow Effect */}
-          <Box
-            className="glow"
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '120px',
-              height: '120px',
-              background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.3)} 0%, transparent 70%)`,
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%) scale(0)',
-              opacity: 0,
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-
-          <Box
-            component="img"
-            src={stack.img}
-            alt={stack.name}
-            sx={{
-              width: { xs: 40, md: 56 },
-              height: { xs: 40, md: 56 },
-              zIndex: 1,
-              transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
-            }}
-          />
-
-          <Typography
-            variant="body2"
-            className="stack-name"
-            sx={{
-              color: theme.palette.text.secondary,
-              fontWeight: 800,
-              fontSize: { xs: '0.7rem', md: '0.85rem' },
-              textTransform: 'uppercase',
-              letterSpacing: { xs: 0.5, md: 1 },
-              zIndex: 1,
-              textAlign: 'center',
-              transition: 'all 0.3s ease',
-            }}
-          >
-            {stack.name}
-          </Typography>
-        </Box>
-      </motion.div>
-    </Grid>
-  );
-}
-
-function Stacks() {
-  const theme = useTheme();
-
-  return (
-    <Box id="stacks" sx={{ py: 15, position: 'relative', backgroundColor: theme.palette.background.default }}>
-      {/* Background Decorative Element */}
-      <Box sx={{
-        position: 'absolute',
-        top: '20%',
-        left: '10%',
-        width: '300px',
-        height: '300px',
-        background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.05)} 0%, transparent 70%)`,
-        filter: 'blur(60px)',
-        zIndex: 0,
-      }} />
-
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Box sx={{ mb: 10, textAlign: 'center' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <Typography variant="h2" sx={{
-              fontSize: { xs: '2.5rem', md: '3.5rem' },
-              textTransform: 'uppercase',
-              letterSpacing: 2,
-              mb: 3,
-              fontWeight: 900,
-              background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>
-              My Stacks
-            </Typography>
-            <Typography variant="h6" sx={{ color: theme.palette.text.secondary, maxWidth: 600, mx: 'auto', fontWeight: 400, opacity: 0.8 }}>
-              A collection of tools and technologies I use to bring ideas to life.
-            </Typography>
-          </motion.div>
-        </Box>
-
-        <Grid container spacing={{ xs: 2, md: 4 }} sx={{ justifyContent: 'center' }}>
-          {stacks.map((stack, index) => (
-            <StackCard key={stack.name} stack={stack} index={index} />
-          ))}
-        </Grid>
-      </Container>
-    </Box>
-  );
-}
+import { TechStacks } from './TechStacks';
 
 function Content() {
   const theme = useTheme();
@@ -288,8 +105,8 @@ function Content() {
                       height: { xs: 150, md: 220 },
                       borderRadius: '50%',
                       objectFit: 'cover',
-                      border: `4px solid #fff`,
-                      boxShadow: `0 20px 50px ${alpha(theme.palette.primary.main, 0.25)}`,
+                      border: `4px solid #7c3aed`,
+                      boxShadow: `0 20px 50px ${alpha('#7c3aed', 0.25)}`,
                       position: 'relative',
                       zIndex: 1,
                     }}
@@ -311,13 +128,13 @@ function Content() {
                   >
                     <Box sx={{
                       position: 'relative',
-                      background: '#fff',
-                      color: '#000',
+                      background: '#7c3aed',
+                      color: '#fff',
                       borderRadius: '50px',
                       px: { xs: 3, md: 5 },
                       py: { xs: 1.5, md: 2.5 },
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
-                      border: '1px solid rgba(0,0,0,0.05)',
+                      boxShadow: `0 10px 30px ${alpha('#7c3aed', 0.15)}`,
+                      border: `2px solid #7c3aed`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -327,25 +144,25 @@ function Content() {
                         content: '""',
                         position: 'absolute',
                         ...(isMobile ? {
-                          bottom: '-12px',
+                          bottom: '-14px',
                           left: '50%',
                           transform: 'translateX(-50%)',
                           borderLeft: '12px solid transparent',
                           borderRight: '12px solid transparent',
-                          borderTop: '12px solid #fff',
+                          borderTop: '12px solid #7c3aed',
                         } : {
-                          left: '-15px',
+                          left: '-17px',
                           top: '50%',
                           transform: 'translateY(-50%)',
                           borderTop: '10px solid transparent',
                           borderBottom: '10px solid transparent',
-                          borderRight: '16px solid #fff',
+                          borderRight: '16px solid #7c3aed',
                         })
                       }
                     }}>
                       <Typography variant="h5" sx={{
                         fontWeight: 600,
-                        color: '#1a1a1a',
+                        color: '#fff',
                         fontSize: { xs: '1.2rem', md: '1.8rem' },
                         fontFamily: '"Outfit", sans-serif'
                       }}>
@@ -358,13 +175,15 @@ function Content() {
             </Box>
 
             <Typography variant="h1" sx={{
-              fontSize: { xs: '4rem', md: '6rem' },
-              lineHeight: 1.05,
-              fontWeight: 900,
-              mb: 1.5,
-              background: `linear-gradient(270deg, ${theme.palette.text.primary}, ${theme.palette.primary.main}, ${theme.palette.secondary.main}, ${theme.palette.primary.main}, ${theme.palette.text.primary})`,
+              fontSize: { xs: '4.5rem', md: '7rem' },
+              lineHeight: 0.95,
+              fontWeight: 950,
+              fontFamily: '"Outfit", sans-serif',
+              letterSpacing: '-0.02em',
+              mb: 2,
+              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
               backgroundSize: '400% 400%',
-              animation: 'gradientShift 6s ease infinite',
+              animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}>
@@ -379,12 +198,12 @@ function Content() {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap', mb: 4 }}>
               {['Web Developer', 'UI Designer'].map((role, i) => (
                 <Typography key={role} variant="body2" sx={{
-                  color: i === 0 ? theme.palette.primary.main : theme.palette.text.secondary,
+                  color: i === 0 ? '#7c3aed' : theme.palette.text.secondary,
                   fontWeight: 600,
                   px: 2.5, py: 0.7,
                   borderRadius: 6,
-                  background: i === 0 ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
-                  border: i === 0 ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}` : 'none',
+                  background: i === 0 ? alpha('#7c3aed', 0.08) : 'transparent',
+                  border: i === 0 ? `1px solid ${alpha('#7c3aed', 0.2)}` : 'none',
                   fontSize: '0.9rem',
                 }}>
                   {i === 1 && <>&nbsp;&</>} {role}
@@ -409,7 +228,9 @@ function Content() {
                 borderRadius: 8,
                 fontSize: '1rem',
                 fontWeight: 700,
-                boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
+                bgcolor: '#7c3aed',
+                '&:hover': { bgcolor: '#6d28d9' },
+                boxShadow: `0 8px 24px ${alpha('#7c3aed', 0.35)}`,
               }}>
                 View My Work
               </Button>
@@ -425,9 +246,13 @@ function Content() {
                 fontSize: '1rem',
                 fontWeight: 600,
                 borderWidth: 2,
-                borderColor: alpha(theme.palette.primary.main, 0.3),
-                color: theme.palette.primary.main,
-                '&:hover': { borderColor: theme.palette.primary.main, backgroundColor: alpha(theme.palette.primary.main, 0.06) },
+                borderColor: alpha('#7c3aed', 0.4),
+                color: '#7c3aed',
+                '&:hover': { 
+                  borderColor: '#7c3aed', 
+                  backgroundColor: alpha('#7c3aed', 0.06),
+                  borderWidth: 2
+                },
               }}>
                 Get in Touch
               </Button>
@@ -494,7 +319,17 @@ function Content() {
           sx={{ position: 'relative', zIndex: 1 }}
         >
           <Box sx={{ mb: 8, textAlign: 'center' }}>
-            <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
+            <Typography variant="h2" sx={{ 
+              fontWeight: 950, 
+              fontFamily: '"Outfit", sans-serif',
+              letterSpacing: -1, 
+              mb: 2,
+              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+              backgroundSize: '400% 400%',
+              animation: 'gradientShift 8s ease infinite',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}>
               Featured Projects
             </Typography>
             <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
@@ -592,7 +427,7 @@ function Content() {
           </Card>
         </Container>
       </Box>
-      <Stacks />
+      <TechStacks />
     </Box>
   );
 }

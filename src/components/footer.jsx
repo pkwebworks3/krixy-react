@@ -6,6 +6,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import HomeIcon from '@mui/icons-material/Home';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import PersonIcon from '@mui/icons-material/Person';
 import { motion } from 'framer-motion';
 
 function Footer() {
@@ -48,6 +49,14 @@ function Footer() {
                 sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
               >
                 Home
+              </Button>
+              <Button
+                component={Link}
+                to="/about"
+                startIcon={<PersonIcon />}
+                sx={{ justifyContent: 'flex-start', color: theme.palette.text.secondary, '&:hover': { color: theme.palette.primary.main }, px: 0 }}
+              >
+                About
               </Button>
               <Button
                 component={Link}

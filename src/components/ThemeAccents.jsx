@@ -49,7 +49,7 @@ const ThemeAccents = () => {
               width: '80vw',
               height: '80vw',
               borderRadius: '50%',
-              background: `radial-gradient(circle, ${alpha('#3b82f6', 0.08)} 0%, ${alpha('#3b82f6', 0.03)} 30%, transparent 70%)`,
+              background: `radial-gradient(circle, ${alpha('#7c3aed', 0.08)} 0%, ${alpha('#7c3aed', 0.03)} 30%, transparent 70%)`,
               willChange: 'transform',
             }}
           />

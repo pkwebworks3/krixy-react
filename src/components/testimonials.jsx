@@ -80,7 +80,17 @@ function Testimonials() {
         sx={{ position: 'relative', zIndex: 1 }}
       >
         <Box sx={{ mb: 8, textAlign: 'center' }}>
-          <Typography variant="h2" sx={{ textTransform: 'uppercase', letterSpacing: 1, mb: 2 }}>
+          <Typography variant="h2" sx={{ 
+            fontWeight: 950, 
+            fontFamily: '"Outfit", sans-serif',
+            letterSpacing: -1, 
+            mb: 2,
+            background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+            backgroundSize: '400% 400%',
+            animation: 'gradientShift 8s ease infinite',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
             Client Reviews
           </Typography>
           <Typography variant="subtitle1" sx={{ color: theme.palette.text.secondary }}>
@@ -94,14 +104,22 @@ function Testimonials() {
             backgroundColor: theme.palette.background.paper,
             position: 'relative',
             overflow: 'visible',
-            mb: 4
+            mb: 4,
+            borderRadius: 6,
+            border: `1px solid ${alpha('#7c3aed', 0.15)}`,
+            boxShadow: `0 20px 50px ${alpha('#7c3aed', 0.1)}`,
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              borderColor: alpha('#7c3aed', 0.3),
+              boxShadow: `0 25px 60px ${alpha('#7c3aed', 0.15)}`,
+            }
           }}>
             <FormatQuoteIcon sx={{
               position: 'absolute',
               top: -20,
               right: 40,
               fontSize: 80,
-              color: alpha(theme.palette.primary.main, 0.2),
+              color: alpha('#7c3aed', 0.2),
               transform: 'rotate(180deg)'
             }} />
 
@@ -117,7 +135,7 @@ function Testimonials() {
                   <Avatar
                     src={testimonials[currentTestimonial].image}
                     alt={testimonials[currentTestimonial].name}
-                    sx={{ width: 80, height: 80, border: `2px solid ${theme.palette.primary.main}` }}
+                    sx={{ width: 80, height: 80, border: `2px solid #7c3aed` }}
                   />
                   <Box>
                     <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
@@ -126,7 +144,7 @@ function Testimonials() {
                     <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 1 }}>
                       {testimonials[currentTestimonial].role}
                     </Typography>
-                    <Rating value={testimonials[currentTestimonial].rating} readOnly size="small" sx={{ color: theme.palette.primary.main }} />
+                    <Rating value={testimonials[currentTestimonial].rating} readOnly size="small" sx={{ color: '#ffb400' }} />
                   </Box>
                 </Box>
 
@@ -138,7 +156,15 @@ function Testimonials() {
           </Card>
 
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}>
-            <IconButton onClick={prevTestimonial} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main }}>
+            <IconButton onClick={prevTestimonial} sx={{ 
+              border: `1px solid #7c3aed`, 
+              color: '#7c3aed',
+              transition: 'all 0.3s',
+              '&:hover': {
+                bgcolor: alpha('#7c3aed', 0.1),
+                boxShadow: `0 0 15px ${alpha('#7c3aed', 0.2)}`
+              }
+            }}>
               <ChevronLeftIcon />
             </IconButton>
 
@@ -151,15 +177,23 @@ function Testimonials() {
                     width: index === currentTestimonial ? 24 : 12,
                     height: 12,
                     borderRadius: 6,
-                    backgroundColor: index === currentTestimonial ? theme.palette.primary.main : alpha(theme.palette.primary.main, 0.3),
+                    backgroundColor: index === currentTestimonial ? '#7c3aed' : alpha('#7c3aed', 0.2),
                     cursor: 'pointer',
-                    transition: 'all 0.3s'
+                    transition: 'all 0.3s ease'
                   }}
                 />
               ))}
             </Box>
 
-            <IconButton onClick={nextTestimonial} sx={{ border: `1px solid ${theme.palette.primary.main}`, color: theme.palette.primary.main }}>
+            <IconButton onClick={nextTestimonial} sx={{ 
+              border: `1px solid #7c3aed`, 
+              color: '#7c3aed',
+              transition: 'all 0.3s',
+              '&:hover': {
+                bgcolor: alpha('#7c3aed', 0.1),
+                boxShadow: `0 0 15px ${alpha('#7c3aed', 0.2)}`
+              }
+            }}>
               <ChevronRightIcon />
             </IconButton>
           </Box>

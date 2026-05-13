@@ -9,6 +9,7 @@ import Footer from './components/footer';
 import Testimonial from './components/testimonials';
 import LoadingScreen from './components/LoadingScreen';
 import ThemeAccents from './components/ThemeAccents';
+import About from './components/About';
 import projectsData from './data/projects_page.json';
 
 const slideInFromRight = {
@@ -126,6 +127,17 @@ function App() {
                 >
                   <Content />
                   <Testimonial />
+                </motion.div>
+              } />
+              <Route path="/about" element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={slideInFromRight}
+                  transition={pageTransition}
+                >
+                  <About />
                 </motion.div>
               } />
               <Route path="/projects" element={
