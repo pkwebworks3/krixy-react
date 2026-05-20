@@ -4,18 +4,18 @@ export const getDesignTokens = (mode) => ({
   palette: {
     mode,
     primary: {
-      main: '#7c3aed',
+      main: '#ff6b00',
     },
     secondary: {
-      main: '#6d28d9',
+      main: '#ea580c',
     },
     background: {
-      default: mode === 'light' ? '#f8fafc' : '#0f172a',
-      paper: mode === 'light' ? '#ffffff' : '#1e293b',
+      default: mode === 'light' ? '#fafafa' : '#09090b',
+      paper: mode === 'light' ? '#ffffff' : '#18181b',
     },
     text: {
       primary: mode === 'light' ? '#0f172a' : '#f8fafc',
-      secondary: mode === 'light' ? '#475569' : '#94a3b8',
+      secondary: mode === 'light' ? '#475569' : '#a1a1aa',
     },
   },
   typography: {
@@ -51,10 +51,10 @@ export const getDesignTokens = (mode) => ({
         root: {
           borderRadius: 24,
           backdropFilter: 'blur(20px)',
-          border: mode === 'light' ? '1px solid rgba(124, 58, 237, 0.1)' : '1px solid rgba(124, 58, 237, 0.2)',
+          border: mode === 'light' ? '1px solid rgba(255, 107, 0, 0.1)' : '1px solid rgba(255, 107, 0, 0.2)',
           boxShadow: mode === 'light' 
-            ? '0 10px 40px rgba(124, 58, 237, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
-            : '0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+            ? '0 10px 40px rgba(255, 107, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+            : '0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
         },
       },
     },

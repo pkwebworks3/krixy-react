@@ -132,7 +132,7 @@ export function TechStacks({ title = "My Tech Stacks", subtitle = "Tools and tec
                 fontWeight: 950,
                 fontFamily: '"Outfit", sans-serif',
                 lineHeight: 1.1,
-                background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+                background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
                 backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
                 WebkitBackgroundClip: 'text',

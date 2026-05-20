@@ -4,6 +4,9 @@ import { useTheme } from '@mui/material/styles';
 const ParticleCanvas = ({ isMobile }) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  
+  if (isDarkMode) return null;
+  
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
   const burstsRef = useRef([]);
@@ -14,7 +17,7 @@ const ParticleCanvas = ({ isMobile }) => {
     const ctx = canvas.getContext('2d');
     let animationId;
 
-    const COLORS = ['#7c3aed', '#a78bfa', '#c4b5fd', '#6d28d9', '#8b5cf6', '#ddd6fe'];
+    const COLORS = ['#ff6b00', '#ff8500', '#ffa600', '#ea580c', '#ffb37c', '#ff7a59'];
     let flowers = [];
     const BLOOM_RADIUS = 150;
     const NUM_GROUPS = 12;
@@ -145,7 +148,7 @@ const ParticleCanvas = ({ isMobile }) => {
             // Constant Blinking/Twinkling logic for stars
             const blinkSpeed = 0.003 + (f.x % 0.005);
             const blink = 0.4 + Math.sin(now * blinkSpeed + f.x) * 0.6;
-            const starColor = '#FFD700'; 
+            const starColor = '#ffb03a';  
 
             ctx.globalAlpha = ease * blink;
             ctx.fillStyle = starColor;

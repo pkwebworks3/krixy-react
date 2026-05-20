@@ -16,7 +16,7 @@ const Contact = () => {
       minHeight: '100vh', 
       pt: { xs: 15, md: 20 }, 
       pb: 10,
-      background: theme.palette.mode === 'light' ? '#f0f4ff' : '#020617',
+      background: theme.palette.mode === 'light' ? '#fafafa' : '#000000',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -45,7 +45,7 @@ const Contact = () => {
               fontWeight: 950, 
               mb: 2,
               fontFamily: '"Outfit", sans-serif',
-              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+              background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
               backgroundSize: '400% 400%',
               animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',

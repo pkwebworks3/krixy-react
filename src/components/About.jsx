@@ -31,7 +31,7 @@ const About = () => {
             mb: 4,
             textAlign: 'center',
             fontFamily: '"Outfit", sans-serif',
-            background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+            background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
             backgroundSize: '400% 400%',
             animation: 'gradientShift 8s ease infinite',
             WebkitBackgroundClip: 'text',
@@ -124,7 +124,7 @@ const About = () => {
                 fontWeight: 950,
                 fontFamily: '"Outfit", sans-serif',
                 lineHeight: 1.1,
-                background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+                background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
                 backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
                 WebkitBackgroundClip: 'text',
@@ -169,16 +169,16 @@ const About = () => {
                         gap: { xs: 2, md: 3 },
                         borderRadius: { xs: 4, md: 6 },
                         background: alpha(theme.palette.background.paper, 0.4),
-                        border: `1px solid ${alpha('#7c3aed', 0.15)}`,
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                         backdropFilter: 'blur(20px)',
                         transition: 'all 0.4s ease',
                         '&:hover': {
-                          background: alpha('#7c3aed', 0.08),
-                          borderColor: '#7c3aed',
-                          boxShadow: `0 15px 35px ${alpha('#7c3aed', 0.1)}`,
+                          background: alpha(theme.palette.primary.main, 0.08),
+                          borderColor: theme.palette.primary.main,
+                          boxShadow: `0 15px 35px ${alpha(theme.palette.primary.main, 0.1)}`,
                           '& .principle-icon': {
                             transform: 'scale(1.1) rotate(5deg)',
-                            color: '#7c3aed'
+                            color: theme.palette.primary.main
                           }
                         }
                       }}
@@ -186,7 +186,7 @@ const About = () => {
                       <Box 
                         className="principle-icon"
                         sx={{ 
-                          color: alpha('#7c3aed', 0.8),
+                          color: alpha(theme.palette.primary.main, 0.8),
                           transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                           display: 'flex'
                         }}

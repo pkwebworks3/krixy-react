@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Container, Grid, Typography, IconButton, Button, useTheme, Divider } from '@mui/material';
+import { Box, Container, Grid, Typography, IconButton, Button, useTheme, Divider, alpha } from '@mui/material';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -14,7 +14,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Box component="footer" sx={{ bgcolor: theme.palette.background.paper, pt: 10, pb: 4, borderTop: `1px solid rgba(124, 58, 237, 0.1)` }}>
+    <Box component="footer" sx={{ bgcolor: theme.palette.background.paper, pt: 10, pb: 4, borderTop: `1px solid ${alpha(theme.palette.primary.main, 0.1)}` }}>
       <Container maxWidth="lg">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
@@ -92,7 +92,7 @@ function Footer() {
           </Grid>
         </Grid>
 
-        <Divider sx={{ borderColor: 'rgba(124, 58, 237, 0.1)', my: 4 }} />
+        <Divider sx={{ borderColor: alpha(theme.palette.primary.main, 0.1), my: 4 }} />
 
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>

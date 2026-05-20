@@ -58,7 +58,7 @@ function Projects() {
             fontFamily: '"Outfit", sans-serif',
             letterSpacing: -1.5, 
             mb: 2,
-            background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+            background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
             backgroundSize: '400% 400%',
             animation: 'gradientShift 8s ease infinite',
             WebkitBackgroundClip: 'text',
@@ -91,7 +91,7 @@ function Projects() {
                   bgcolor: alpha(theme.palette.background.paper, 0.1),
                   backdropFilter: 'blur(20px)',
                   boxShadow: `0 40px 100px ${alpha('#000', 0.3)}`,
-                  border: `1px solid ${alpha('#7c3aed', 0.1)}`,
+                  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
                   '& .thumb': { transform: 'scale(1.05)' }
                 },
                 display: 'flex', 
@@ -125,7 +125,7 @@ function Projects() {
 
               {/* Project Info */}
               <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' }, position: 'relative', zIndex: 1 }}>
-                <Typography variant="overline" sx={{ color: '#7c3aed', fontWeight: 900, letterSpacing: 3 }}>
+                <Typography variant="overline" sx={{ color: theme.palette.primary.main, fontWeight: 900, letterSpacing: 3 }}>
                   Project {idx + 1}
                 </Typography>
                 <Typography variant="h2" sx={{ 
@@ -133,7 +133,7 @@ function Projects() {
                   fontFamily: '"Outfit", sans-serif',
                   mb: 3,
                   fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  color: '#7c3aed'
+                  color: theme.palette.primary.main
                 }}>
                   {project.title}
                 </Typography>

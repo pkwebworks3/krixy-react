@@ -61,7 +61,7 @@ function Content() {
         background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.06)} 50%, ${theme.palette.background.default} 100%)`
       }}>
         <ParticleCanvas isMobile={isMobile} />
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -69,220 +69,252 @@ function Content() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <style>{`@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}`}</style>
-          <Box sx={{ 
-            textAlign: 'center', 
-            px: { xs: 3, md: 8 }, 
-            py: { xs: 6, md: 10 },
-            borderRadius: { xs: 8, md: 12 },
-            background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.15)',
-            backdropFilter: 'blur(20px)',
-            // No border as requested
-          }}>
-            <Box sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', md: 'row' },
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: { xs: 4, md: 5 },
-              mb: 6,
-              position: 'relative'
-            }}>
-              {/* Profile Avatar */}
-              <Box sx={{ position: 'relative' }}>
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
-                  style={{ position: 'relative' }}
-                >
+            
+            <Grid container spacing={{ xs: 6, md: 8 }} alignItems="center" sx={{ py: { xs: 4, md: 8 } }}>
+              {/* Left Column: Brand, Badges, Buttons, Socials */}
+              <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, textAlign: { xs: 'center', md: 'left' } }}>
 
-                  <Box
-                    component="img"
-                    src="/reviews_profile/kirubha.jpg"
-                    alt="Kirubha"
-                    sx={{
-                      width: { xs: 150, md: 220 },
-                      height: { xs: 150, md: 220 },
-                      borderRadius: '50%',
-                      objectFit: 'cover',
-                      border: `4px solid #7c3aed`,
-                      boxShadow: `0 20px 50px ${alpha('#7c3aed', 0.25)}`,
-                      position: 'relative',
-                      zIndex: 1,
-                    }}
-                  />
-                </motion.div>
 
-                {/* Speech Bubble */}
-                <Box sx={{
-                  position: 'absolute',
-                  top: { xs: '-40px', md: '20px' },
-                  right: { xs: '50%', md: '-140px' },
-                  transform: { xs: 'translateX(50%)', md: 'none' },
-                  zIndex: 2
+              <Typography variant="h1" sx={{
+                fontSize: { xs: '4.5rem', md: '7rem' },
+                lineHeight: 0.95,
+                fontWeight: 950,
+                fontFamily: '"Outfit", sans-serif',
+                letterSpacing: '-0.02em',
+                mb: 2,
+                background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+                backgroundSize: '400% 400%',
+                animation: 'gradientShift 8s ease infinite',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>
+                <TypeAnimation
+                  sequence={['krix', 1000]}
+                  wrapper="span"
+                  speed={20}
+                  cursor={true}
+                />
+              </Typography>
+
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap', mb: 4 }}>
+                {/* Web Developing Box */}
+                <Typography variant="body2" sx={{
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  px: 2.5, py: 0.8,
+                  borderRadius: '50px',
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.25)}`,
+                  border: `1px solid rgba(255, 255, 255, 0.15)`,
+                  fontSize: { xs: '0.8rem', md: '0.9rem' },
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase',
+                  fontFamily: '"Outfit", sans-serif',
                 }}>
+                  Web Developing
+                </Typography>
+
+                {/* Normal Ampersand */}
+                <Typography variant="body2" sx={{
+                  color: theme.palette.text.secondary,
+                  fontWeight: 800,
+                  fontSize: { xs: '1rem', md: '1.2rem' },
+                  fontFamily: '"Outfit", sans-serif',
+                }}>
+                  &
+                </Typography>
+
+                {/* UI Designing Box */}
+                <Typography variant="body2" sx={{
+                  color: '#ffffff',
+                  fontWeight: 800,
+                  px: 2.5, py: 0.8,
+                  borderRadius: '50px',
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  boxShadow: `0 8px 16px ${alpha(theme.palette.primary.main, 0.25)}`,
+                  border: `1px solid rgba(255, 255, 255, 0.15)`,
+                  fontSize: { xs: '0.8rem', md: '0.9rem' },
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase',
+                  fontFamily: '"Outfit", sans-serif',
+                }}>
+                  UI Designing
+                </Typography>
+
+                {/* Normal Company Text */}
+                <Typography variant="body2" sx={{
+                  color: theme.palette.text.secondary,
+                  fontWeight: 800,
+                  fontSize: { xs: '0.85rem', md: '0.95rem' },
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase',
+                  fontFamily: '"Outfit", sans-serif',
+                }}>
+                  Company
+                </Typography>
+              </Box>
+
+
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
+                <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{
+                  px: 5, py: 1.6,
+                  borderRadius: 8,
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  bgcolor: theme.palette.primary.main,
+                  '&:hover': { bgcolor: theme.palette.secondary.main },
+                  boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
+                }}>
+                  View My Work
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  startIcon={<SendIcon />}
+                  component={Link}
+                  to="/contact"
+                  sx={{
+                    px: 5, py: 1.6,
+                    borderRadius: 8,
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    borderWidth: 2,
+                    borderColor: alpha(theme.palette.primary.main, 0.4),
+                    color: theme.palette.primary.main,
+                    '&:hover': {
+                      borderColor: theme.palette.primary.main,
+                      backgroundColor: alpha(theme.palette.primary.main, 0.06),
+                      borderWidth: 2
+                    },
+                  }}>
+                  Get in Touch
+                </Button>
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                {[
+                  { icon: <InstagramIcon />, href: 'https://www.instagram.com/kirubha.exe/' },
+                  { icon: <FacebookIcon />, href: '#' },
+                  { icon: <GitHubIcon />, href: 'https://github.com/pkwebworks3' },
+                ].map((s, i) => (
+                  <IconButton key={i} href={s.href} target="_blank" sx={{
+                    border: `1px solid ${alpha(theme.palette.text.secondary, 0.12)}`,
+                    borderRadius: '50%',
+                    color: alpha(theme.palette.text.secondary, 0.6),
+                    p: 1.3,
+                    transition: 'all 0.3s',
+                    '&:hover': {
+                      borderColor: theme.palette.primary.main,
+                      color: theme.palette.primary.main,
+                      transform: 'translateY(-3px)',
+                      bgcolor: alpha(theme.palette.primary.main, 0.06),
+                      boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    },
+                  }}>
+                    {s.icon}
+                  </IconButton>
+                ))}
+              </Box>
+            </Grid>
+
+              {/* Right Column: Hero Logo with glowing background */}
+              <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <motion.div
-                    initial={{ opacity: 0, x: 20, y: 10 }}
-                    animate={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+                    style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                   >
-                    <Box sx={{
-                      position: 'relative',
-                      background: '#7c3aed',
-                      color: '#fff',
-                      borderRadius: '50px',
-                      px: { xs: 3, md: 5 },
-                      py: { xs: 1.5, md: 2.5 },
-                      boxShadow: `0 10px 30px ${alpha('#7c3aed', 0.15)}`,
-                      border: `2px solid #7c3aed`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      whiteSpace: 'nowrap',
-                      // Bubble Tail
-                      '&:after': {
-                        content: '""',
+                    {/* Glowing Animated Gradient Background behind the logo */}
+                    <Box
+                      sx={{
                         position: 'absolute',
-                        ...(isMobile ? {
-                          bottom: '-14px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
-                          borderLeft: '12px solid transparent',
-                          borderRight: '12px solid transparent',
-                          borderTop: '12px solid #7c3aed',
-                        } : {
-                          left: '-17px',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          borderTop: '10px solid transparent',
-                          borderBottom: '10px solid transparent',
-                          borderRight: '16px solid #7c3aed',
-                        })
-                      }
-                    }}>
-                      <Typography variant="h5" sx={{
-                        fontWeight: 600,
-                        color: '#fff',
-                        fontSize: { xs: '1.2rem', md: '1.8rem' },
-                        fontFamily: '"Outfit", sans-serif'
-                      }}>
-                        Hey, I'm
-                      </Typography>
+                        width: { xs: 180, md: 240 },
+                        height: { xs: 180, md: 240 },
+                        borderRadius: '50%',
+                        background: 'linear-gradient(45deg, #ff6b00, #ea580c, #ff9f43, #ff6b00)',
+                        backgroundSize: '200% 200%',
+                        filter: 'blur(45px)',
+                        zIndex: 0,
+                        animation: 'auroraGlow 6s ease infinite alternate',
+                        '@keyframes auroraGlow': {
+                          '0%': {
+                            transform: 'rotate(0deg) scale(0.9)',
+                            backgroundPosition: '0% 50%',
+                            opacity: 0.75,
+                          },
+                          '50%': {
+                            transform: 'rotate(180deg) scale(1.1)',
+                            backgroundPosition: '100% 50%',
+                            opacity: 0.95,
+                          },
+                          '100%': {
+                            transform: 'rotate(360deg) scale(0.9)',
+                            backgroundPosition: '0% 50%',
+                            opacity: 0.75,
+                          }
+                        }
+                      }}
+                    />
+
+                    <Box
+                      component="img"
+                      src="1x/hero_logo.png"
+                      alt="Logo"
+                      sx={{
+                        width: { xs: 220, md: 300 },
+                        height: { xs: 220, md: 300 },
+                        objectFit: 'contain',
+                        position: 'relative',
+                        zIndex: 1,
+                        filter: `drop-shadow(0 20px 40px ${alpha(theme.palette.primary.main, 0.4)})`,
+                      }}
+                    />
+
+                    {/* Beta Badge Overlay */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: { xs: 10, md: 15 },
+                        right: { xs: 10, md: 15 },
+                        zIndex: 2,
+                        background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                        color: '#ffffff',
+                        fontSize: { xs: '0.6rem', md: '0.75rem' },
+                        fontWeight: 900,
+                        px: 1.8,
+                        py: 0.5,
+                        borderRadius: '20px',
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                        border: '1px solid rgba(255, 255, 255, 0.25)',
+                        boxShadow: `0 8px 20px ${alpha('#ff6b00', 0.4)}, inset 0 2px 4px rgba(255, 255, 255, 0.3)`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontFamily: '"Outfit", sans-serif',
+                        transform: 'rotate(5deg)',
+                        pointerEvents: 'none',
+                        animation: 'pulseBeta 2s ease infinite alternate',
+                        '@keyframes pulseBeta': {
+                          '0%': {
+                            transform: 'rotate(5deg) scale(0.92)',
+                            boxShadow: `0 6px 14px ${alpha('#ff6b00', 0.35)}, inset 0 2px 4px rgba(255, 255, 255, 0.3)`,
+                          },
+                          '100%': {
+                            transform: 'rotate(5deg) scale(1.08)',
+                            boxShadow: `0 12px 24px ${alpha('#ff6b00', 0.7)}, inset 0 2px 4px rgba(255, 255, 255, 0.5)`,
+                          }
+                        }
+                      }}
+                    >
+                      Beta
                     </Box>
                   </motion.div>
                 </Box>
-              </Box>
-            </Box>
-
-            <Typography variant="h1" sx={{
-              fontSize: { xs: '4.5rem', md: '7rem' },
-              lineHeight: 0.95,
-              fontWeight: 950,
-              fontFamily: '"Outfit", sans-serif',
-              letterSpacing: '-0.02em',
-              mb: 2,
-              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
-              backgroundSize: '400% 400%',
-              animation: 'gradientShift 8s ease infinite',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}>
-              <TypeAnimation
-                sequence={['Kirubhaa!', 1000]}
-                wrapper="span"
-                speed={20}
-                cursor={true}
-              />
-            </Typography>
-
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap', mb: 4 }}>
-              {['Web Developer', 'UI Designer'].map((role, i) => (
-                <Typography key={role} variant="body2" sx={{
-                  color: i === 0 ? '#7c3aed' : theme.palette.text.secondary,
-                  fontWeight: 600,
-                  px: 2.5, py: 0.7,
-                  borderRadius: 6,
-                  background: i === 0 ? alpha('#7c3aed', 0.08) : 'transparent',
-                  border: i === 0 ? `1px solid ${alpha('#7c3aed', 0.2)}` : 'none',
-                  fontSize: '0.9rem',
-                }}>
-                  {i === 1 && <>&nbsp;&</>} {role}
-                </Typography>
-              ))}
-            </Box>
-
-            <Typography variant="body1" sx={{
-              color: alpha(theme.palette.text.secondary, 0.85),
-              fontSize: { xs: '1rem', md: '1.15rem' },
-              lineHeight: 1.8,
-              maxWidth: 540,
-              mx: 'auto',
-              mb: 5,
-            }}>
-              Web Developer by Code, Designer by Passion, Animator by Craft!
-            </Typography>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
-              <Button variant="contained" size="large" endIcon={<ArrowForwardIcon />} href="#projects" sx={{
-                px: 5, py: 1.6,
-                borderRadius: 8,
-                fontSize: '1rem',
-                fontWeight: 700,
-                bgcolor: '#7c3aed',
-                '&:hover': { bgcolor: '#6d28d9' },
-                boxShadow: `0 8px 24px ${alpha('#7c3aed', 0.35)}`,
-              }}>
-                View My Work
-              </Button>
-              <Button 
-                variant="outlined" 
-                size="large" 
-                startIcon={<SendIcon />} 
-                component={Link}
-                to="/contact" 
-                sx={{
-                px: 5, py: 1.6,
-                borderRadius: 8,
-                fontSize: '1rem',
-                fontWeight: 600,
-                borderWidth: 2,
-                borderColor: alpha('#7c3aed', 0.4),
-                color: '#7c3aed',
-                '&:hover': { 
-                  borderColor: '#7c3aed', 
-                  backgroundColor: alpha('#7c3aed', 0.06),
-                  borderWidth: 2
-                },
-              }}>
-                Get in Touch
-              </Button>
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-              {[
-                { icon: <InstagramIcon />, href: 'https://www.instagram.com/kirubha.exe/' },
-                { icon: <FacebookIcon />, href: '#' },
-                { icon: <GitHubIcon />, href: 'https://github.com/pkwebworks3' },
-              ].map((s, i) => (
-                <IconButton key={i} href={s.href} target="_blank" sx={{
-                  border: `1px solid ${alpha(theme.palette.text.secondary, 0.12)}`,
-                  borderRadius: '50%',
-                  color: alpha(theme.palette.text.secondary, 0.6),
-                  p: 1.3,
-                  transition: 'all 0.3s',
-                  '&:hover': {
-                    borderColor: theme.palette.primary.main,
-                    color: theme.palette.primary.main,
-                    transform: 'translateY(-3px)',
-                    bgcolor: alpha(theme.palette.primary.main, 0.06),
-                    boxShadow: `0 4px 16px ${alpha(theme.palette.primary.main, 0.15)}`,
-                  },
-                }}>
-                  {s.icon}
-                </IconButton>
-              ))}
-            </Box>
-          </Box>
+              </Grid>
+            </Grid>
           </motion.div>
         </Container>
       </Box>
@@ -319,12 +351,12 @@ function Content() {
           sx={{ position: 'relative', zIndex: 1 }}
         >
           <Box sx={{ mb: 8, textAlign: 'center' }}>
-            <Typography variant="h2" sx={{ 
-              fontWeight: 950, 
+            <Typography variant="h2" sx={{
+              fontWeight: 950,
               fontFamily: '"Outfit", sans-serif',
-              letterSpacing: -1, 
+              letterSpacing: -1,
               mb: 2,
-              background: `linear-gradient(270deg, #7c3aed, #a78bfa, #6d28d9, #7c3aed)`,
+              background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
               backgroundSize: '400% 400%',
               animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',

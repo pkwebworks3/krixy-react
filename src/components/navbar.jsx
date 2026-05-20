@@ -48,10 +48,10 @@ function Navbar() {
   const colorMode = useContext(ColorModeContext);
 
   const routeColors = {
-    '/': '#7c3aed',
-    '/about': '#7c3aed',
-    '/projects': '#7c3aed',
-    '/contact': '#7c3aed'
+    '/': '#ff6b00',
+    '/about': '#ff6b00',
+    '/projects': '#ff6b00',
+    '/contact': '#ff6b00'
   };
 
   const getPageColor = (path) => {
@@ -101,11 +101,11 @@ function Navbar() {
         maxWidth: isScrolled ? 'none' : '1200px',
         borderRadius: isScrolled ? 0 : { xs: '12px', md: '20px' },
         background: isScrolled
-          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(15, 23, 42, 0.85)')
-          : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(15, 23, 42, 0.15)'),
+          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(9, 9, 11, 0.85)')
+          : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(9, 9, 11, 0.15)'),
         backdropFilter: 'blur(20px)', // Consistent blur to differentiate from background particles
         borderBottom: isScrolled
-          ? (theme.palette.mode === 'light' ? '1px solid rgba(124, 58, 237, 0.15)' : '1px solid rgba(124, 58, 237, 0.3)')
+          ? (theme.palette.mode === 'light' ? '1px solid rgba(255, 107, 0, 0.15)' : '1px solid rgba(255, 107, 0, 0.3)')
           : 'none',
         border: !isScrolled ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
         boxShadow: isScrolled ? `0 10px 40px ${alpha(theme.palette.common.black, 0.1)}` : 'none',
@@ -116,7 +116,7 @@ function Navbar() {
           content: '""',
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, rgba(124, 58, 237, 0.15), transparent 100%)`,
+          background: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.15), transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
           transition: 'opacity 0.3s ease',
@@ -128,29 +128,64 @@ function Navbar() {
         <Toolbar disableGutters sx={{ minHeight: { xs: '48px', md: '56px' } }}>
           {/* Desktop Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
+              <Box
+                sx={{
+                  background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                  color: '#ffffff',
+                  fontSize: '0.55rem',
+                  fontWeight: 900,
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: '12px',
+                  letterSpacing: '0.8px',
+                  textTransform: 'uppercase',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  boxShadow: `0 4px 10px ${alpha(theme.palette.primary.main, 0.35)}`,
+                  fontFamily: '"Outfit", sans-serif',
+                  pointerEvents: 'none',
+                }}
+              >
+                Beta
+              </Box>
             </Link>
           </Box>
 
           {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
+              <Box
+                sx={{
+                  background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                  color: '#ffffff',
+                  fontSize: '0.5rem',
+                  fontWeight: 900,
+                  px: 0.8,
+                  py: 0.2,
+                  borderRadius: '10px',
+                  letterSpacing: '0.8px',
+                  textTransform: 'uppercase',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.35)}`,
+                  fontFamily: '"Outfit", sans-serif',
+                  pointerEvents: 'none',
+                }}
+              >
+                Beta
+              </Box>
             </Link>
           </Box>
 
-          {/* Mobile Menu & Toggle */}
-          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 0.5 }}>
-            <IconButton onClick={colorMode.toggleColorMode} sx={{ color: theme.palette.text.primary }}>
-              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+          {/* Mobile Menu */}
+          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
             <IconButton
               size="large"
               onClick={handleOpenNavMenu}
               sx={{ 
                 color: theme.palette.text.primary,
-                background: alpha('#7c3aed', 0.1),
+                background: alpha(theme.palette.primary.main, 0.1),
                 borderRadius: '10px'
               }}
             >
@@ -171,7 +206,7 @@ function Navbar() {
                   borderRadius: '20px',
                   bgcolor: alpha(theme.palette.background.default, 0.9),
                   backdropFilter: 'blur(20px)',
-                  border: `1px solid ${alpha('#7c3aed', 0.2)}`,
+                  border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
                   boxShadow: `0 15px 35px ${alpha(theme.palette.common.black, 0.2)}`,
                   '& .MuiList-root': { p: 0 }
                 }
@@ -190,10 +225,10 @@ function Navbar() {
                     display: 'flex',
                     alignItems: 'center',
                     gap: 2,
-                    color: location.pathname === page.path ? '#7c3aed' : theme.palette.text.primary,
-                    bgcolor: location.pathname === page.path ? alpha('#7c3aed', 0.08) : 'transparent',
+                    color: location.pathname === page.path ? theme.palette.primary.main : theme.palette.text.primary,
+                    bgcolor: location.pathname === page.path ? alpha(theme.palette.primary.main, 0.08) : 'transparent',
                     '&:hover': {
-                      bgcolor: alpha('#7c3aed', 0.05),
+                      bgcolor: alpha(theme.palette.primary.main, 0.05),
                     },
                     '& .MuiTypography-root': {
                       fontWeight: 700,
@@ -201,7 +236,7 @@ function Navbar() {
                     }
                   }}
                 >
-                  <Box sx={{ color: '#7c3aed', display: 'flex' }}>{page.icon}</Box>
+                  <Box sx={{ color: theme.palette.primary.main, display: 'flex' }}>{page.icon}</Box>
                   <Typography>{page.title}</Typography>
                 </MenuItem>
               ))}
@@ -219,7 +254,7 @@ function Navbar() {
                 sx={{ 
                   my: 1, 
                   mx: 0.5,
-                  color: location.pathname === page.path ? '#7c3aed' : theme.palette.text.primary, 
+                  color: location.pathname === page.path ? theme.palette.primary.main : theme.palette.text.primary, 
                   fontWeight: location.pathname === page.path ? 800 : 500,
                   fontSize: '0.95rem',
                   fontFamily: '"Outfit", sans-serif',
@@ -229,11 +264,11 @@ function Navbar() {
                   py: 1,
                   display: 'flex',
                   transition: 'all 0.3s ease',
-                  bgcolor: location.pathname === page.path ? alpha('#7c3aed', 0.1) : 'transparent',
-                  border: `1px solid ${location.pathname === page.path ? alpha('#7c3aed', 0.2) : 'transparent'}`,
+                  bgcolor: location.pathname === page.path ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+                  border: `1px solid ${location.pathname === page.path ? alpha(theme.palette.primary.main, 0.2) : 'transparent'}`,
                   '&:hover': { 
-                    color: '#7c3aed',
-                    bgcolor: alpha('#7c3aed', 0.08),
+                    color: theme.palette.primary.main,
+                    bgcolor: alpha(theme.palette.primary.main, 0.08),
                     transform: 'translateY(-2px)'
                   } 
                 }}
@@ -243,12 +278,7 @@ function Navbar() {
             ))}
           </Box>
 
-          {/* Desktop Theme Toggle */}
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
-            <IconButton onClick={colorMode.toggleColorMode} sx={{ color: theme.palette.text.primary }}>
-              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
-          </Box>
+
 
         </Toolbar>
       </Container>
