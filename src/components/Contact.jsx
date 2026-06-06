@@ -16,7 +16,7 @@ const Contact = () => {
       minHeight: '100vh', 
       pt: { xs: 15, md: 20 }, 
       pb: 10,
-      background: theme.palette.mode === 'light' ? '#fafafa' : '#000000',
+      background: 'transparent',
       position: 'relative',
       overflow: 'hidden'
     }}>
@@ -70,13 +70,14 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Box sx={{ 
-                p: { xs: 4, md: 8 }, 
+                p: { xs: 5, md: 8 }, 
                 textAlign: 'center',
                 borderRadius: 10, 
-                bgcolor: alpha(theme.palette.background.paper, 0.4),
-                backdropFilter: 'blur(30px)',
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                boxShadow: `0 30px 60px ${alpha(theme.palette.common.black, 0.15)}`,
+                backgroundColor: 'rgba(20, 20, 25, 0.35)',
+                backdropFilter: 'blur(35px)',
+                WebkitBackdropFilter: 'blur(35px)',
+                border: '1px solid rgba(255, 107, 0, 0.15)',
+                boxShadow: '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                 position: 'relative',
                 overflow: 'hidden'
               }}>
@@ -97,17 +98,20 @@ const Contact = () => {
                     px: 6,
                     py: 2.5, 
                     borderRadius: 100, 
-                    fontSize: '1.2rem', 
+                    fontSize: '1.15rem', 
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: 1.5,
-                    background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                    boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.3)}`,
+                    background: 'linear-gradient(45deg, #ff6b00 0%, #ea580c 100%)',
+                    boxShadow: '0 12px 35px rgba(255, 107, 0, 0.4)',
+                    color: '#ffffff',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                     '&:hover': { 
-                      transform: 'scale(1.05)',
-                      boxShadow: `0 25px 50px ${alpha(theme.palette.primary.main, 0.4)}`,
+                      background: 'linear-gradient(45deg, #ea580c 0%, #ff6b00 100%)',
+                      transform: 'translateY(-3px) scale(1.03)',
+                      boxShadow: '0 16px 45px rgba(255, 107, 0, 0.6)',
                     },
-                    transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                   }}
                 >
                   Open Inquiry Form
@@ -117,7 +121,7 @@ const Contact = () => {
                   <Typography variant="subtitle2" sx={{ mb: 4, fontWeight: 700, opacity: 0.6, letterSpacing: 2 }}>OR CONNECT VIA</Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 2, md: 4 }, flexWrap: 'wrap' }}>
                     {[
-                      { icon: <EmailIcon />, label: 'Email', value: 'hello@pkwebworks.com' },
+                      { icon: <EmailIcon />, label: 'Email', href: 'mailto:hello@pkwebworks.com' },
                       { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/kirubha.exe/' },
                       { icon: <GitHubIcon />, label: 'GitHub', href: 'https://github.com/pkwebworks3' },
                     ].map((item, i) => (
@@ -126,14 +130,23 @@ const Contact = () => {
                           href={item.href}
                           target="_blank"
                           sx={{ 
-                            bgcolor: alpha(theme.palette.primary.main, 0.1),
-                            color: theme.palette.primary.main,
-                            '&:hover': { bgcolor: theme.palette.primary.main, color: '#fff' }
+                            border: '1.5px solid rgba(255, 107, 0, 0.25)',
+                            bgcolor: 'rgba(255, 107, 0, 0.05)',
+                            color: '#ff6b00',
+                            p: 1.8,
+                            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                            '&:hover': { 
+                              borderColor: '#ff6b00',
+                              bgcolor: 'rgba(255, 107, 0, 0.15)',
+                              color: '#fff',
+                              transform: 'translateY(-4px) scale(1.08)',
+                              boxShadow: '0 8px 20px rgba(255, 107, 0, 0.25)'
+                            }
                           }}
                         >
                           {item.icon}
                         </IconButton>
-                        <Typography variant="body2" sx={{ fontWeight: 600, display: { xs: 'none', sm: 'block' } }}>
+                        <Typography variant="body1" sx={{ fontWeight: 700, color: 'rgba(255, 255, 255, 0.85)', display: { xs: 'none', sm: 'block' } }}>
                           {item.label}
                         </Typography>
                       </Box>

@@ -27,30 +27,33 @@ export function StackCard({ stack, index }) {
             alignItems: 'center',
             justifyContent: 'center',
             gap: { xs: 1.5, md: 2 },
-            p: { xs: 2, md: 3 },
+            p: { xs: 2.5, md: 3.5 },
             height: '100%',
-            borderRadius: { xs: 3, md: 4 },
-            background: alpha(theme.palette.background.paper, 0.05),
-            border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-            backdropFilter: 'blur(12px)',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            borderRadius: { xs: '16px', md: '24px' },
+            background: 'rgba(20, 20, 25, 0.15)',
+            border: '1.5px solid rgba(255, 107, 0, 0.35)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             overflow: 'hidden',
             cursor: 'pointer',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
             '&:hover': {
-              transform: 'translateY(-10px) scale(1.05)',
-              background: alpha(theme.palette.background.paper, 0.12),
-              borderColor: alpha(theme.palette.primary.main, 0.4),
-              boxShadow: `0 30px 60px ${alpha(theme.palette.common.black, 0.3)}`,
+              transform: 'translateY(-8px) scale(1.04)',
+              background: 'rgba(20, 20, 25, 0.35)',
+              borderColor: 'rgba(255, 107, 0, 0.65)',
+              boxShadow: `0 20px 40px rgba(0, 0, 0, 0.5), 0 0 35px ${alpha('#ff6b00', 0.5)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
               '& .glow': {
-                opacity: 0.8,
-                transform: 'translate(-50%, -50%) scale(1.8)',
+                opacity: 0.95,
+                transform: 'translate(-50%, -50%) scale(2.0)',
               },
               '& img': {
-                transform: 'scale(1.2) rotate(8deg)',
-                filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.4))'
+                transform: 'scale(1.22) rotate(8deg)',
+                filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))'
               },
               '& .stack-name': {
-                color: theme.palette.primary.main,
+                color: '#ffffff',
+                textShadow: '0 0 8px rgba(255, 107, 0, 0.5)',
                 transform: 'translateY(-2px)'
               }
             },

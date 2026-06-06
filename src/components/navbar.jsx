@@ -94,29 +94,32 @@ function Navbar() {
       sx={{
         top: isScrolled ? 0 : 20,
         left: '50%',
-        transform: isScrolled ? 'translateX(-50%)' : 'translateX(-50%)',
+        transform: 'translateX(-50%)',
         px: { xs: 1.5, md: 3 },
-        py: isScrolled ? 0.8 : 1.2,
-        width: isScrolled ? '100%' : { xs: '92%', md: '85%' },
-        maxWidth: isScrolled ? 'none' : '1200px',
-        borderRadius: isScrolled ? 0 : { xs: '12px', md: '20px' },
+        py: isScrolled ? 0.6 : 1.0,
+        width: isScrolled ? '100%' : { xs: '94%', md: '88%' },
+        maxWidth: isScrolled ? 'none' : '1300px',
+        borderRadius: isScrolled ? 0 : { xs: '16px', md: '30px' },
         background: isScrolled
-          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.85)' : 'rgba(9, 9, 11, 0.85)')
-          : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(9, 9, 11, 0.15)'),
-        backdropFilter: 'blur(20px)', // Consistent blur to differentiate from background particles
+          ? 'rgba(10, 10, 12, 0.8)'
+          : 'rgba(20, 20, 25, 0.35)',
+        backdropFilter: 'blur(30px)',
+        WebkitBackdropFilter: 'blur(30px)',
         borderBottom: isScrolled
-          ? (theme.palette.mode === 'light' ? '1px solid rgba(255, 107, 0, 0.15)' : '1px solid rgba(255, 107, 0, 0.3)')
+          ? '1px solid rgba(255, 107, 0, 0.25)'
           : 'none',
-        border: !isScrolled ? `1px solid ${alpha(theme.palette.divider, 0.1)}` : 'none',
-        boxShadow: isScrolled ? `0 10px 40px ${alpha(theme.palette.common.black, 0.1)}` : 'none',
-        transition: 'all 0.4s ease',
+        border: !isScrolled ? '1px solid rgba(255, 107, 0, 0.12)' : 'none',
+        boxShadow: isScrolled 
+          ? '0 20px 50px rgba(0, 0, 0, 0.5)' 
+          : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         overflow: 'hidden',
         zIndex: 1100,
         '&::before': {
           content: '""',
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.15), transparent 100%)`,
+          background: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.18), transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
           transition: 'opacity 0.3s ease',
@@ -244,38 +247,48 @@ function Navbar() {
           </Box>
 
           {/* Desktop Links */}
-          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center', mr: 2 }}>
-            {pages.map((page) => (
-              <Button
-                key={page.title}
-                component={Link}
-                to={page.path}
-                startIcon={page.icon}
-                sx={{ 
-                  my: 1, 
-                  mx: 0.5,
-                  color: location.pathname === page.path ? theme.palette.primary.main : theme.palette.text.primary, 
-                  fontWeight: location.pathname === page.path ? 800 : 500,
-                  fontSize: '0.95rem',
-                  fontFamily: '"Outfit", sans-serif',
-                  textTransform: 'none',
-                  borderRadius: '100px',
-                  px: 3,
-                  py: 1,
-                  display: 'flex',
-                  transition: 'all 0.3s ease',
-                  bgcolor: location.pathname === page.path ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
-                  border: `1px solid ${location.pathname === page.path ? alpha(theme.palette.primary.main, 0.2) : 'transparent'}`,
-                  '&:hover': { 
-                    color: theme.palette.primary.main,
-                    bgcolor: alpha(theme.palette.primary.main, 0.08),
-                    transform: 'translateY(-2px)'
-                  } 
-                }}
-              >
-                {page.title}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' }, gap: 1.5, alignItems: 'center', mr: 2 }}>
+            {pages.map((page) => {
+              const isActive = location.pathname === page.path;
+              return (
+                <Button
+                  key={page.title}
+                  component={Link}
+                  to={page.path}
+                  startIcon={page.icon}
+                  sx={{ 
+                    my: 1, 
+                    mx: 0.2,
+                    color: isActive ? '#ffffff' : alpha(theme.palette.text.primary, 0.8), 
+                    fontWeight: isActive ? 800 : 650,
+                    fontSize: '0.95rem',
+                    fontFamily: '"Outfit", sans-serif',
+                    textTransform: 'none',
+                    borderRadius: '100px',
+                    px: 3.5,
+                    py: 1.2,
+                    display: 'flex',
+                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    background: isActive 
+                      ? `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)` 
+                      : 'transparent',
+                    border: '1px solid',
+                    borderColor: isActive ? 'rgba(255, 107, 0, 0.35)' : 'transparent',
+                    boxShadow: isActive ? `0 8px 20px ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
+                    textShadow: isActive ? '0 0 10px rgba(255, 107, 0, 0.4)' : 'none',
+                    '&:hover': { 
+                      color: '#ffffff',
+                      borderColor: 'rgba(255, 107, 0, 0.4)',
+                      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+                      transform: 'translateY(-3px)',
+                      boxShadow: `0 12px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
+                    } 
+                  }}
+                >
+                  {page.title}
+                </Button>
+              );
+            })}
           </Box>
 
 

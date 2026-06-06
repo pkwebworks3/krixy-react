@@ -5,8 +5,6 @@ const ParticleCanvas = ({ isMobile }) => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
   
-  if (isDarkMode) return null;
-  
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: -999, y: -999, px: -999, py: -999, active: false, speed: 0 });
   const burstsRef = useRef([]);

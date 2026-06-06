@@ -86,17 +86,29 @@ const About = () => {
                   <Grid item xs={6} sm={4} key={i}>
                     <Box sx={{
                       p: 3,
-                      borderRadius: 4,
-                      bgcolor: alpha(theme.palette.primary.main, 0.05),
-                      border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+                      borderRadius: '24px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      border: '1px solid rgba(255, 107, 0, 0.18)',
+                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.02)',
                       textAlign: 'center',
-                      transition: 'transform 0.3s ease',
-                      '&:hover': { transform: 'translateY(-5px)' }
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        transform: 'translateY(-8px) scale(1.03)',
+                        borderColor: '#ff6b00',
+                        background: 'rgba(255, 107, 0, 0.08)',
+                        boxShadow: '0 15px 35px rgba(255, 107, 0, 0.25), 0 0 15px rgba(255, 107, 0, 0.1)',
+                        '& .stat-val': {
+                          textShadow: '0 0 10px rgba(255, 107, 0, 0.5)'
+                        }
+                      }
                     }}>
-                      <Typography variant="h4" sx={{ fontWeight: 900, color: theme.palette.primary.main, fontFamily: '"Outfit", sans-serif' }}>
+                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: '#ff6b00', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s' }}>
                         {stat.value}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: theme.palette.text.secondary, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
                         {stat.label}
                       </Typography>
                     </Box>
@@ -163,22 +175,27 @@ const About = () => {
                   >
                     <Box
                       sx={{
-                        p: { xs: 2.5, md: 4 },
+                        p: { xs: 3, md: 4.5 },
                         display: 'flex',
                         alignItems: 'center',
-                        gap: { xs: 2, md: 3 },
-                        borderRadius: { xs: 4, md: 6 },
-                        background: alpha(theme.palette.background.paper, 0.4),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-                        backdropFilter: 'blur(20px)',
-                        transition: 'all 0.4s ease',
+                        gap: { xs: 2.5, md: 3.5 },
+                        borderRadius: { xs: '16px', md: '28px' },
+                        background: 'rgba(20, 20, 25, 0.35)',
+                        border: '1px solid rgba(255, 107, 0, 0.15)',
+                        backdropFilter: 'blur(30px)',
+                        WebkitBackdropFilter: 'blur(30px)',
+                        boxShadow: '0 15px 35px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
+                        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                         '&:hover': {
-                          background: alpha(theme.palette.primary.main, 0.08),
-                          borderColor: theme.palette.primary.main,
-                          boxShadow: `0 15px 35px ${alpha(theme.palette.primary.main, 0.1)}`,
+                          background: 'rgba(25, 25, 30, 0.55)',
+                          borderColor: '#ff6b00',
+                          boxShadow: `0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha('#ff6b00', 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.06)`,
                           '& .principle-icon': {
-                            transform: 'scale(1.1) rotate(5deg)',
-                            color: theme.palette.primary.main
+                            transform: 'scale(1.18) rotate(6deg)',
+                            color: '#ffffff',
+                            background: 'linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)',
+                            boxShadow: '0 0 15px rgba(255, 107, 0, 0.4)',
+                            borderColor: '#ff6b00'
                           }
                         }
                       }}
@@ -186,9 +203,13 @@ const About = () => {
                       <Box 
                         className="principle-icon"
                         sx={{ 
-                          color: alpha(theme.palette.primary.main, 0.8),
-                          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                          display: 'flex'
+                          color: '#ff6b00',
+                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                          display: 'flex',
+                          p: 2,
+                          borderRadius: '16px',
+                          background: 'rgba(255, 107, 0, 0.08)',
+                          border: '1px solid rgba(255, 107, 0, 0.2)'
                         }}
                       >
                         {item.icon}

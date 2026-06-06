@@ -62,46 +62,13 @@ const fragmentShaderSource = `
 
     float t = u_time * 0.18;
 
-    // --- Base background: pitch black ---
-    vec3 color = vec3(0.0, 0.0, 0.0);
-
-    // --- Animated center light position ---
-    vec2 lightCenter = vec2(0.5 * aspect, 0.5);
-    lightCenter.x += sin(t * 0.6) * 0.08 * aspect;
-    lightCenter.y += cos(t * 0.4) * 0.06;
-
-    // --- Core Bloom: Vivid Neon Orange ---
-    float blob1 = lightBlob(st, lightCenter, 1.2, 3.2);
-    blob1 = pow(blob1, 2.2);
-    vec3 orangeBloom = vec3(0.98, 0.42, 0.05) * blob1 * 0.9;
-
-    // --- Warm Highlight: Dark Rust Orange ---
-    vec2 rustCenter = lightCenter + vec2(-0.15 * aspect, -0.1);
-    float blob2 = lightBlob(st, rustCenter, 1.0, 4.0);
-    blob2 = pow(blob2, 2.5);
-    vec3 rustBloom = vec3(0.85, 0.25, 0.02) * blob2 * 0.75;
-
-    // --- Bright Accent: Glowing Golden Amber ---
-    vec2 amberCenter = lightCenter + vec2(0.18 * aspect, 0.08);
-    float blob3 = lightBlob(st, amberCenter, 0.9, 4.2);
-    blob3 = pow(blob3, 2.8);
-    vec3 amberBloom = vec3(0.95, 0.65, 0.08) * blob3 * 0.65;
-
-    // --- Diffuse Underglow: Deep Fire Orange ---
-    float wideGlow = lightBlob(st, lightCenter, 1.5, 1.4);
-    wideGlow = pow(wideGlow, 1.8);
-    vec3 diffuse = vec3(0.45, 0.12, 0.01) * wideGlow * 0.45;
-
-    // Combine warm light contributions
-    color += orangeBloom + rustBloom + amberBloom + diffuse;
+    // --- Base background: very dark warm tone ---
+    vec3 color = vec3(0.03, 0.015, 0.01);
 
     // --- Diagonal stripe overlay ---
     float s = stripes(st);
-    // Stripes are darker near the edges, lighter near the center glow area
-    float glowMask = lightBlob(st, lightCenter, 1.0, 2.0);
-    glowMask = pow(glowMask, 1.5);
-    // Stripes catch some of the light
-    vec3 stripeColor = color * (s * (1.0 + glowMask * 3.0));
+    // Stripes give a subtle texture
+    vec3 stripeColor = vec3(0.12, 0.06, 0.02) * s * 1.5;
     color += stripeColor;
 
     // Subtle stripe shadow (dark grooves between lit ridges)
@@ -164,8 +131,8 @@ const ShaderBackground = () => {
 
     // Full-screen quad
     const vertices = new Float32Array([
-      -1, -1,  1, -1,  -1,  1,
-      -1,  1,  1, -1,   1,  1,
+      -1, -1, 1, -1, -1, 1,
+      -1, 1, 1, -1, 1, 1,
     ]);
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);

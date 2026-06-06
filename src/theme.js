@@ -42,19 +42,30 @@ export const getDesignTokens = (mode) => ({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 100,
+          fontFamily: '"Outfit", sans-serif',
+          fontWeight: 700,
+          padding: '12px 32px',
+          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          textTransform: 'none',
+          boxShadow: 'none',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 12px 24px rgba(255, 107, 0, 0.2)',
+          },
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 24,
-          backdropFilter: 'blur(20px)',
-          border: mode === 'light' ? '1px solid rgba(255, 107, 0, 0.1)' : '1px solid rgba(255, 107, 0, 0.2)',
-          boxShadow: mode === 'light' 
-            ? '0 10px 40px rgba(255, 107, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
-            : '0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+          borderRadius: 30,
+          backgroundColor: 'rgba(20, 20, 25, 0.45)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
+          border: '1px solid rgba(255, 107, 0, 0.12)',
+          boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+          transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         },
       },
     },

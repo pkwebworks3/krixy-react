@@ -1,19 +1,40 @@
 import React from 'react';
 import { Box, useTheme, alpha } from '@mui/material';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionTemplate, easeInOut } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 const ThemeAccents = () => {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const location = useLocation();
+  const isContentPage = location.pathname === '/';
+  const { scrollY } = useScroll();
+  const radius = useTransform(scrollY, [0, 400], [0, 120], { ease: easeInOut });
+
+  if (!isContentPage) {
+    return null;
+  }
 
   return (
-    <Box sx={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
+    <Box 
+      component={motion.div}
+      style={isContentPage ? {
+        borderBottomLeftRadius: radius,
+        borderBottomRightRadius: radius,
+      } : {}}
+      sx={{
+      position: isContentPage ? 'absolute' : 'fixed',
+      top: 0,
+      left: isContentPage ? '50%' : 0,
+      right: isContentPage ? 'auto' : 0,
+      bottom: isContentPage ? 'auto' : 0,
+      width: isContentPage ? '100%' : 'auto',
+      height: isContentPage ? '100vh' : 'auto',
+      transform: isContentPage ? 'translateX(-50%)' : 'none',
       zIndex: -1,
       overflow: 'hidden',
       pointerEvents: 'none',
-      background: '#000000'
+      background: 'transparent'
     }}>
       {/* Vertical Tech Lines */}
       <Box sx={{

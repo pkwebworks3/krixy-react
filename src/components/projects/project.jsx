@@ -49,7 +49,7 @@ function Projects() {
       minHeight: '100vh', 
       pt: 15, 
       pb: 8, 
-      background: `linear-gradient(135deg, ${theme.palette.background.default} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 50%, ${theme.palette.background.default} 100%)`
+      background: 'transparent'
     }}>
       <Container maxWidth="lg">
         <Box sx={{ mb: 8, textAlign: 'center' }}>
@@ -84,15 +84,21 @@ function Projects() {
               sx={{ 
                 position: 'relative',
                 cursor: 'pointer',
-                p: { xs: 2, md: 4 },
-                borderRadius: 8,
-                transition: 'all 0.5s ease',
+                p: { xs: 3, md: 5 },
+                borderRadius: '30px',
+                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                border: '1px solid transparent',
                 '&:hover': {
-                  bgcolor: alpha(theme.palette.background.paper, 0.1),
-                  backdropFilter: 'blur(20px)',
-                  boxShadow: `0 40px 100px ${alpha('#000', 0.3)}`,
-                  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                  '& .thumb': { transform: 'scale(1.05)' }
+                  background: 'rgba(20, 20, 25, 0.35)',
+                  backdropFilter: 'blur(30px)',
+                  WebkitBackdropFilter: 'blur(30px)',
+                  boxShadow: '0 40px 100px rgba(0, 0, 0, 0.5)',
+                  border: '1px solid rgba(255, 107, 0, 0.15)',
+                  '& .thumb': { transform: 'scale(1.06)' },
+                  '& .proj-title': {
+                    color: '#ffffff',
+                    textShadow: '0 0 12px rgba(255, 107, 0, 0.45)'
+                  }
                 },
                 display: 'flex', 
                 flexDirection: { xs: 'column', md: idx % 2 === 0 ? 'row' : 'row-reverse' },
@@ -105,9 +111,10 @@ function Projects() {
                 flex: 1.2, 
                 width: '100%',
                 position: 'relative',
-                borderRadius: 6,
+                borderRadius: '24px',
                 overflow: 'hidden',
-                boxShadow: `0 30px 60px ${alpha('#000', 0.4)}`,
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
               }}>
                 <Box
                   component="img"
@@ -125,20 +132,21 @@ function Projects() {
 
               {/* Project Info */}
               <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' }, position: 'relative', zIndex: 1 }}>
-                <Typography variant="overline" sx={{ color: theme.palette.primary.main, fontWeight: 900, letterSpacing: 3 }}>
+                <Typography variant="overline" sx={{ color: '#ff6b00', fontWeight: 900, letterSpacing: 3 }}>
                   Project {idx + 1}
                 </Typography>
-                <Typography variant="h2" sx={{ 
+                <Typography className="proj-title" variant="h2" sx={{ 
                   fontWeight: 950, 
                   fontFamily: '"Outfit", sans-serif',
                   mb: 3,
                   fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  color: theme.palette.primary.main
+                  color: '#ff6b00',
+                  transition: 'all 0.4s ease'
                 }}>
                   {project.title}
                 </Typography>
                 <Typography variant="body1" sx={{ 
-                  color: theme.palette.mode === 'light' ? theme.palette.text.secondary : alpha('#fff', 0.7), 
+                  color: 'rgba(255, 255, 255, 0.75)', 
                   lineHeight: 1.8, 
                   fontSize: '1.1rem',
                   mb: 0,

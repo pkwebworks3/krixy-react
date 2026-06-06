@@ -55,7 +55,7 @@ function Testimonials() {
       onMouseLeave={handleMouseLeave}
       sx={{
         py: 12,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: 'transparent',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -101,17 +101,19 @@ function Testimonials() {
         <Box sx={{ maxWidth: 800, mx: 'auto', position: 'relative' }}>
           <Card sx={{
             p: { xs: 4, md: 6 },
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: 'rgba(20, 20, 25, 0.18)',
+            backdropFilter: 'blur(30px)',
+            WebkitBackdropFilter: 'blur(30px)',
             position: 'relative',
             overflow: 'visible',
             mb: 4,
-            borderRadius: 6,
-            border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-            boxShadow: `0 20px 50px ${alpha(theme.palette.primary.main, 0.1)}`,
-            transition: 'all 0.3s ease',
+            borderRadius: 8,
+            border: '1.5px solid rgba(255, 107, 0, 0.35)',
+            boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 107, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             '&:hover': {
-              borderColor: alpha(theme.palette.primary.main, 0.3),
-              boxShadow: `0 25px 60px ${alpha(theme.palette.primary.main, 0.15)}`,
+              borderColor: 'rgba(255, 107, 0, 0.65)',
+              boxShadow: `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha('#ff6b00', 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
             }
           }}>
             <FormatQuoteIcon sx={{
