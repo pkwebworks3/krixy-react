@@ -48,11 +48,11 @@ function Content() {
         overflow: 'hidden',
         background: 'transparent'
       }}>
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container disableGutters sx={{ position: 'relative', zIndex: 1, width: { xs: '94%', md: '88%' }, maxWidth: '1300px !important' }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ opacity: contentOpacityValue }}
           >
@@ -68,9 +68,9 @@ function Content() {
               }
             `}</style>
 
-            <Grid container spacing={{ xs: 6, md: 8 }} alignItems="center" sx={{ py: { xs: 4, md: 8 } }}>
-              {/* Left Column: Brand, Badges, Buttons, Socials */}
-              <Grid item xs={12} md={7} sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', md: 'flex-start' }, textAlign: { xs: 'center', md: 'left' } }}>
+            <Grid container spacing={{ xs: 6, md: 6 }} direction="column" alignItems="center" justifyContent="center" sx={{ py: { xs: 2, md: 4 } }}>
+              {/* Text Column: Brand, Badges, Buttons, Socials */}
+              <Grid item xs={12} md={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
 
                 <Typography variant="h1" sx={{
                   fontSize: { xs: '5rem', md: '8rem' },
@@ -94,7 +94,7 @@ function Content() {
                   />
                 </Typography>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-start' }, gap: 1.5, flexWrap: 'wrap', mb: 5 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap', mb: 5 }}>
                   {/* Web Developing Box */}
                   <Typography variant="body2" sx={{
                     color: '#ffffff',
@@ -144,7 +144,7 @@ function Content() {
                   </Typography>
                 </Box>
 
-                <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2.5, flexWrap: 'wrap', mb: 8 }}>
                   <Button
                     variant="contained"
                     size="large"
@@ -231,106 +231,7 @@ function Content() {
                 </Box>
               </Grid>
 
-              {/* Right Column: Hero Logo with glowing background */}
-              <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-end' }, alignItems: 'center' }}>
-                <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1, y: [0, -12, 0] }}
-                    transition={{
-                      scale: { duration: 0.6, type: "spring", stiffness: 100 },
-                      y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-                    }}
-                    style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                  >
-                    {/* Glowing Animated Gradient Background behind the logo */}
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        width: { xs: 200, md: 280 },
-                        height: { xs: 200, md: 280 },
-                        borderRadius: '50%',
-                        background: 'linear-gradient(45deg, #ff6b00, #ea580c, #ffaa00, #ff6b00)',
-                        backgroundSize: '200% 200%',
-                        filter: 'blur(60px)',
-                        zIndex: 0,
-                        animation: 'auroraGlow 6s ease infinite alternate',
-                        '@keyframes auroraGlow': {
-                          '0%': {
-                            transform: 'rotate(0deg) scale(0.85)',
-                            backgroundPosition: '0% 50%',
-                            opacity: 0.7,
-                          },
-                          '50%': {
-                            transform: 'rotate(180deg) scale(1.15)',
-                            backgroundPosition: '100% 50%',
-                            opacity: 0.95,
-                          },
-                          '100%': {
-                            transform: 'rotate(360deg) scale(0.85)',
-                            backgroundPosition: '0% 50%',
-                            opacity: 0.7,
-                          }
-                        }
-                      }}
-                    />
 
-                    <Box
-                      component="img"
-                      src="1x/hero_logo.png"
-                      alt="Logo"
-                      sx={{
-                        width: { xs: 240, md: 340 },
-                        height: { xs: 240, md: 340 },
-                        objectFit: 'contain',
-                        position: 'relative',
-                        zIndex: 1,
-                        filter: `drop-shadow(0 20px 50px rgba(255, 107, 0, 0.45))`,
-                      }}
-                    />
-
-                    {/* Beta Badge Overlay */}
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: { xs: 15, md: 25 },
-                        right: { xs: 15, md: 25 },
-                        zIndex: 2,
-                        background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
-                        color: '#ffffff',
-                        fontSize: { xs: '0.65rem', md: '0.8rem' },
-                        fontWeight: 900,
-                        px: 2,
-                        py: 0.6,
-                        borderRadius: '20px',
-                        letterSpacing: '1.5px',
-                        textTransform: 'uppercase',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
-                        boxShadow: `0 8px 24px rgba(255, 107, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.3)`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontFamily: '"Outfit", sans-serif',
-                        transform: 'rotate(5deg)',
-                        pointerEvents: 'none',
-                        animation: 'pulseBeta 2s ease infinite alternate',
-                        '@keyframes pulseBeta': {
-                          '0%': {
-                            transform: 'rotate(5deg) scale(0.92)',
-                            boxShadow: `0 6px 14px rgba(255, 107, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.3)`,
-                          },
-                          '100%': {
-                            transform: 'rotate(5deg) scale(1.08)',
-                            boxShadow: `0 12px 28px rgba(255, 107, 0, 0.75), inset 0 2px 4px rgba(255, 255, 255, 0.5)`,
-                          }
-                        }
-                      }}
-                    >
-                      Beta
-                    </Box>
-                  </motion.div>
-                </Box>
-              </Grid>
             </Grid>
           </motion.div>
         </Container>
@@ -354,7 +255,7 @@ function Content() {
           initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: false, amount: 0.2 }}
           sx={{ position: 'relative', zIndex: 1 }}
         >
           <Box sx={{ mb: 8, textAlign: 'center' }}>

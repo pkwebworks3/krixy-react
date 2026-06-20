@@ -76,7 +76,7 @@ function Testimonials() {
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: false, amount: 0.2 }}
         sx={{ position: 'relative', zIndex: 1 }}
       >
         <Box sx={{ mb: 8, textAlign: 'center' }}>

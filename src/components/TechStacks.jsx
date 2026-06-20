@@ -11,7 +11,7 @@ export function StackCard({ stack, index }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
+        viewport={{ once: false }}
         transition={{ 
           duration: 0.5, 
           delay: index * 0.03,
@@ -125,7 +125,7 @@ export function TechStacks({ title = "My Tech Stacks", subtitle = "Tools and tec
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.8 }}
               style={{ position: 'sticky', top: '150px' }}
             >
@@ -157,7 +157,7 @@ export function TechStacks({ title = "My Tech Stacks", subtitle = "Tools and tec
 
           {/* Right Side: Clustered Grid */}
           <Grid item xs={12} md={8}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent="center">
               {stacks.map((stack, index) => (
                 <StackCard key={stack.name} stack={stack} index={index} />
               ))}

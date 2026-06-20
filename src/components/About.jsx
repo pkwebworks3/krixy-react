@@ -126,7 +126,7 @@ const About = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: false }}
               transition={{ duration: 0.8 }}
               style={{ position: 'sticky', top: '150px' }}
             >
@@ -169,7 +169,7 @@ const About = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    viewport={{ once: false }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     whileHover={{ y: -5, scale: 1.02 }}
                   >

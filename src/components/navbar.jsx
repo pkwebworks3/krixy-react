@@ -251,42 +251,67 @@ function Navbar() {
             {pages.map((page) => {
               const isActive = location.pathname === page.path;
               return (
-                <Button
-                  key={page.title}
-                  component={Link}
-                  to={page.path}
-                  startIcon={page.icon}
+                <Box 
+                  key={page.title} 
                   sx={{ 
+                    position: 'relative', 
                     my: 1, 
                     mx: 0.2,
-                    color: isActive ? '#ffffff' : alpha(theme.palette.text.primary, 0.8), 
-                    fontWeight: isActive ? 800 : 650,
-                    fontSize: '0.95rem',
-                    fontFamily: '"Outfit", sans-serif',
-                    textTransform: 'none',
-                    borderRadius: '100px',
-                    px: 3.5,
-                    py: 1.2,
-                    display: 'flex',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    background: isActive 
-                      ? `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)` 
-                      : 'transparent',
-                    border: '1px solid',
-                    borderColor: isActive ? 'rgba(255, 107, 0, 0.35)' : 'transparent',
-                    boxShadow: isActive ? `0 8px 20px ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
-                    textShadow: isActive ? '0 0 10px rgba(255, 107, 0, 0.4)' : 'none',
-                    '&:hover': { 
-                      color: '#ffffff',
-                      borderColor: 'rgba(255, 107, 0, 0.4)',
-                      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.15)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    '&:hover': {
                       transform: 'translateY(-3px)',
-                      boxShadow: `0 12px 24px ${alpha(theme.palette.primary.main, 0.2)}`,
-                    } 
+                    }
                   }}
                 >
-                  {page.title}
-                </Button>
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavIndicator"
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        borderRadius: '100px',
+                        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)`,
+                        border: '1px solid rgba(255, 107, 0, 0.35)',
+                        boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.15)}`,
+                        zIndex: 0
+                      }}
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <Button
+                    component={Link}
+                    to={page.path}
+                    startIcon={page.icon}
+                    sx={{ 
+                      color: isActive ? '#ffffff' : alpha(theme.palette.text.primary, 0.8), 
+                      fontWeight: isActive ? 800 : 650,
+                      fontSize: '0.95rem',
+                      fontFamily: '"Outfit", sans-serif',
+                      textTransform: 'none',
+                      borderRadius: '100px',
+                      px: 3.5,
+                      py: 1.2,
+                      display: 'flex',
+                      position: 'relative',
+                      zIndex: 1,
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      background: 'transparent',
+                      border: '1px solid transparent',
+                      textShadow: isActive ? '0 0 10px rgba(255, 107, 0, 0.4)' : 'none',
+                      '&:hover': { 
+                        color: '#ffffff',
+                        borderColor: isActive ? 'transparent' : 'rgba(255, 255, 255, 0.1)',
+                        background: isActive ? 'transparent' : 'rgba(255, 255, 255, 0.08)',
+                        boxShadow: isActive ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.1)',
+                      } 
+                    }}
+                  >
+                    {page.title}
+                  </Button>
+                </Box>
               );
             })}
           </Box>

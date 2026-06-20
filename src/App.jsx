@@ -12,22 +12,10 @@ import ThemeAccents from './components/ThemeAccents';
 import About from './components/About';
 import projectsData from './data/projects_page.json';
 
-const slideInFromRight = {
-  initial: { x: '100vw', opacity: 0 },
-  in:      { x: 0, opacity: 1 },
-  out:     { x: '-100vw', opacity: 0 },
-};
-
-const slideInFromLeft = {
-  initial: { x: '-100vw', opacity: 0 },
-  in:      { x: 0, opacity: 1 },
-  out:     { x: '100vw', opacity: 0 },
-};
-
-const noTransition = {
-  initial: { opacity: 1, x: 0 },
-  in:      { opacity: 1, x: 0 },
-  out:     { opacity: 1, x: 0 },
+const fadeAnimation = {
+  initial: { opacity: 0 },
+  in:      { opacity: 1 },
+  out:     { opacity: 0 },
 };
 
 const pageTransition = {
@@ -48,6 +36,7 @@ function App() {
 
   useEffect(() => {
     prevPath.current = location.pathname;
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -88,8 +77,7 @@ function App() {
     cacheImages(criticalImages);
   }, []);
 
-  // Home: only animate if coming from /projects. Otherwise no animation.
-  const homeVariants = isFromProjects ? slideInFromLeft : noTransition;
+  // Using uniform fade transition
 
   return (
     <>
@@ -122,7 +110,7 @@ function App() {
                   initial="initial"
                   animate="in"
                   exit="out"
-                  variants={homeVariants}
+                  variants={fadeAnimation}
                   transition={pageTransition}
                 >
                   <Content />
@@ -134,7 +122,7 @@ function App() {
                   initial="initial"
                   animate="in"
                   exit="out"
-                  variants={slideInFromRight}
+                  variants={fadeAnimation}
                   transition={pageTransition}
                 >
                   <About />
@@ -145,7 +133,7 @@ function App() {
                   initial="initial"
                   animate="in"
                   exit="out"
-                  variants={slideInFromRight}
+                  variants={fadeAnimation}
                   transition={pageTransition}
                 >
                   <Projects />
@@ -156,7 +144,7 @@ function App() {
                   initial="initial"
                   animate="in"
                   exit="out"
-                  variants={slideInFromRight}
+                  variants={fadeAnimation}
                   transition={pageTransition}
                 >
                   <Contact />
