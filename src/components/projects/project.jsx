@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, Card, CardMedia, CardContent, Button, useTheme, alpha, Dialog, DialogTitle, DialogContent, DialogActions, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -9,6 +10,7 @@ function Projects() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [warningOpen, setWarningOpen] = useState(true);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -80,7 +82,7 @@ function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.8 }}
-              onClick={() => window.open(project.link, '_blank')}
+              onClick={() => navigate(`?preview=${encodeURIComponent(project.link)}&title=${encodeURIComponent(project.title)}`)}
               sx={{ 
                 position: 'relative',
                 cursor: 'pointer',

@@ -369,9 +369,9 @@ function Content() {
                       <ChevronLeftIcon />
                     </IconButton>
                     <Button
+                      component={Link}
+                      to={`?preview=${encodeURIComponent(projects[currentSlide]?.link)}&title=${encodeURIComponent(projects[currentSlide]?.title)}`}
                       variant="contained"
-                      href={projects[currentSlide]?.link}
-                      target="_blank"
                       sx={{
                         flex: 1,
                         py: 1.8,
