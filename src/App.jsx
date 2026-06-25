@@ -12,6 +12,7 @@ import ThemeAccents from './components/ThemeAccents';
 import About from './components/About';
 import projectsData from './data/projects_page.json';
 import ProjectShowroom from './components/ProjectShowroom';
+import DevTerminal from './components/DevTerminal';
 
 const fadeAnimation = {
   initial: { opacity: 0 },
@@ -105,6 +106,7 @@ function App() {
           <ThemeAccents />
           <Navbar />
           <ProjectShowroom />
+          <DevTerminal />
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={
