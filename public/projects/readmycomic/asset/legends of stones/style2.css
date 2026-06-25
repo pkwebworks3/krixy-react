@@ -149,7 +149,5 @@ body {
     width: 200px;
 }
 @media (max-width: 1280px){
-    body{
-        display: none;
-    }
+    /* Allow body to display on smaller screens for the simulator preview */
 }
