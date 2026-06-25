@@ -8,93 +8,179 @@ import MinimizeIcon from '@mui/icons-material/Remove';
 import projectsData from '../data/projects_page.json';
 import { stacks } from '../data/stacks';
 
-// Matrix code rain screen-saver overlay
-const MatrixRain = ({ onClose }) => {
-  const canvasRef = useRef(null);
-
+// Fullscreen screensaver matching hero background with center logo
+const HeroScreensaver = ({ onClose }) => {
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animationId;
+    // Hide scrollbars on mount
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Characters to drop (katakana, alphabets, numbers)
-    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
-    const charArr = chars.split('');
-
-    const fontSize = 16;
-    const columns = Math.ceil(canvas.width / fontSize);
-    
-    // Y-coordinate drop states
-    const drops = Array(columns).fill(1);
-
-    const draw = () => {
-      // Semi-transparent black background to create trail effect
-      ctx.fillStyle = 'rgba(9, 9, 11, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Neon orange text matching Krix's style
-      ctx.fillStyle = '#ff6b00';
-      ctx.font = `bold ${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        // Pick a random character
-        const text = charArr[Math.floor(Math.random() * charArr.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        // Draw character
-        ctx.fillText(text, x, y);
-
-        // Reset or drop y coordinate
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+    // Only backspace key exits
+    const exitScreensaver = (e) => {
+      if (e.key === 'Backspace') {
+        onClose();
       }
-      animationId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    // Any keypress or click exits the screensaver
-    const exitScreensaver = () => {
-      onClose();
     };
     window.addEventListener('keydown', exitScreensaver);
-    window.addEventListener('click', exitScreensaver);
 
     return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', handleResize);
+      // Restore scrollbars on unmount
+      document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', exitScreensaver);
-      window.removeEventListener('click', exitScreensaver);
     };
   }, [onClose]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
+    <Box
+      sx={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        right: 0,
+        bottom: 0,
         zIndex: 10000,
         cursor: 'none',
         background: '#09090b',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
-    />
+    >
+      {/* Vertical Tech Lines */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          px: '3vw',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        {[...Array(19)].map((_, i) => (
+          <Box
+            key={i}
+            sx={{
+              width: '1px',
+              height: '100%',
+              background: 'linear-gradient(to top, rgba(255, 107, 0, 0.5) 0%, rgba(255, 107, 0, 0.1) 50%, transparent 100%)',
+              opacity: 0.4,
+              animation: 'lineGlowWave 5s ease-in-out infinite',
+              animationDelay: `${i * 0.15}s`,
+              '@keyframes lineGlowWave': {
+                '0%, 100%': {
+                  opacity: 0.3,
+                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.4) 0%, rgba(255, 107, 0, 0.08) 50%, transparent 100%)',
+                },
+                '50%': {
+                  opacity: 1,
+                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.75) 0%, rgba(255, 107, 0, 0.2) 65%, transparent 100%)',
+                }
+              }
+            }}
+          />
+        ))}
+      </Box>
+
+      {/* Rising Glow Accent / Breathing effect */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '55vh',
+          background: 'linear-gradient(to top, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.06) 45%, transparent 100%)',
+          zIndex: 1,
+          pointerEvents: 'none',
+          animation: 'glowBreath 7s ease-in-out infinite alternate',
+          '@keyframes glowBreath': {
+            '0%': {
+              opacity: 0.7,
+              height: '48vh',
+            },
+            '100%': {
+              opacity: 1,
+              height: '58vh',
+            }
+          }
+        }}
+      />
+
+      {/* Central Pulsing / Glowing Logo */}
+      <Box
+        component={motion.div}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+        sx={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* Glowing Background Radial */}
+        <Box
+          sx={{
+            position: 'absolute',
+            width: '250px',
+            height: '250px',
+            background: 'radial-gradient(circle, rgba(255,107,0,0.2) 0%, transparent 70%)',
+            filter: 'blur(20px)',
+            animation: 'radialPulse 4s ease-in-out infinite alternate',
+            '@keyframes radialPulse': {
+              '0%': { transform: 'scale(0.8)', opacity: 0.5 },
+              '100%': { transform: 'scale(1.2)', opacity: 1 }
+            }
+          }}
+        />
+
+        <Box
+          component="img"
+          src="1x/1x/Asset 2.png"
+          alt="Krix Logo"
+          sx={{
+            height: { xs: '80px', sm: '120px', md: '150px' },
+            width: 'auto',
+            filter: 'drop-shadow(0 0 25px rgba(255, 107, 0, 0.6))',
+            animation: 'logoFloat 4s ease-in-out infinite alternate',
+            '@keyframes logoFloat': {
+              '0%': { transform: 'translateY(0px)' },
+              '100%': { transform: 'translateY(-15px)' }
+            }
+          }}
+        />
+        
+        {/* Nice subtle caption */}
+        <Typography
+          variant="h6"
+          sx={{
+            mt: 3,
+            color: 'rgba(255, 255, 255, 0.4)',
+            fontFamily: '"Outfit", sans-serif',
+            fontWeight: 700,
+            fontSize: '0.9rem',
+            letterSpacing: '3px',
+            textTransform: 'uppercase',
+            animation: 'textPulse 3s ease-in-out infinite alternate',
+            '@keyframes textPulse': {
+              '0%': { opacity: 0.3, letterSpacing: '2px' },
+              '100%': { opacity: 0.7, letterSpacing: '4px' }
+            }
+          }}
+        >
+          Krix
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
@@ -104,7 +190,7 @@ const DevTerminal = () => {
   const location = useLocation();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [showMatrix, setShowMatrix] = useState(false);
+  const [showScreensaver, setShowScreensaver] = useState(false);
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [commandValue, setCommandValue] = useState('');
@@ -182,7 +268,7 @@ const DevTerminal = () => {
           { text: '  projects   - List completed engineering and design work', type: 'info' },
           { text: '  preview    - Test any project in the simulator (usage: preview [id])', type: 'info' },
           { text: '  contact    - Display social profiles and communication links', type: 'info' },
-          { text: '  matrix     - Launch the fullscreen neon-orange screensaver', type: 'info' },
+          { text: '  screensaver- Launch the fullscreen background animation screensaver', type: 'info' },
           { text: '  clear      - Clear terminal screen buffers', type: 'info' },
           { text: '  exit       - Close the developer terminal panel', type: 'info' }
         );
@@ -274,9 +360,10 @@ const DevTerminal = () => {
         break;
 
       case 'matrix':
+      case 'screensaver':
         outputs.push({ text: 'Entering screensaver mode. Press any key to exit.', type: 'success' });
         setTimeout(() => {
-          setShowMatrix(true);
+          setShowScreensaver(true);
         }, 500);
         break;
 
@@ -375,8 +462,8 @@ const DevTerminal = () => {
         </Tooltip>
       </Zoom>
 
-      {/* Fullscreen Code Rain Screen Saver */}
-      {showMatrix && <MatrixRain onClose={() => setShowMatrix(false)} />}
+      {/* Fullscreen Background Animation Screen Saver */}
+      {showScreensaver && <HeroScreensaver onClose={() => setShowScreensaver(false)} />}
 
       {/* Dev Terminal Window Overlay */}
       <AnimatePresence>
