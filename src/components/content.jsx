@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, useMediaQuery, alpha } from '@mui/material';
+import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, useMediaQuery, alpha, Snackbar, Alert } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SendIcon from '@mui/icons-material/Send';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -21,6 +20,7 @@ function Content() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [openFbAlert, setOpenFbAlert] = useState(false);
 
   const { scrollY } = useScroll();
   const contentOpacityValue = useTransform(scrollY, [0, 400], [1, 0.5], { ease: easeInOut });
@@ -204,11 +204,10 @@ function Content() {
 
                 <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
                   {[
-                    { icon: <InstagramIcon />, href: 'https://www.instagram.com/kirubha.exe/' },
-                    { icon: <FacebookIcon />, href: '#' },
-                    { icon: <GitHubIcon />, href: 'https://github.com/pkwebworks3' },
+                    { icon: <InstagramIcon />, href: 'https://www.instagram.com/madebykrix/', onClick: null },
+                    { icon: <FacebookIcon />, href: '#', onClick: (e) => { e.preventDefault(); setOpenFbAlert(true); } },
                   ].map((s, i) => (
-                    <IconButton key={i} href={s.href} target="_blank" sx={{
+                    <IconButton key={i} href={s.onClick ? undefined : s.href} onClick={s.onClick || undefined} target={s.onClick ? undefined : '_blank'} sx={{
                       border: `1px solid rgba(255, 107, 0, 0.15)`,
                       borderRadius: '50%',
                       color: alpha(theme.palette.text.secondary, 0.7),
@@ -414,6 +413,29 @@ function Content() {
           </Card>
         </Container>
       </Box>
+
+      <Snackbar
+        open={openFbAlert}
+        autoHideDuration={4000}
+        onClose={() => setOpenFbAlert(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setOpenFbAlert(false)}
+          severity="error"
+          variant="filled"
+          sx={{
+            bgcolor: '#ef4444',
+            color: '#ffffff',
+            borderRadius: '12px',
+            fontWeight: 600,
+            fontFamily: '"Outfit", sans-serif',
+            boxShadow: '0 8px 30px rgba(239, 68, 68, 0.35)',
+          }}
+        >
+          Facebook is temporarily unavailable. Please try again later.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

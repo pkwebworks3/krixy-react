@@ -344,6 +344,13 @@ const DevTerminal = () => {
         } else if (subCmd === 'git' || subCmd === 'github') {
           outputs.push({ text: 'Opening GitHub profile in new tab...', type: 'success' });
           window.open('https://github.com/pkwebworks3', '_blank');
+        } else if (subCmd === 'form' || subCmd === 'inquiry') {
+          outputs.push({ text: 'Opening inquiry form in simulator...', type: 'success' });
+          const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScEhsojHcF2sIs2OmZ_2xVYV1m2dsO00z5B-jRJ7fBEBJnRuw/viewform?usp=publish-editor";
+          setTimeout(() => {
+            navigate(`?preview=${encodeURIComponent(googleFormUrl)}&title=${encodeURIComponent("Project Inquiry Form")}`);
+            setIsOpen(false);
+          }, 600);
         } else {
           outputs.push(
             { text: '--- CONTACT INFORMATION ---', type: 'separator' },
@@ -354,7 +361,8 @@ const DevTerminal = () => {
             { text: 'Shortcuts to open instantly:', type: 'system' },
             { text: '  contact mail   - Compose email', type: 'info' },
             { text: '  contact insta  - Open Instagram', type: 'info' },
-            { text: '  contact github - Open GitHub repo', type: 'info' }
+            { text: '  contact github - Open GitHub repo', type: 'info' },
+            { text: '  contact form   - Open inquiry form in simulator', type: 'info' }
           );
         }
         break;

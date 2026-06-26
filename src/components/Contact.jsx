@@ -1,15 +1,17 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Box, Container, Typography, Button, Grid, IconButton, alpha, useTheme } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box, Container, Typography, Button, Grid, IconButton, alpha, useTheme, Snackbar, Alert } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const Contact = () => {
   const theme = useTheme();
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScEhsojHcF2sIs2OmZ_2xVYV1m2dsO00z5B-jRJ7fBEBJnRuw/viewform?usp=publish-editor";
+  const [openFbAlert, setOpenFbAlert] = useState(false);
 
   return (
     <Box sx={{ 
@@ -89,8 +91,8 @@ const Contact = () => {
                 </Typography>
                 
                 <Button 
-                  href={googleFormUrl}
-                  target="_blank"
+                  component={Link}
+                  to={`?preview=${encodeURIComponent(googleFormUrl)}&title=${encodeURIComponent("Project Inquiry Form")}`}
                   variant="contained" 
                   size="large" 
                   endIcon={<ArrowForwardIcon />}
@@ -121,14 +123,16 @@ const Contact = () => {
                   <Typography variant="subtitle2" sx={{ mb: 4, fontWeight: 700, opacity: 0.6, letterSpacing: 2 }}>OR CONNECT VIA</Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 2, md: 4 }, flexWrap: 'wrap' }}>
                     {[
-                      { icon: <EmailIcon />, label: 'Email', href: 'mailto:hello@pkwebworks.com' },
-                      { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/kirubha.exe/' },
-                      { icon: <GitHubIcon />, label: 'GitHub', href: 'https://github.com/pkwebworks3' },
+                      { icon: <EmailIcon />, label: 'Email', href: 'mailto:hello@pkwebworks.com', onClick: null },
+                      { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/madebykrix/', onClick: null },
+                      { icon: <FacebookIcon />, label: 'Facebook', href: '#', onClick: (e) => { e.preventDefault(); setOpenFbAlert(true); } }
                     ].map((item, i) => (
                       <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                         <IconButton 
-                          href={item.href}
-                          target="_blank"
+                          component={item.onClick ? 'button' : 'a'}
+                          href={item.onClick ? undefined : item.href}
+                          onClick={item.onClick || undefined}
+                          target={item.onClick ? undefined : '_blank'}
                           sx={{ 
                             border: '1.5px solid rgba(255, 107, 0, 0.25)',
                             bgcolor: 'rgba(255, 107, 0, 0.05)',
@@ -158,6 +162,29 @@ const Contact = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <Snackbar
+        open={openFbAlert}
+        autoHideDuration={4000}
+        onClose={() => setOpenFbAlert(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setOpenFbAlert(false)}
+          severity="error"
+          variant="filled"
+          sx={{
+            bgcolor: '#ef4444',
+            color: '#ffffff',
+            borderRadius: '12px',
+            fontWeight: 600,
+            fontFamily: '"Outfit", sans-serif',
+            boxShadow: '0 8px 30px rgba(239, 68, 68, 0.35)',
+          }}
+        >
+          Facebook is temporarily unavailable. Please try again later.
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
