@@ -194,6 +194,9 @@ const DevTerminal = () => {
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [commandValue, setCommandValue] = useState('');
+  const [gameState, setGameState] = useState('idle'); // 'idle', 'playing_guess'
+  const [gameTarget, setGameTarget] = useState(0);
+  const [gameGuesses, setGameGuesses] = useState(0);
   const [consoleLines, setConsoleLines] = useState([
     { text: 'KRIX DEVELOPER SHELL [Version 1.0.0]', type: 'system' },
     { text: '(c) 2026 Krix. All rights reserved.', type: 'system' },
@@ -237,16 +240,48 @@ const DevTerminal = () => {
     }
   };
 
+  const handleGuessInput = (input) => {
+    const lower = input.toLowerCase().trim();
+    let outputs = [{ text: `guess > ${input}`, type: 'command' }];
+
+    if (lower === 'exit' || lower === 'quit') {
+      setGameState('idle');
+      outputs.push({ text: 'Game session terminated. Returned to standard shell.', type: 'system' });
+    } else {
+      const guess = parseInt(input, 10);
+      if (isNaN(guess)) {
+        outputs.push({ text: 'Error: Please enter a valid number or type "exit" to quit.', type: 'error' });
+      } else {
+        const nextGuesses = gameGuesses + 1;
+        setGameGuesses(nextGuesses);
+        if (guess === gameTarget) {
+          setGameState('idle');
+          outputs.push({ text: `🎉 SUCCESS! You guessed the correct number (${gameTarget}) in ${nextGuesses} tries!`, type: 'success' });
+        } else if (guess > gameTarget) {
+          outputs.push({ text: 'Too high! Try a lower number.', type: 'info' });
+        } else {
+          outputs.push({ text: 'Too low! Try a higher number.', type: 'info' });
+        }
+      }
+    }
+    setConsoleLines((prev) => [...prev, ...outputs, { text: '', type: 'empty' }]);
+  };
+
   const processCommand = (cmdStr) => {
     const trimmed = cmdStr.trim();
     if (!trimmed) {
-      setConsoleLines((prev) => [...prev, { text: 'visitor@krix.dev:~$ ', type: 'prompt' }]);
+      setConsoleLines((prev) => [...prev, { text: gameState === 'playing_guess' ? 'guess > ' : 'visitor@krix.dev:~$ ', type: 'prompt' }]);
       return;
     }
 
     // Save history
     setHistory((prev) => [trimmed, ...prev]);
     setHistoryIndex(-1);
+
+    if (gameState === 'playing_guess') {
+      handleGuessInput(trimmed);
+      return;
+    }
 
     const args = trimmed.split(' ');
     const primaryCmd = args[0].toLowerCase();
@@ -268,10 +303,36 @@ const DevTerminal = () => {
           { text: '  projects   - List completed engineering and design work', type: 'info' },
           { text: '  preview    - Test any project in the simulator (usage: preview [id])', type: 'info' },
           { text: '  contact    - Display social profiles and communication links', type: 'info' },
+          { text: '  guess      - Play an interactive number-guessing game', type: 'info' },
+          { text: '  history    - Show list of entered commands', type: 'info' },
           { text: '  screensaver- Launch the fullscreen background animation screensaver', type: 'info' },
           { text: '  clear      - Clear terminal screen buffers', type: 'info' },
           { text: '  exit       - Close the developer terminal panel', type: 'info' }
         );
+        break;
+
+      case 'guess':
+        const targetNum = Math.floor(Math.random() * 100) + 1;
+        setGameTarget(targetNum);
+        setGameGuesses(0);
+        setGameState('playing_guess');
+        outputs.push(
+          { text: '--- NUMBER GUESSING GAME ---', type: 'separator' },
+          { text: 'I am thinking of a random number between 1 and 100.', type: 'system' },
+          { text: 'Can you guess what it is? (Type "exit" to stop playing)', type: 'system' }
+        );
+        break;
+
+      case 'history':
+        outputs.push({ text: '--- COMMAND HISTORY ---', type: 'separator' });
+        if (history.length === 0) {
+          outputs.push({ text: 'No history found.', type: 'info' });
+        } else {
+          const chronHistory = [...history].reverse();
+          chronHistory.forEach((cmd, idx) => {
+            outputs.push({ text: `  ${idx + 1}  ${cmd}`, type: 'info' });
+          });
+        }
         break;
 
       case 'about':
@@ -340,7 +401,9 @@ const DevTerminal = () => {
           window.open('mailto:hello@pkwebworks.com');
         } else if (subCmd === 'insta' || subCmd === 'instagram') {
           outputs.push({ text: 'Opening Instagram profile in new tab...', type: 'success' });
-          window.open('https://www.instagram.com/kirubha.exe/', '_blank');
+          window.open('https://www.instagram.com/madebykrix/', '_blank');
+        } else if (subCmd === 'fb' || subCmd === 'facebook') {
+          outputs.push({ text: 'Facebook is temporarily unavailable. Please try again later.', type: 'error' });
         } else if (subCmd === 'git' || subCmd === 'github') {
           outputs.push({ text: 'Opening GitHub profile in new tab...', type: 'success' });
           window.open('https://github.com/pkwebworks3', '_blank');
@@ -355,12 +418,14 @@ const DevTerminal = () => {
           outputs.push(
             { text: '--- CONTACT INFORMATION ---', type: 'separator' },
             { text: '  Email:     hello@pkwebworks.com', type: 'info' },
-            { text: '  Instagram: @kirubha.exe', type: 'info' },
+            { text: '  Instagram: @madebykrix', type: 'info' },
+            { text: '  Facebook:  (Unavailable)', type: 'error' },
             { text: '  GitHub:    github.com/pkwebworks3', type: 'info' },
             { text: '---------------------------------------------------', type: 'separator' },
             { text: 'Shortcuts to open instantly:', type: 'system' },
             { text: '  contact mail   - Compose email', type: 'info' },
             { text: '  contact insta  - Open Instagram', type: 'info' },
+            { text: '  contact fb     - Open Facebook', type: 'info' },
             { text: '  contact github - Open GitHub repo', type: 'info' },
             { text: '  contact form   - Open inquiry form in simulator', type: 'info' }
           );
@@ -597,13 +662,13 @@ const DevTerminal = () => {
               <Typography
                 variant="body2"
                 sx={{
-                  color: '#00ff66',
+                  color: gameState === 'playing_guess' ? '#ffbd2e' : '#00ff66',
                   fontFamily: 'monospace',
                   fontWeight: 'bold',
                   fontSize: { xs: '0.75rem', sm: '0.85rem' },
                 }}
               >
-                visitor@krix.dev:~$
+                {gameState === 'playing_guess' ? 'guess >' : 'visitor@krix.dev:~$'}
               </Typography>
               <input
                 ref={inputRef}
