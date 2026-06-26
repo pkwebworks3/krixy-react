@@ -47,15 +47,8 @@ function Navbar() {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
 
-  const routeColors = {
-    '/': '#ff6b00',
-    '/about': '#ff6b00',
-    '/projects': '#ff6b00',
-    '/contact': '#ff6b00'
-  };
-
   const getPageColor = (path) => {
-    return location.pathname === path ? routeColors[path] : 'inherit';
+    return location.pathname === path ? theme.palette.primary.main : 'inherit';
   };
 
   useEffect(() => {
@@ -106,9 +99,9 @@ function Navbar() {
         backdropFilter: 'blur(30px)',
         WebkitBackdropFilter: 'blur(30px)',
         borderBottom: isScrolled
-          ? '1px solid rgba(255, 107, 0, 0.25)'
+          ? `1px solid ${alpha(theme.palette.primary.main, 0.25)}`
           : 'none',
-        border: !isScrolled ? '1px solid rgba(255, 107, 0, 0.12)' : 'none',
+        border: !isScrolled ? `1px solid ${alpha(theme.palette.primary.main, 0.12)}` : 'none',
         boxShadow: isScrolled 
           ? '0 20px 50px rgba(0, 0, 0, 0.5)' 
           : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
@@ -119,7 +112,7 @@ function Navbar() {
           content: '""',
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.18), transparent 100%)`,
+          background: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, ${alpha(theme.palette.primary.main, 0.18)}, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
           transition: 'opacity 0.3s ease',
@@ -135,7 +128,7 @@ function Navbar() {
               <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
               <Box
                 sx={{
-                  background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                   color: '#ffffff',
                   fontSize: '0.55rem',
                   fontWeight: 900,
@@ -161,7 +154,7 @@ function Navbar() {
               <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
               <Box
                 sx={{
-                  background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                   color: '#ffffff',
                   fontSize: '0.5rem',
                   fontWeight: 900,
@@ -274,7 +267,7 @@ function Navbar() {
                         bottom: 0,
                         borderRadius: '100px',
                         background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)`,
-                        border: '1px solid rgba(255, 107, 0, 0.35)',
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.35)}`,
                         boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.15)}`,
                         zIndex: 0
                       }}
@@ -300,7 +293,7 @@ function Navbar() {
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       background: 'transparent',
                       border: '1px solid transparent',
-                      textShadow: isActive ? '0 0 10px rgba(255, 107, 0, 0.4)' : 'none',
+                      textShadow: isActive ? `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}` : 'none',
                       '&:hover': { 
                         color: '#ffffff',
                         borderColor: isActive ? 'transparent' : 'rgba(255, 255, 255, 0.1)',

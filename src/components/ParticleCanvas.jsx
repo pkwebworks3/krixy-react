@@ -1,8 +1,69 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { useTheme } from '@mui/material/styles';
+import { ColorModeContext } from '../ThemeContext';
+
+const ACCENT_PARTICLE_COLORS = {
+  orange: ['#ff6b00', '#ff8500', '#ffa600', '#ea580c', '#ffb37c', '#ff7a59'],
+  green:  ['#00ff66', '#33ff85', '#66ffa3', '#00c34e', '#99ffc2', '#1ae060'],
+  cyan:   ['#00f0ff', '#33f3ff', '#66f6ff', '#00c3d9', '#99f9ff', '#1ad4e0'],
+  purple: ['#bd00ff', '#ca33ff', '#d766ff', '#9600d9', '#f3e6ff', '#a81ae0'],
+  pink:   ['#ff007f', '#ff3399', '#ff66b2', '#d9006b', '#ff99cc', '#e01a8d'],
+};
+
+const ACCENT_STAR_COLORS = {
+  orange: '#ffb03a',
+  green:  '#b3ffd1',
+  cyan:   '#b3faff',
+  purple: '#f0b3ff',
+  pink:   '#ffb3d9',
+};
+
+const getHexVariations = (hex) => {
+  let cleanHex = hex.replace(/^\s*#|\s*$/g, '');
+  if (cleanHex.length === 3) {
+    cleanHex = cleanHex.split('').map(c => c + c).join('');
+  }
+  const num = parseInt(cleanHex, 16);
+  const r = (num >> 16);
+  const g = ((num >> 8) & 0x00FF);
+  const b = (num & 0x0000FF);
+
+  const variations = [];
+  const mixFactors = [1, 0.85, 0.7, 0.55, 0.4, 0.25];
+  mixFactors.forEach((factor) => {
+    let vr = Math.max(0, Math.min(255, Math.round(r * factor + 50 * (1 - factor))));
+    let vg = Math.max(0, Math.min(255, Math.round(g * factor + 50 * (1 - factor))));
+    let vb = Math.max(0, Math.min(255, Math.round(b * factor + 50 * (1 - factor))));
+    variations.push(`#${((1 << 24) + (vr << 16) + (vg << 8) + vb).toString(16).slice(1)}`);
+  });
+  return variations;
+};
+
+const lightenColor = (hex, percent = 30) => {
+  let cleanHex = hex.replace(/^\s*#|\s*$/g, '');
+  if (cleanHex.length === 3) {
+    cleanHex = cleanHex.split('').map(c => c + c).join('');
+  }
+  let num = parseInt(cleanHex, 16);
+  let r = (num >> 16) + Math.round(255 * (percent / 100));
+  let g = ((num >> 8) & 0x00FF) + Math.round(255 * (percent / 100));
+  let b = (num & 0x0000FF) + Math.round(255 * (percent / 100));
+  
+  r = Math.max(0, Math.min(255, r));
+  g = Math.max(0, Math.min(255, g));
+  b = Math.max(0, Math.min(255, b));
+  
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+};
+
+const isHexColor = (str) => {
+  return /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(str);
+};
 
 const ParticleCanvas = ({ isMobile }) => {
   const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
+  const accent = colorMode?.accent || 'orange';
   const isDarkMode = theme.palette.mode === 'dark';
   
   const canvasRef = useRef(null);
@@ -15,7 +76,9 @@ const ParticleCanvas = ({ isMobile }) => {
     const ctx = canvas.getContext('2d');
     let animationId;
 
-    const COLORS = ['#ff6b00', '#ff8500', '#ffa600', '#ea580c', '#ffb37c', '#ff7a59'];
+    const COLORS = isHexColor(accent)
+      ? getHexVariations(accent)
+      : (ACCENT_PARTICLE_COLORS[accent] || ACCENT_PARTICLE_COLORS.orange);
     let flowers = [];
     const BLOOM_RADIUS = 150;
     const NUM_GROUPS = 12;
@@ -146,7 +209,9 @@ const ParticleCanvas = ({ isMobile }) => {
             // Constant Blinking/Twinkling logic for stars
             const blinkSpeed = 0.003 + (f.x % 0.005);
             const blink = 0.4 + Math.sin(now * blinkSpeed + f.x) * 0.6;
-            const starColor = '#ffb03a';  
+            const starColor = isHexColor(accent)
+              ? lightenColor(accent, 20)
+              : (ACCENT_STAR_COLORS[accent] || ACCENT_STAR_COLORS.orange);  
 
             ctx.globalAlpha = ease * blink;
             ctx.fillStyle = starColor;
@@ -200,7 +265,7 @@ const ParticleCanvas = ({ isMobile }) => {
       window.removeEventListener('pointerdown', handlePointerDown);
       clearTimeout(resizeTimeout);
     };
-  }, [isMobile, theme.palette.mode]);
+  }, [isMobile, theme.palette.mode, accent]);
 
   return (
     <canvas

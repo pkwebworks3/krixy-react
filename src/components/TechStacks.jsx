@@ -31,18 +31,18 @@ export function StackCard({ stack, index }) {
             height: '100%',
             borderRadius: { xs: '16px', md: '24px' },
             background: 'rgba(20, 20, 25, 0.15)',
-            border: '1.5px solid rgba(255, 107, 0, 0.35)',
+            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             overflow: 'hidden',
             cursor: 'pointer',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
+            boxShadow: (theme) => `0 8px 24px rgba(0, 0, 0, 0.3), 0 0 15px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.03)`,
             '&:hover': {
               transform: 'translateY(-8px) scale(1.04)',
               background: 'rgba(20, 20, 25, 0.35)',
-              borderColor: 'rgba(255, 107, 0, 0.65)',
-              boxShadow: `0 20px 40px rgba(0, 0, 0, 0.5), 0 0 35px ${alpha('#ff6b00', 0.5)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
+              borderColor: (theme) => alpha(theme.palette.primary.main, 0.65),
+              boxShadow: (theme) => `0 20px 40px rgba(0, 0, 0, 0.5), 0 0 35px ${alpha(theme.palette.primary.main, 0.5)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
               '& .glow': {
                 opacity: 0.95,
                 transform: 'translate(-50%, -50%) scale(2.0)',
@@ -53,7 +53,7 @@ export function StackCard({ stack, index }) {
               },
               '& .stack-name': {
                 color: '#ffffff',
-                textShadow: '0 0 8px rgba(255, 107, 0, 0.5)',
+                textShadow: (theme) => `0 0 8px ${alpha(theme.palette.primary.main, 0.5)}`,
                 transform: 'translateY(-2px)'
               }
             },
@@ -135,7 +135,7 @@ export function TechStacks({ title = "My Tech Stacks", subtitle = "Tools and tec
                 fontWeight: 950,
                 fontFamily: '"Outfit", sans-serif',
                 lineHeight: 1.1,
-                background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+                background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
                 backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
                 WebkitBackgroundClip: 'text',

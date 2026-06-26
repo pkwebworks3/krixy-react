@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Typography, IconButton, Tooltip, Zoom, useTheme, alpha } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,9 +7,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import MinimizeIcon from '@mui/icons-material/Remove';
 import projectsData from '../data/projects_page.json';
 import { stacks } from '../data/stacks';
+import { ColorModeContext } from '../ThemeContext';
 
 // Fullscreen screensaver matching hero background with center logo
 const HeroScreensaver = ({ onClose }) => {
+  const theme = useTheme();
   useEffect(() => {
     // Hide scrollbars on mount
     const originalOverflow = document.body.style.overflow;
@@ -68,18 +70,18 @@ const HeroScreensaver = ({ onClose }) => {
             sx={{
               width: '1px',
               height: '100%',
-              background: 'linear-gradient(to top, rgba(255, 107, 0, 0.5) 0%, rgba(255, 107, 0, 0.1) 50%, transparent 100%)',
+              background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.5)} 0%, ${alpha(theme.palette.primary.main, 0.1)} 50%, transparent 100%)`,
               opacity: 0.4,
               animation: 'lineGlowWave 5s ease-in-out infinite',
               animationDelay: `${i * 0.15}s`,
               '@keyframes lineGlowWave': {
                 '0%, 100%': {
                   opacity: 0.3,
-                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.4) 0%, rgba(255, 107, 0, 0.08) 50%, transparent 100%)',
+                  background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.4)} 0%, ${alpha(theme.palette.primary.main, 0.08)} 50%, transparent 100%)`,
                 },
                 '50%': {
                   opacity: 1,
-                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.75) 0%, rgba(255, 107, 0, 0.2) 65%, transparent 100%)',
+                  background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.75)} 0%, ${alpha(theme.palette.primary.main, 0.2)} 65%, transparent 100%)`,
                 }
               }
             }}
@@ -95,7 +97,7 @@ const HeroScreensaver = ({ onClose }) => {
           left: 0,
           right: 0,
           height: '55vh',
-          background: 'linear-gradient(to top, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.06) 45%, transparent 100%)',
+          background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.primary.main, 0.06)} 45%, transparent 100%)`,
           zIndex: 1,
           pointerEvents: 'none',
           animation: 'glowBreath 7s ease-in-out infinite alternate',
@@ -133,7 +135,7 @@ const HeroScreensaver = ({ onClose }) => {
             position: 'absolute',
             width: '250px',
             height: '250px',
-            background: 'radial-gradient(circle, rgba(255,107,0,0.2) 0%, transparent 70%)',
+            background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.2)} 0%, transparent 70%)`,
             filter: 'blur(20px)',
             animation: 'radialPulse 4s ease-in-out infinite alternate',
             '@keyframes radialPulse': {
@@ -150,7 +152,7 @@ const HeroScreensaver = ({ onClose }) => {
           sx={{
             height: { xs: '80px', sm: '120px', md: '150px' },
             width: 'auto',
-            filter: 'drop-shadow(0 0 25px rgba(255, 107, 0, 0.6))',
+            filter: `drop-shadow(0 0 25px ${alpha(theme.palette.primary.main, 0.6)})`,
             animation: 'logoFloat 4s ease-in-out infinite alternate',
             '@keyframes logoFloat': {
               '0%': { transform: 'translateY(0px)' },
@@ -188,6 +190,7 @@ const DevTerminal = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const colorMode = useContext(ColorModeContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [showScreensaver, setShowScreensaver] = useState(false);
@@ -303,12 +306,32 @@ const DevTerminal = () => {
           { text: '  projects   - List completed engineering and design work', type: 'info' },
           { text: '  preview    - Test any project in the simulator (usage: preview [id])', type: 'info' },
           { text: '  contact    - Display social profiles and communication links', type: 'info' },
+          { text: '  theme      - Customize website & terminal accent color (usage: theme [color])', type: 'info' },
           { text: '  guess      - Play an interactive number-guessing game', type: 'info' },
           { text: '  history    - Show list of entered commands', type: 'info' },
           { text: '  screensaver- Launch the fullscreen background animation screensaver', type: 'info' },
           { text: '  clear      - Clear terminal screen buffers', type: 'info' },
           { text: '  exit       - Close the developer terminal panel', type: 'info' }
         );
+        break;
+
+      case 'theme':
+        const selectedColor = subCmd;
+        const validColors = ['orange', 'green', 'cyan', 'purple', 'pink'];
+        const isHexColor = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(selectedColor);
+
+        if (!selectedColor) {
+          outputs.push(
+            { text: 'Usage: theme [color|hex]', type: 'system' },
+            { text: 'Available colors: orange, green, cyan, purple, pink, or any hex code (e.g., #00ff66, #000)', type: 'info' }
+          );
+        } else if (!validColors.includes(selectedColor) && !isHexColor) {
+          outputs.push({ text: `Error: Unknown theme color: "${selectedColor}". Try orange, green, cyan, purple, pink, or a hex code like #00ff66 or #000.`, type: 'error' });
+        } else {
+          const colorToApply = isHexColor && !selectedColor.startsWith('#') ? `#${selectedColor}` : selectedColor;
+          colorMode.setAccentColor(colorToApply);
+          outputs.push({ text: `Theme accent color updated to: "${colorToApply}" successfully!`, type: 'success' });
+        }
         break;
 
       case 'guess':
@@ -488,9 +511,9 @@ const DevTerminal = () => {
         return '#00ff66'; // green prompt
       case 'logo':
       case 'separator':
-        return '#ea580c'; // dark orange
+        return theme.palette.secondary.main; // dynamic secondary accent
       case 'system':
-        return '#ff8500'; // light orange
+        return theme.palette.primary.main; // dynamic primary accent
       case 'error':
         return '#f43f5e'; // red
       case 'success':
@@ -515,18 +538,18 @@ const DevTerminal = () => {
               width: 56,
               height: 56,
               bgcolor: 'rgba(20, 20, 25, 0.75)',
-              color: '#ff6b00',
-              border: '2px solid rgba(255, 107, 0, 0.45)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 107, 0, 0.25)',
+              color: 'primary.main',
+              border: '2px solid ' + alpha(theme.palette.primary.main, 0.45),
+              boxShadow: `0 8px 32px rgba(0, 0, 0, 0.5), 0 0 15px ${alpha(theme.palette.primary.main, 0.25)}`,
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
               '&:hover': {
-                bgcolor: 'rgba(255, 107, 0, 0.18)',
+                bgcolor: alpha(theme.palette.primary.main, 0.18),
                 color: '#fff',
-                borderColor: '#ff6b00',
+                borderColor: 'primary.main',
                 transform: 'scale(1.1) rotate(5deg)',
-                boxShadow: '0 12px 40px rgba(255, 107, 0, 0.5)',
+                boxShadow: `0 12px 40px ${alpha(theme.palette.primary.main, 0.5)}`,
               },
             }}
           >
@@ -555,8 +578,8 @@ const DevTerminal = () => {
               width: { xs: 'calc(100vw - 32px)', sm: '520px', md: '650px' },
               height: { xs: '450px', sm: '480px', md: '520px' },
               borderRadius: '16px',
-              border: '2px solid rgba(255, 107, 0, 0.45)',
-              boxShadow: '0 30px 90px rgba(0, 0, 0, 0.85), 0 0 40px rgba(255, 107, 0, 0.2)',
+              border: '2px solid ' + alpha(theme.palette.primary.main, 0.45),
+              boxShadow: `0 30px 90px rgba(0, 0, 0, 0.85), 0 0 40px ${alpha(theme.palette.primary.main, 0.2)}`,
               bgcolor: 'rgba(10, 10, 15, 0.93)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
@@ -577,7 +600,7 @@ const DevTerminal = () => {
                 px: 2,
                 py: 1.5,
                 bgcolor: 'rgba(25, 25, 30, 0.85)',
-                borderBottom: '1px solid rgba(255, 107, 0, 0.15)',
+                borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
               }}
             >
               <Box sx={{ display: 'flex', gap: 1 }}>
@@ -622,9 +645,9 @@ const DevTerminal = () => {
                 '&::-webkit-scrollbar': { width: '6px' },
                 '&::-webkit-scrollbar-track': { background: 'transparent' },
                 '&::-webkit-scrollbar-thumb': {
-                  background: 'rgba(255, 107, 0, 0.25)',
+                  background: alpha(theme.palette.primary.main, 0.25),
                   borderRadius: '3px',
-                  '&:hover': { background: '#ff6b00' },
+                  '&:hover': { background: theme.palette.primary.main },
                 },
               }}
             >
@@ -656,7 +679,7 @@ const DevTerminal = () => {
                 px: 3,
                 py: 2,
                 bgcolor: 'rgba(15, 15, 20, 0.8)',
-                borderTop: '1px solid rgba(255, 107, 0, 0.15)',
+                borderTop: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
               }}
             >
               <Typography
@@ -685,7 +708,7 @@ const DevTerminal = () => {
                   color: '#f8fafc',
                   fontFamily: 'monospace',
                   fontSize: '0.85rem',
-                  caretColor: '#ff6b00', // blinking cursor in theme accent
+                  caretColor: theme.palette.primary.main, // blinking cursor in theme accent
                 }}
               />
             </Box>

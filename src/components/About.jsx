@@ -31,7 +31,7 @@ const About = () => {
             mb: 4,
             textAlign: 'center',
             fontFamily: '"Outfit", sans-serif',
-            background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+            background: `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
             backgroundSize: '400% 400%',
             animation: 'gradientShift 8s ease infinite',
             WebkitBackgroundClip: 'text',
@@ -90,22 +90,22 @@ const About = () => {
                       background: 'rgba(255, 255, 255, 0.02)',
                       backdropFilter: 'blur(16px)',
                       WebkitBackdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(255, 107, 0, 0.18)',
+                      border: `1px solid ${alpha(theme.palette.primary.main, 0.18)}`,
                       boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.02)',
                       textAlign: 'center',
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       cursor: 'pointer',
                       '&:hover': {
                         transform: 'translateY(-8px) scale(1.03)',
-                        borderColor: '#ff6b00',
-                        background: 'rgba(255, 107, 0, 0.08)',
-                        boxShadow: '0 15px 35px rgba(255, 107, 0, 0.25), 0 0 15px rgba(255, 107, 0, 0.1)',
+                        borderColor: 'primary.main',
+                        background: alpha(theme.palette.primary.main, 0.08),
+                        boxShadow: `0 15px 35px ${alpha(theme.palette.primary.main, 0.25)}, 0 0 15px ${alpha(theme.palette.primary.main, 0.1)}`,
                         '& .stat-val': {
-                          textShadow: '0 0 10px rgba(255, 107, 0, 0.5)'
+                          textShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.5)}`
                         }
                       }
                     }}>
-                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: '#ff6b00', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s' }}>
+                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: 'primary.main', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s' }}>
                         {stat.value}
                       </Typography>
                       <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -136,7 +136,7 @@ const About = () => {
                 fontWeight: 950,
                 fontFamily: '"Outfit", sans-serif',
                 lineHeight: 1.1,
-                background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+                background: `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
                 backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
                 WebkitBackgroundClip: 'text',
@@ -181,21 +181,21 @@ const About = () => {
                         gap: { xs: 2.5, md: 3.5 },
                         borderRadius: { xs: '16px', md: '28px' },
                         background: 'rgba(20, 20, 25, 0.35)',
-                        border: '1px solid rgba(255, 107, 0, 0.15)',
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                         backdropFilter: 'blur(30px)',
                         WebkitBackdropFilter: 'blur(30px)',
                         boxShadow: '0 15px 35px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
                         transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                         '&:hover': {
                           background: 'rgba(25, 25, 30, 0.55)',
-                          borderColor: '#ff6b00',
-                          boxShadow: `0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha('#ff6b00', 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.06)`,
+                          borderColor: 'primary.main',
+                          boxShadow: `0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.06)`,
                           '& .principle-icon': {
                             transform: 'scale(1.18) rotate(6deg)',
                             color: '#ffffff',
-                            background: 'linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)',
-                            boxShadow: '0 0 15px rgba(255, 107, 0, 0.4)',
-                            borderColor: '#ff6b00'
+                            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                            boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.4)}`,
+                            borderColor: 'primary.main'
                           }
                         }
                       }}
@@ -203,13 +203,13 @@ const About = () => {
                       <Box 
                         className="principle-icon"
                         sx={{ 
-                          color: '#ff6b00',
+                          color: 'primary.main',
                           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                           display: 'flex',
                           p: 2,
                           borderRadius: '16px',
-                          background: 'rgba(255, 107, 0, 0.08)',
-                          border: '1px solid rgba(255, 107, 0, 0.2)'
+                          background: alpha(theme.palette.primary.main, 0.08),
+                          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`
                         }}
                       >
                         {item.icon}

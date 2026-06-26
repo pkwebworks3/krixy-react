@@ -47,7 +47,7 @@ const Contact = () => {
               fontWeight: 950, 
               mb: 2,
               fontFamily: '"Outfit", sans-serif',
-              background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+              background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
               backgroundSize: '400% 400%',
               animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',
@@ -78,7 +78,7 @@ const Contact = () => {
                 backgroundColor: 'rgba(20, 20, 25, 0.35)',
                 backdropFilter: 'blur(35px)',
                 WebkitBackdropFilter: 'blur(35px)',
-                border: '1px solid rgba(255, 107, 0, 0.15)',
+                border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                 boxShadow: '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                 position: 'relative',
                 overflow: 'hidden'
@@ -104,14 +104,14 @@ const Contact = () => {
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: 1.5,
-                    background: 'linear-gradient(45deg, #ff6b00 0%, #ea580c 100%)',
-                    boxShadow: '0 12px 35px rgba(255, 107, 0, 0.4)',
+                    background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                    boxShadow: `0 12px 35px ${alpha(theme.palette.primary.main, 0.4)}`,
                     color: '#ffffff',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     '&:hover': { 
-                      background: 'linear-gradient(45deg, #ea580c 0%, #ff6b00 100%)',
+                      background: `linear-gradient(45deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
                       transform: 'translateY(-3px) scale(1.03)',
-                      boxShadow: '0 16px 45px rgba(255, 107, 0, 0.6)',
+                      boxShadow: `0 16px 45px ${alpha(theme.palette.primary.main, 0.6)}`,
                     },
                     transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                   }}
@@ -134,17 +134,17 @@ const Contact = () => {
                           onClick={item.onClick || undefined}
                           target={item.onClick ? undefined : '_blank'}
                           sx={{ 
-                            border: '1.5px solid rgba(255, 107, 0, 0.25)',
-                            bgcolor: 'rgba(255, 107, 0, 0.05)',
-                            color: '#ff6b00',
+                            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.25)}`,
+                            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.05),
+                            color: 'primary.main',
                             p: 1.8,
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                             '&:hover': { 
-                              borderColor: '#ff6b00',
-                              bgcolor: 'rgba(255, 107, 0, 0.15)',
+                              borderColor: 'primary.main',
+                              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.15),
                               color: '#fff',
                               transform: 'translateY(-4px) scale(1.08)',
-                              boxShadow: '0 8px 20px rgba(255, 107, 0, 0.25)'
+                              boxShadow: (theme) => `0 8px 20px ${alpha(theme.palette.primary.main, 0.25)}`
                             }
                           }}
                         >

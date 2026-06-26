@@ -79,12 +79,12 @@ function Content() {
                   fontFamily: '"Outfit", sans-serif',
                   letterSpacing: '-0.03em',
                   mb: 3,
-                  background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+                  background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 6s ease infinite',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                  filter: 'drop-shadow(0 4px 20px rgba(255, 107, 0, 0.15))'
+                  filter: (theme) => `drop-shadow(0 4px 20px ${alpha(theme.palette.primary.main, 0.15)})`
                 }}>
                   <TypeAnimation
                     sequence={['krix', 1000]}
@@ -101,9 +101,9 @@ function Content() {
                     fontWeight: 800,
                     px: 3, py: 1,
                     borderRadius: '50px',
-                    background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(234, 88, 12, 0.05) 100%)',
-                    boxShadow: `0 8px 32px rgba(255, 107, 0, 0.15)`,
-                    border: `1px solid rgba(255, 107, 0, 0.25)`,
+                    background: (theme) => `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+                    boxShadow: (theme) => `0 8px 32px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.25)}`,
                     fontSize: { xs: '0.8rem', md: '0.9rem' },
                     letterSpacing: '1px',
                     textTransform: 'uppercase',
@@ -130,9 +130,9 @@ function Content() {
                     fontWeight: 800,
                     px: 3, py: 1,
                     borderRadius: '50px',
-                    background: 'linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(234, 88, 12, 0.05) 100%)',
-                    boxShadow: `0 8px 32px rgba(255, 107, 0, 0.15)`,
-                    border: `1px solid rgba(255, 107, 0, 0.25)`,
+                    background: (theme) => `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
+                    boxShadow: (theme) => `0 8px 32px ${alpha(theme.palette.primary.main, 0.15)}`,
+                    border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.25)}`,
                     fontSize: { xs: '0.8rem', md: '0.9rem' },
                     letterSpacing: '1px',
                     textTransform: 'uppercase',
@@ -156,14 +156,14 @@ function Content() {
                       fontSize: '1.05rem',
                       fontWeight: 800,
                       letterSpacing: '0.5px',
-                      background: `linear-gradient(135deg, #ff6b00 0%, #ea580c 100%)`,
+                      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                       border: '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: `0 12px 35px ${alpha('#ff6b00', 0.45)}`,
+                      boxShadow: `0 12px 35px ${alpha(theme.palette.primary.main, 0.45)}`,
                       color: '#ffffff',
                       '&:hover': {
-                        background: `linear-gradient(135deg, #ea580c 0%, #ff6b00 100%)`,
+                        background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
                         transform: 'translateY(-3px) scale(1.03)',
-                        boxShadow: `0 16px 45px ${alpha('#ff6b00', 0.65)}`,
+                        boxShadow: `0 16px 45px ${alpha(theme.palette.primary.main, 0.65)}`,
                       },
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                     }}
@@ -183,17 +183,17 @@ function Content() {
                       fontWeight: 700,
                       letterSpacing: '0.5px',
                       borderWidth: 2,
-                      borderColor: 'rgba(255, 107, 0, 0.4)',
+                      borderColor: (theme) => alpha(theme.palette.primary.main, 0.4),
                       background: 'rgba(255, 255, 255, 0.02)',
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
                       color: '#ffffff',
                       '&:hover': {
-                        borderColor: '#ff6b00',
-                        backgroundColor: 'rgba(255, 107, 0, 0.1)',
+                        borderColor: 'primary.main',
+                        backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.1),
                         borderWidth: 2,
                         transform: 'translateY(-3px) scale(1.03)',
-                        boxShadow: `0 12px 30px ${alpha('#ff6b00', 0.2)}`,
+                        boxShadow: (theme) => `0 12px 30px ${alpha(theme.palette.primary.main, 0.2)}`,
                       },
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
                     }}
@@ -207,8 +207,8 @@ function Content() {
                     { icon: <InstagramIcon />, href: 'https://www.instagram.com/madebykrix/', onClick: null },
                     { icon: <FacebookIcon />, href: '#', onClick: (e) => { e.preventDefault(); setOpenFbAlert(true); } },
                   ].map((s, i) => (
-                    <IconButton key={i} href={s.onClick ? undefined : s.href} onClick={s.onClick || undefined} target={s.onClick ? undefined : '_blank'} sx={{
-                      border: `1px solid rgba(255, 107, 0, 0.15)`,
+                    <IconButton key={i} href={s.onClick ? undefined : s.href} onClick={s.onClick || undefined} target={s.onClick ? undefined : '_blank'} sx={(theme) => ({
+                      border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                       borderRadius: '50%',
                       color: alpha(theme.palette.text.secondary, 0.7),
                       p: 1.5,
@@ -217,13 +217,13 @@ function Content() {
                       WebkitBackdropFilter: 'blur(10px)',
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       '&:hover': {
-                        borderColor: '#ff6b00',
+                        borderColor: theme.palette.primary.main,
                         color: '#ffffff',
                         transform: 'translateY(-4px) scale(1.08)',
-                        background: 'rgba(255, 107, 0, 0.12)',
-                        boxShadow: `0 10px 24px rgba(255, 107, 0, 0.25)`,
+                        background: alpha(theme.palette.primary.main, 0.12),
+                        boxShadow: `0 10px 24px ${alpha(theme.palette.primary.main, 0.25)}`,
                       },
-                    }}>
+                    })}>
                       {s.icon}
                     </IconButton>
                   ))}
@@ -263,7 +263,7 @@ function Content() {
               fontFamily: '"Outfit", sans-serif',
               letterSpacing: -1.5,
               mb: 2,
-              background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+              background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
               backgroundSize: '400% 400%',
               animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',
@@ -289,8 +289,8 @@ function Content() {
             backgroundColor: 'rgba(20, 20, 25, 0.15)',
             backdropFilter: 'blur(35px)',
             WebkitBackdropFilter: 'blur(35px)',
-            border: '1.5px solid rgba(255, 107, 0, 0.35)',
-            boxShadow: '0 40px 100px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 107, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
+            boxShadow: (theme) => `0 40px 100px rgba(0, 0, 0, 0.5), 0 0 30px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
           }}>
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -324,8 +324,8 @@ function Content() {
               background: 'rgba(20, 20, 25, 0.22)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
-              border: '1px solid rgba(255, 107, 0, 0.35)',
-              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 107, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+              border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.35)}`,
+              boxShadow: (theme) => `0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
             }}>
               <AnimatePresence mode="wait" custom={direction}>
@@ -337,7 +337,7 @@ function Content() {
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Typography variant="overline" sx={{ color: '#ff6b00', fontWeight: 900, letterSpacing: 3, mb: 1, display: 'block' }}>
+                  <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 900, letterSpacing: 3, mb: 1, display: 'block' }}>
                     FEATURED PROJECT
                   </Typography>
                   <Typography variant="h3" sx={{ color: '#fff', mb: 2, fontWeight: 900, fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.5px' }}>
@@ -351,17 +351,17 @@ function Content() {
                     <IconButton
                       onClick={prevSlide}
                       sx={{
-                        border: '1.5px solid rgba(255, 107, 0, 0.4)',
-                        color: '#ff6b00',
+                        border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.4)}`,
+                        color: 'primary.main',
                         borderRadius: '50%',
                         p: 1.5,
-                        background: 'rgba(255, 107, 0, 0.05)',
+                        background: (theme) => alpha(theme.palette.primary.main, 0.05),
                         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                         '&:hover': {
-                          borderColor: '#ff6b00',
-                          background: 'rgba(255, 107, 0, 0.15)',
+                          borderColor: 'primary.main',
+                          background: (theme) => alpha(theme.palette.primary.main, 0.15),
                           transform: 'translateX(-4px)',
-                          boxShadow: '0 0 15px rgba(255, 107, 0, 0.25)'
+                          boxShadow: (theme) => `0 0 15px ${alpha(theme.palette.primary.main, 0.25)}`
                         }
                       }}
                     >
@@ -375,13 +375,13 @@ function Content() {
                         flex: 1,
                         py: 1.8,
                         borderRadius: 100,
-                        background: 'linear-gradient(45deg, #ff6b00 0%, #ea580c 100%)',
+                        background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                         fontWeight: 800,
                         fontSize: '1rem',
-                        boxShadow: '0 8px 24px rgba(255, 107, 0, 0.35)',
+                        boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
                         '&:hover': {
-                          background: 'linear-gradient(45deg, #ea580c 0%, #ff6b00 100%)',
-                          boxShadow: '0 12px 30px rgba(255, 107, 0, 0.55)',
+                          background: `linear-gradient(45deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
+                          boxShadow: `0 12px 30px ${alpha(theme.palette.primary.main, 0.55)}`,
                         }
                       }}
                     >
@@ -390,17 +390,17 @@ function Content() {
                     <IconButton
                       onClick={nextSlide}
                       sx={{
-                        border: '1.5px solid rgba(255, 107, 0, 0.4)',
-                        color: '#ff6b00',
+                        border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.4)}`,
+                        color: 'primary.main',
                         borderRadius: '50%',
                         p: 1.5,
-                        background: 'rgba(255, 107, 0, 0.05)',
+                        background: (theme) => alpha(theme.palette.primary.main, 0.05),
                         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                         '&:hover': {
-                          borderColor: '#ff6b00',
-                          background: 'rgba(255, 107, 0, 0.15)',
+                          borderColor: 'primary.main',
+                          background: (theme) => alpha(theme.palette.primary.main, 0.15),
                           transform: 'translateX(4px)',
-                          boxShadow: '0 0 15px rgba(255, 107, 0, 0.25)'
+                          boxShadow: (theme) => `0 0 15px ${alpha(theme.palette.primary.main, 0.25)}`
                         }
                       }}
                     >

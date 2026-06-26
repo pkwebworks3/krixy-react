@@ -106,8 +106,8 @@ const ProjectShowroom = () => {
             borderRadius: '24px',
             overflow: 'hidden',
             backgroundColor: 'rgba(20, 20, 25, 0.65)',
-            border: '1.5px solid rgba(255, 107, 0, 0.3)',
-            boxShadow: '0 40px 100px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 107, 0, 0.15)',
+            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+            boxShadow: (theme) => `0 40px 100px rgba(0, 0, 0, 0.8), 0 0 35px ${alpha(theme.palette.primary.main, 0.15)}`,
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
           }}
@@ -121,7 +121,7 @@ const ProjectShowroom = () => {
               gap: 2,
               px: { xs: 2, md: 3 },
               py: 2,
-              borderBottom: '1px solid rgba(255, 107, 0, 0.18)',
+              borderBottom: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.18)}`,
               bgcolor: 'rgba(15, 15, 20, 0.8)',
             }}
           >
@@ -155,10 +155,10 @@ const ProjectShowroom = () => {
                 py: 0.8,
                 borderRadius: '100px',
                 bgcolor: 'rgba(9, 9, 11, 0.5)',
-                border: '1px solid rgba(255, 107, 0, 0.12)',
+                border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
               }}
             >
-              <LockIcon sx={{ fontSize: 14, color: '#ff6b00' }} />
+              <LockIcon sx={{ fontSize: 14, color: 'primary.main' }} />
               <Typography
                 variant="body2"
                 sx={{
@@ -195,7 +195,7 @@ const ProjectShowroom = () => {
                   bgcolor: 'rgba(9, 9, 11, 0.4)',
                   p: 0.5,
                   borderRadius: '100px',
-                  border: '1px solid rgba(255, 107, 0, 0.15)',
+                  border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                 }}
               >
                 {[
@@ -208,12 +208,12 @@ const ProjectShowroom = () => {
                       onClick={() => setDevice(d.name)}
                       sx={{
                         color: device === d.name ? '#ffffff' : 'rgba(255, 255, 255, 0.4)',
-                        bgcolor: device === d.name ? 'rgba(255, 107, 0, 0.8)' : 'transparent',
+                        bgcolor: (theme) => device === d.name ? alpha(theme.palette.primary.main, 0.8) : 'transparent',
                         borderRadius: '50%',
                         p: 0.8,
                         transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                         '&:hover': {
-                          bgcolor: device === d.name ? 'rgba(255, 107, 0, 0.9)' : 'rgba(255, 255, 255, 0.05)',
+                          bgcolor: (theme) => device === d.name ? alpha(theme.palette.primary.main, 0.9) : 'rgba(255, 255, 255, 0.05)',
                           color: '#ffffff',
                         },
                       }}
@@ -230,8 +230,8 @@ const ProjectShowroom = () => {
                   onClick={handleReload}
                   sx={{
                     color: 'rgba(255, 255, 255, 0.6)',
-                    border: '1px solid rgba(255, 107, 0, 0.15)',
-                    '&:hover': { color: '#ff6b00', borderColor: '#ff6b00', bgcolor: 'rgba(255, 107, 0, 0.08)' }
+                    border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                    '&:hover': { color: 'primary.main', borderColor: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08) }
                   }}
                 >
                   <RefreshIcon fontSize="small" />
@@ -244,8 +244,8 @@ const ProjectShowroom = () => {
                   target="_blank"
                   sx={{
                     color: 'rgba(255, 255, 255, 0.6)',
-                    border: '1px solid rgba(255, 107, 0, 0.15)',
-                    '&:hover': { color: '#ff6b00', borderColor: '#ff6b00', bgcolor: 'rgba(255, 107, 0, 0.08)' }
+                    border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                    '&:hover': { color: 'primary.main', borderColor: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08) }
                   }}
                 >
                   <OpenInNewIcon fontSize="small" />
@@ -316,8 +316,8 @@ const ProjectShowroom = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: device !== 'desktop' ? '0 0 50px rgba(0, 0, 0, 0.8)' : 'none',
-                borderLeft: device !== 'desktop' ? '1px solid rgba(255, 107, 0, 0.15)' : 'none',
-                borderRight: device !== 'desktop' ? '1px solid rgba(255, 107, 0, 0.15)' : 'none',
+                borderLeft: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
+                borderRight: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
               }}
             >
               <iframe

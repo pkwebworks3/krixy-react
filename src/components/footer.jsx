@@ -97,7 +97,7 @@ function Footer() {
                   <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
                   <Box
                     sx={{
-                      background: 'linear-gradient(135deg, #ff6b00, #ea580c)',
+                      background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                       color: '#ffffff',
                       fontSize: '0.55rem',
                       fontWeight: 900,

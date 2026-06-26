@@ -54,18 +54,18 @@ const ThemeAccents = () => {
             sx={{
               width: '1px',
               height: '100%',
-              background: 'linear-gradient(to top, rgba(255, 107, 0, 0.5) 0%, rgba(255, 107, 0, 0.1) 50%, transparent 100%)',
+              background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.5)} 0%, ${alpha(theme.palette.primary.main, 0.1)} 50%, transparent 100%)`,
               opacity: 0.4,
               animation: 'lineGlowWave 5s ease-in-out infinite',
               animationDelay: `${i * 0.15}s`,
               '@keyframes lineGlowWave': {
                 '0%, 100%': {
                   opacity: 0.3,
-                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.4) 0%, rgba(255, 107, 0, 0.08) 50%, transparent 100%)',
+                  background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.4)} 0%, ${alpha(theme.palette.primary.main, 0.08)} 50%, transparent 100%)`,
                 },
                 '50%': {
                   opacity: 1,
-                  background: 'linear-gradient(to top, rgba(255, 107, 0, 0.75) 0%, rgba(255, 107, 0, 0.2) 65%, transparent 100%)',
+                  background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.75)} 0%, ${alpha(theme.palette.primary.main, 0.2)} 65%, transparent 100%)`,
                 }
               }
             }}
@@ -81,7 +81,7 @@ const ThemeAccents = () => {
           left: 0,
           right: 0,
           height: '55vh',
-          background: 'linear-gradient(to top, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.06) 45%, transparent 100%)',
+          background: `linear-gradient(to top, ${alpha(theme.palette.primary.main, 0.2)} 0%, ${alpha(theme.palette.primary.main, 0.06)} 45%, transparent 100%)`,
           zIndex: 1,
           animation: 'glowBreath 7s ease-in-out infinite alternate',
           '@keyframes glowBreath': {

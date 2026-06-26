@@ -85,11 +85,11 @@ function Testimonials() {
             fontFamily: '"Outfit", sans-serif',
             letterSpacing: -1, 
             mb: 2,
-            background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
-            backgroundSize: '400% 400%',
-            animation: 'gradientShift 8s ease infinite',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+              background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
+              backgroundSize: '400% 400%',
+              animation: 'gradientShift 8s ease infinite',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
           }}>
             Client Reviews
           </Typography>
@@ -108,12 +108,12 @@ function Testimonials() {
             overflow: 'visible',
             mb: 4,
             borderRadius: 8,
-            border: '1.5px solid rgba(255, 107, 0, 0.35)',
-            boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 107, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
+            boxShadow: (theme) => `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             '&:hover': {
-              borderColor: 'rgba(255, 107, 0, 0.65)',
-              boxShadow: `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha('#ff6b00', 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
+              borderColor: (theme) => alpha(theme.palette.primary.main, 0.65),
+              boxShadow: (theme) => `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha(theme.palette.primary.main, 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
             }
           }}>
             <FormatQuoteIcon sx={{

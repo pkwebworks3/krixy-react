@@ -60,7 +60,7 @@ function Projects() {
             fontFamily: '"Outfit", sans-serif',
             letterSpacing: -1.5, 
             mb: 2,
-            background: `linear-gradient(270deg, #ff6b00, #ff9f43, #ea580c, #ff6b00)`,
+            background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
             backgroundSize: '400% 400%',
             animation: 'gradientShift 8s ease infinite',
             WebkitBackgroundClip: 'text',
@@ -95,11 +95,11 @@ function Projects() {
                   backdropFilter: 'blur(30px)',
                   WebkitBackdropFilter: 'blur(30px)',
                   boxShadow: '0 40px 100px rgba(0, 0, 0, 0.5)',
-                  border: '1px solid rgba(255, 107, 0, 0.15)',
+                  border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
                   '& .thumb': { transform: 'scale(1.06)' },
                   '& .proj-title': {
                     color: '#ffffff',
-                    textShadow: '0 0 12px rgba(255, 107, 0, 0.45)'
+                    textShadow: (theme) => `0 0 12px ${alpha(theme.palette.primary.main, 0.45)}`
                   }
                 },
                 display: 'flex', 
@@ -134,7 +134,7 @@ function Projects() {
 
               {/* Project Info */}
               <Box sx={{ flex: 1, textAlign: { xs: 'center', md: 'left' }, position: 'relative', zIndex: 1 }}>
-                <Typography variant="overline" sx={{ color: '#ff6b00', fontWeight: 900, letterSpacing: 3 }}>
+                <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 900, letterSpacing: 3 }}>
                   Project {idx + 1}
                 </Typography>
                 <Typography className="proj-title" variant="h2" sx={{ 
@@ -142,7 +142,7 @@ function Projects() {
                   fontFamily: '"Outfit", sans-serif',
                   mb: 3,
                   fontSize: { xs: '2.5rem', md: '3.5rem' },
-                  color: '#ff6b00',
+                  color: 'primary.main',
                   transition: 'all 0.4s ease'
                 }}>
                   {project.title}
