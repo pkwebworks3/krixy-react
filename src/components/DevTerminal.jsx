@@ -8,6 +8,7 @@ import MinimizeIcon from '@mui/icons-material/Remove';
 import projectsData from '../data/projects_page.json';
 import { stacks } from '../data/stacks';
 import { ColorModeContext } from '../ThemeContext';
+import themePasswordData from '../data/theme_password.json';
 
 // Fullscreen screensaver matching hero background with center logo
 const HeroScreensaver = ({ onClose }) => {
@@ -197,7 +198,8 @@ const DevTerminal = () => {
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [commandValue, setCommandValue] = useState('');
-  const [gameState, setGameState] = useState('idle'); // 'idle', 'playing_guess'
+  const [gameState, setGameState] = useState('idle'); // 'idle', 'playing_guess', 'entering_password'
+  const [pendingThemeColor, setPendingThemeColor] = useState(null);
   const [gameTarget, setGameTarget] = useState(0);
   const [gameGuesses, setGameGuesses] = useState(0);
   const [consoleLines, setConsoleLines] = useState([
@@ -270,8 +272,42 @@ const DevTerminal = () => {
     setConsoleLines((prev) => [...prev, ...outputs, { text: '', type: 'empty' }]);
   };
 
+  const handlePasswordInput = (input) => {
+    const trimmedInput = input.trim();
+    const outputs = [];
+
+    if (!trimmedInput || trimmedInput.toLowerCase() === 'exit' || trimmedInput.toLowerCase() === 'cancel') {
+      setGameState('idle');
+      setPendingThemeColor(null);
+      outputs.push(
+        { text: 'password: ', type: 'command' },
+        { text: 'Authentication cancelled. Returned to standard shell.', type: 'system' }
+      );
+    } else {
+      outputs.push({ text: `password: ${'•'.repeat(trimmedInput.length)}`, type: 'command' });
+      if (trimmedInput === themePasswordData.themePassword) {
+        setGameState('idle');
+        colorMode.setAccentColor(pendingThemeColor);
+        outputs.push({ text: `🎉 Access granted. Theme accent color updated to: "${pendingThemeColor}" successfully!`, type: 'success' });
+        setPendingThemeColor(null);
+      } else {
+        setGameState('idle');
+        setPendingThemeColor(null);
+        outputs.push({ text: '❌ Access denied. Incorrect password.', type: 'error' });
+      }
+    }
+
+    setConsoleLines((prev) => [...prev, ...outputs, { text: '', type: 'empty' }]);
+  };
+
   const processCommand = (cmdStr) => {
     const trimmed = cmdStr.trim();
+
+    if (gameState === 'entering_password') {
+      handlePasswordInput(cmdStr);
+      return;
+    }
+
     if (!trimmed) {
       setConsoleLines((prev) => [...prev, { text: gameState === 'playing_guess' ? 'guess > ' : 'visitor@krix.dev:~$ ', type: 'prompt' }]);
       return;
@@ -329,8 +365,12 @@ const DevTerminal = () => {
           outputs.push({ text: `Error: Unknown theme color: "${selectedColor}". Try orange, green, cyan, purple, pink, or a hex code like #00ff66 or #000.`, type: 'error' });
         } else {
           const colorToApply = isHexColor && !selectedColor.startsWith('#') ? `#${selectedColor}` : selectedColor;
-          colorMode.setAccentColor(colorToApply);
-          outputs.push({ text: `Theme accent color updated to: "${colorToApply}" successfully!`, type: 'success' });
+          setPendingThemeColor(colorToApply);
+          setGameState('entering_password');
+          outputs.push(
+            { text: 'Authentication required to modify system theme.', type: 'system' },
+            { text: 'Please enter password: ', type: 'info' }
+          );
         }
         break;
 
@@ -685,21 +725,29 @@ const DevTerminal = () => {
               <Typography
                 variant="body2"
                 sx={{
-                  color: gameState === 'playing_guess' ? '#ffbd2e' : '#00ff66',
+                  color: gameState === 'playing_guess' 
+                    ? '#ffbd2e' 
+                    : gameState === 'entering_password'
+                    ? '#f43f5e'
+                    : '#00ff66',
                   fontFamily: 'monospace',
                   fontWeight: 'bold',
                   fontSize: { xs: '0.75rem', sm: '0.85rem' },
                 }}
               >
-                {gameState === 'playing_guess' ? 'guess >' : 'visitor@krix.dev:~$'}
+                {gameState === 'playing_guess' 
+                  ? 'guess >' 
+                  : gameState === 'entering_password'
+                  ? 'password:'
+                  : 'visitor@krix.dev:~$'}
               </Typography>
               <input
                 ref={inputRef}
-                type="text"
+                type={gameState === 'entering_password' ? 'password' : 'text'}
                 value={commandValue}
                 onChange={(e) => setCommandValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="type 'help'..."
+                placeholder={gameState === 'entering_password' ? 'Enter password...' : "type 'help'..."}
                 style={{
                   flex: 1,
                   background: 'transparent',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, IconButton, Tooltip, CircularProgress, useTheme, alpha } from '@mui/material';
+import { Box, Typography, IconButton, Tooltip, CircularProgress, useTheme, alpha, useMediaQuery } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -12,6 +12,7 @@ import LockIcon from '@mui/icons-material/Lock';
 
 const ProjectShowroom = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,6 +40,14 @@ const ProjectShowroom = () => {
     const searchStr = newParams.toString();
     navigate(location.pathname + (searchStr ? `?${searchStr}` : ''));
   };
+
+  // Redirect/close guard for mobile users
+  useEffect(() => {
+    if (previewUrl && isMobile) {
+      window.open(previewUrl, '_blank', 'noopener,noreferrer');
+      handleClose();
+    }
+  }, [previewUrl, isMobile]);
 
   const handleReload = () => {
     setIframeKey((prev) => prev + 1);

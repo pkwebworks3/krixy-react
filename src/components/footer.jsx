@@ -236,7 +236,7 @@ function Footer() {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   {[
                     { title: 'Read My Comic', href: '/projects/readmycomic/index.html' },
-                    { title: 'Switch Case Text', href: 'https://switchcase-pkww.vercel.app/' },
+                    { title: 'Krix Cases', href: 'https://krixcases.vercel.app/' },
                     { title: 'Interactive To-Do', href: '/projects/todolist/index.html' },
                     { title: 'Rabbit Mash Game', href: '/projects/rabit%20mash/index.html' },
                   ].map((link, index) => (

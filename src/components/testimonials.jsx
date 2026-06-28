@@ -100,7 +100,7 @@ function Testimonials() {
 
         <Box sx={{ maxWidth: 800, mx: 'auto', position: 'relative' }}>
           <Card sx={{
-            p: { xs: 4, md: 6 },
+            p: { xs: 2.5, sm: 4, md: 6 },
             backgroundColor: 'rgba(20, 20, 25, 0.18)',
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
@@ -133,13 +133,13 @@ function Testimonials() {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeIn" }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 4, gap: 3 }}>
+                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', textAlign: { xs: 'center', sm: 'left' }, mb: 4, gap: { xs: 2, sm: 3 } }}>
                   <Avatar
                     src={testimonials[currentTestimonial].image}
                     alt={testimonials[currentTestimonial].name}
-                    sx={{ width: 80, height: 80, border: `2px solid ${theme.palette.primary.main}` }}
+                    sx={{ width: { xs: 70, sm: 80 }, height: { xs: 70, sm: 80 }, border: `2px solid ${theme.palette.primary.main}` }}
                   />
-                  <Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'center', sm: 'flex-start' } }}>
                     <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
                       {testimonials[currentTestimonial].name}
                     </Typography>
@@ -150,7 +150,7 @@ function Testimonials() {
                   </Box>
                 </Box>
 
-                <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontStyle: 'italic', lineHeight: 1.8, fontWeight: 400 }}>
+                <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontStyle: 'italic', lineHeight: 1.8, fontWeight: 400, fontSize: { xs: '1rem', sm: '1.25rem' } }}>
                   "{testimonials[currentTestimonial].comment}"
                 </Typography>
               </motion.div>

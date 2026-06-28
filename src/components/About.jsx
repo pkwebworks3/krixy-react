@@ -81,11 +81,11 @@ const About = () => {
               </Box>
 
               {/* Stats Grid */}
-              <Grid container spacing={3} sx={{ justifyContent: 'center' }}>
+              <Grid container spacing={{ xs: 2, md: 3 }} sx={{ justifyContent: 'center' }}>
                 {stats.map((stat, i) => (
-                  <Grid item xs={6} sm={4} key={i}>
+                  <Grid item xs={4} sm={4} key={i}>
                     <Box sx={{
-                      p: 3,
+                      p: { xs: 1.5, sm: 3 },
                       borderRadius: '24px',
                       background: 'rgba(255, 255, 255, 0.02)',
                       backdropFilter: 'blur(16px)',
@@ -105,10 +105,10 @@ const About = () => {
                         }
                       }
                     }}>
-                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: 'primary.main', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s' }}>
+                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: 'primary.main', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s', fontSize: { xs: '1.5rem', sm: '2.125rem', md: '2.25rem' } }}>
                         {stat.value}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1 }}>
+                      <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.6rem', sm: '0.85rem' } }}>
                         {stat.label}
                       </Typography>
                     </Box>
@@ -120,7 +120,7 @@ const About = () => {
         </Grid>
 
         {/* Reverted Core Principles to Grid Layout */}
-        <Grid container spacing={8} alignItems="flex-start" sx={{ mt: 15, mb: 10 }}>
+        <Grid container spacing={{ xs: 4, md: 8 }} alignItems="flex-start" sx={{ mt: { xs: 8, md: 15 }, mb: 10 }}>
           {/* Left Side: Header */}
           <Grid item xs={12} md={4}>
             <motion.div
@@ -131,7 +131,7 @@ const About = () => {
               style={{ position: 'sticky', top: '150px' }}
             >
               <Typography variant="h3" sx={{
-                fontSize: { xs: '3rem', md: '4.5rem' },
+                fontSize: { xs: '3.5rem', md: '4.5rem' },
                 mb: 3,
                 fontWeight: 950,
                 fontFamily: '"Outfit", sans-serif',
@@ -158,14 +158,14 @@ const About = () => {
 
           {/* Right Side: Principles */}
           <Grid item xs={12} md={8}>
-            <Grid container spacing={3}>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
               {[
                 { title: 'Design First', icon: <BrushIcon sx={{ fontSize: 35 }} /> },
                 { title: 'Performance', icon: <SpeedIcon sx={{ fontSize: 35 }} /> },
                 { title: 'Innovation', icon: <AutoAwesomeIcon sx={{ fontSize: 35 }} /> },
                 { title: 'User Centric', icon: <PersonIcon sx={{ fontSize: 35 }} /> }
               ].map((item, i) => (
-                <Grid item xs={6} key={i}>
+                <Grid item xs={12} sm={6} key={i}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -175,10 +175,12 @@ const About = () => {
                   >
                     <Box
                       sx={{
-                        p: { xs: 3, md: 4.5 },
+                        p: { xs: 2.5, md: 4.5 },
                         display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
                         alignItems: 'center',
-                        gap: { xs: 2.5, md: 3.5 },
+                        textAlign: { xs: 'center', sm: 'left' },
+                        gap: { xs: 2, sm: 3.5 },
                         borderRadius: { xs: '16px', md: '28px' },
                         background: 'rgba(20, 20, 25, 0.35)',
                         border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,

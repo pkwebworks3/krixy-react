@@ -1,170 +1,205 @@
 import React from 'react';
-import { Box, Container, Grid, Typography, useTheme, alpha } from '@mui/material';
+import { Box, Container, Typography, useTheme, alpha } from '@mui/material';
 import { motion } from 'framer-motion';
 import { stacks } from '../data/stacks';
 
-export function StackCard({ stack, index }) {
+function MarqueeRow({ items, direction = 'left', speed = 25 }) {
   const theme = useTheme();
-
+  // Repeat items 6 times to ensure no gaps ever on ultra-wide screens
+  const repeatedItems = [...items, ...items, ...items, ...items, ...items, ...items];
+  
   return (
-    <Grid item xs={4} sm={3} md={2.4} lg={2}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false }}
-        transition={{ 
-          duration: 0.5, 
-          delay: index * 0.03,
-          type: "spring",
-          stiffness: 100
-        }}
-      >
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: { xs: 1.5, md: 2 },
-            p: { xs: 2.5, md: 3.5 },
-            height: '100%',
-            borderRadius: { xs: '16px', md: '24px' },
-            background: 'rgba(20, 20, 25, 0.15)',
-            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            overflow: 'hidden',
-            cursor: 'pointer',
-            boxShadow: (theme) => `0 8px 24px rgba(0, 0, 0, 0.3), 0 0 15px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.03)`,
-            '&:hover': {
-              transform: 'translateY(-8px) scale(1.04)',
-              background: 'rgba(20, 20, 25, 0.35)',
-              borderColor: (theme) => alpha(theme.palette.primary.main, 0.65),
-              boxShadow: (theme) => `0 20px 40px rgba(0, 0, 0, 0.5), 0 0 35px ${alpha(theme.palette.primary.main, 0.5)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
-              '& .glow': {
-                opacity: 0.95,
-                transform: 'translate(-50%, -50%) scale(2.0)',
-              },
-              '& img': {
-                transform: 'scale(1.22) rotate(8deg)',
-                filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))'
-              },
-              '& .stack-name': {
-                color: '#ffffff',
-                textShadow: (theme) => `0 0 8px ${alpha(theme.palette.primary.main, 0.5)}`,
-                transform: 'translateY(-2px)'
-              }
-            },
-          }}
-        >
-          {/* Interactive Glow Effect */}
+    <Box sx={{
+      display: 'flex',
+      overflow: 'hidden',
+      width: '100%',
+      userSelect: 'none',
+    }}>
+      <Box sx={{
+        display: 'flex',
+        width: 'max-content',
+        animation: `${direction === 'left' ? 'scrollLeft' : 'scrollRight'} ${speed}s linear infinite`,
+      }}>
+        {repeatedItems.map((stack, idx) => (
           <Box
-            className="glow"
+            key={`${stack.name}-${idx}`}
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              width: '120px',
-              height: '120px',
-              background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.3)} 0%, transparent 70%)`,
-              borderRadius: '50%',
-              transform: 'translate(-50%, -50%) scale(0)',
-              opacity: 0,
-              transition: 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-
-          <Box
-            component="img"
-            src={stack.img}
-            alt={stack.name}
-            sx={{
-              width: { xs: 40, md: 56 },
-              height: { xs: 40, md: 56 },
-              zIndex: 1,
-              transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
-            }}
-          />
-
-          <Typography
-            variant="body2"
-            className="stack-name"
-            sx={{
-              color: theme.palette.text.secondary,
-              fontWeight: 800,
-              fontSize: { xs: '0.7rem', md: '0.85rem' },
-              textTransform: 'uppercase',
-              letterSpacing: { xs: 0.5, md: 1 },
-              zIndex: 1,
-              textAlign: 'center',
-              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: { xs: 90, sm: 120, md: 150 },
+              height: { xs: 60, sm: 80, md: 95 },
+              borderRadius: { xs: '12px', sm: '16px', md: '20px' },
+              mr: { xs: 1.5, sm: 2, md: 3 }, // Use marginRight instead of gap for seamless looping
+              background: theme.palette.mode === 'light' 
+                ? '#ffffff' 
+                : 'rgba(255, 255, 255, 0.03)',
+              border: theme.palette.mode === 'light'
+                ? '1px solid rgba(0, 0, 0, 0.06)'
+                : '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: theme.palette.mode === 'light'
+                ? '0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02)'
+                : '0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)',
             }}
           >
-            {stack.name}
-          </Typography>
-        </Box>
-      </motion.div>
-    </Grid>
-  );
-}
-
-export function TechStacks({ title = "My Tech Stacks", subtitle = "Tools and technologies I use to bring ideas to life." }) {
-  const theme = useTheme();
-
-  return (
-    <Box sx={{ py: 15, position: 'relative' }}>
-      <Container maxWidth="lg">
-        <Grid container spacing={8} alignItems="flex-start">
-          {/* Left Side: Header */}
-          <Grid item xs={12} md={4}>
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false }}
-              transition={{ duration: 0.8 }}
-              style={{ position: 'sticky', top: '150px' }}
-            >
-              <Typography variant="h3" sx={{
-                fontSize: { xs: '3rem', md: '4rem' },
-                mb: 3,
-                fontWeight: 950,
-                fontFamily: '"Outfit", sans-serif',
-                lineHeight: 1.1,
-                background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
-                backgroundSize: '400% 400%',
-                animation: 'gradientShift 8s ease infinite',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>
-                {title}
-              </Typography>
-              <Typography variant="body1" sx={{ 
-                color: theme.palette.text.secondary, 
-                fontSize: '1.1rem',
-                lineHeight: 1.8,
-                opacity: 0.8,
-                fontWeight: 500
-              }}>
-                {subtitle}
-              </Typography>
-            </motion.div>
-          </Grid>
-
-          {/* Right Side: Clustered Grid */}
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={2} justifyContent="center">
-              {stacks.map((stack, index) => (
-                <StackCard key={stack.name} stack={stack} index={index} />
-              ))}
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+            <Box
+              component="img"
+              src={stack.img}
+              alt={stack.name}
+              sx={{
+                width: { xs: 28, sm: 36, md: 44 },
+                height: { xs: 28, sm: 36, md: 44 },
+                objectFit: 'contain',
+              }}
+            />
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
+
+export function TechStacks({ 
+  title = "Anything you can imagine, I can build for you.", 
+  subtitle = "Tools and technologies I use to bring ideas to life.",
+  badge = "Unlimited capability >"
+}) {
+  const theme = useTheme();
+
+  // Distribute the items across 3 rows dynamically
+  const rowCount = 3;
+  const itemsPerRow = 8;
+  const rows = [[], [], []];
+  
+  if (stacks && stacks.length > 0) {
+    for (let r = 0; r < rowCount; r++) {
+      for (let i = 0; i < itemsPerRow; i++) {
+        const index = (r * 4 + i) % stacks.length;
+        rows[r].push(stacks[index]);
+      }
+    }
+  }
+
+  return (
+    <Box sx={{ 
+      py: { xs: 10, md: 15 }, 
+      position: 'relative',
+      overflow: 'hidden',
+      width: '100%',
+    }}>
+      <style>{`
+        @keyframes scrollLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-16.6667%); }
+        }
+        @keyframes scrollRight {
+          0% { transform: translateX(-16.6667%); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
+
+      <Container maxWidth="lg" sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false }}
+          transition={{ duration: 0.6 }}
+        >
+          {badge && (
+            <Typography
+              variant="subtitle2"
+              sx={{
+                color: (theme) => theme.palette.mode === 'light' ? '#0070f3' : theme.palette.primary.main,
+                fontWeight: 700,
+                fontSize: { xs: '0.8rem', md: '0.9rem' },
+                textTransform: 'none',
+                letterSpacing: '0.5px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 0.5,
+                mb: 1.5,
+                cursor: 'pointer',
+                transition: 'opacity 0.2s',
+                '&:hover': {
+                  opacity: 0.8
+                }
+              }}
+            >
+              {badge}
+            </Typography>
+          )}
+          
+          <Typography 
+            variant="h2" 
+            sx={{
+              fontSize: { xs: '2rem', sm: '3rem', md: '3.5rem' },
+              fontWeight: 800,
+              fontFamily: '"Outfit", sans-serif',
+              lineHeight: 1.15,
+              color: theme.palette.text.primary,
+              mb: 2,
+              letterSpacing: '-0.02em',
+              maxWidth: '800px',
+              mx: 'auto',
+            }}
+          >
+            {title}
+          </Typography>
+          
+          {subtitle && (
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: theme.palette.text.secondary, 
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                lineHeight: 1.6,
+                fontWeight: 500,
+                maxWidth: '600px',
+                mx: 'auto',
+                opacity: 0.85
+              }}
+            >
+              {subtitle}
+            </Typography>
+          )}
+        </motion.div>
+      </Container>
+
+      {/* 3D Perspective Plane Container */}
+      <Box sx={{
+        position: 'relative',
+        width: '100%',
+        overflow: 'hidden',
+        py: { xs: 4, md: 8 },
+        // Smooth fade mask at edges
+        maskImage: 'radial-gradient(ellipse 65% 55% at 50% 50%, #000 35%, transparent 100%)',
+        WebkitMaskImage: 'radial-gradient(ellipse 65% 55% at 50% 50%, #000 35%, transparent 100%)',
+      }}>
+        <Box sx={{
+          perspective: '1200px',
+          width: '100%',
+        }}>
+          <Box sx={{
+            transform: 'rotateX(52deg) scale(1.15) translateY(-5%)',
+            transformStyle: 'preserve-3d',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: { xs: 1.5, sm: 2.5, md: 3.5 },
+            width: '140%',
+            marginLeft: '-20%',
+          }}>
+            {rows.map((rowItems, idx) => (
+              <MarqueeRow 
+                key={idx} 
+                items={rowItems} 
+                direction={idx % 2 === 0 ? 'left' : 'right'} 
+                speed={22 + idx * 4} 
+              />
+            ))}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+

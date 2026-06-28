@@ -82,7 +82,13 @@ function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false }}
               transition={{ duration: 0.8 }}
-              onClick={() => navigate(`?preview=${encodeURIComponent(project.link)}&title=${encodeURIComponent(project.title)}`)}
+              onClick={() => {
+                if (isMobile) {
+                  window.open(project.link, '_blank', 'noopener,noreferrer');
+                } else {
+                  navigate(`?preview=${encodeURIComponent(project.link)}&title=${encodeURIComponent(project.title)}`);
+                }
+              }}
               sx={{ 
                 position: 'relative',
                 cursor: 'pointer',
@@ -125,7 +131,7 @@ function Projects() {
                   className="thumb"
                   sx={{ 
                     width: '100%', 
-                    height: { xs: 300, md: 450 },
+                    height: { xs: 200, sm: 320, md: 450 },
                     objectFit: 'cover',
                     transition: 'transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)'
                   }}
@@ -141,7 +147,7 @@ function Projects() {
                   fontWeight: 950, 
                   fontFamily: '"Outfit", sans-serif',
                   mb: 3,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  fontSize: { xs: '2rem', sm: '2.75rem', md: '3.5rem' },
                   color: 'primary.main',
                   transition: 'all 0.4s ease'
                 }}>
@@ -150,7 +156,7 @@ function Projects() {
                 <Typography variant="body1" sx={{ 
                   color: 'rgba(255, 255, 255, 0.75)', 
                   lineHeight: 1.8, 
-                  fontSize: '1.1rem',
+                  fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.1rem' },
                   mb: 0,
                   maxWidth: 600
                 }}>

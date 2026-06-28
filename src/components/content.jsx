@@ -73,7 +73,7 @@ function Content() {
               <Grid item xs={12} md={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
 
                 <Typography variant="h1" sx={{
-                  fontSize: { xs: '5rem', md: '8rem' },
+                  fontSize: { xs: '3.5rem', sm: '5rem', md: '8rem' },
                   lineHeight: 0.9,
                   fontWeight: 950,
                   fontFamily: '"Outfit", sans-serif',
@@ -151,9 +151,9 @@ function Content() {
                     endIcon={<ArrowForwardIcon />}
                     href="#projects"
                     sx={{
-                      px: 6, py: 2,
+                      px: { xs: 4, sm: 6 }, py: { xs: 1.5, sm: 2 },
                       borderRadius: 100,
-                      fontSize: '1.05rem',
+                      fontSize: { xs: '0.95rem', sm: '1.05rem' },
                       fontWeight: 800,
                       letterSpacing: '0.5px',
                       background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
@@ -177,9 +177,9 @@ function Content() {
                     component={Link}
                     to="/contact"
                     sx={{
-                      px: 6, py: 2,
+                      px: { xs: 4, sm: 6 }, py: { xs: 1.5, sm: 2 },
                       borderRadius: 100,
-                      fontSize: '1.05rem',
+                      fontSize: { xs: '0.95rem', sm: '1.05rem' },
                       fontWeight: 700,
                       letterSpacing: '0.5px',
                       borderWidth: 2,
@@ -283,7 +283,7 @@ function Content() {
             flexDirection: 'column',
             justifyContent: 'flex-end',
             alignItems: 'flex-start',
-            p: { xs: 3, md: 8 },
+            p: { xs: 2, sm: 5, md: 8 },
             borderRadius: 8,
             overflow: 'hidden',
             backgroundColor: 'rgba(20, 20, 25, 0.15)',
@@ -319,7 +319,7 @@ function Content() {
               position: 'relative', zIndex: 1,
               width: '100%',
               maxWidth: { md: 550 },
-              p: { xs: 4, md: 5 },
+              p: { xs: 2.5, sm: 4, md: 5 },
               borderRadius: 6,
               background: 'rgba(20, 20, 25, 0.22)',
               backdropFilter: 'blur(30px)',
@@ -340,14 +340,14 @@ function Content() {
                   <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 900, letterSpacing: 3, mb: 1, display: 'block' }}>
                     FEATURED PROJECT
                   </Typography>
-                  <Typography variant="h3" sx={{ color: '#fff', mb: 2, fontWeight: 900, fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.5px' }}>
+                  <Typography variant="h3" sx={{ color: '#fff', mb: 2, fontWeight: 900, fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.5px', fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem' } }}>
                     {projects[currentSlide]?.title}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)', mb: 4, lineHeight: 1.7, fontWeight: 450 }}>
+                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)', mb: 4, lineHeight: 1.7, fontWeight: 450, fontSize: { xs: '0.95rem', md: '1.1rem' } }}>
                     {projects[currentSlide]?.description}
                   </Typography>
 
-                  <Box sx={{ display: 'flex', gap: 2.5, alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: { xs: 1.5, sm: 2.5 }, alignItems: 'center' }}>
                     <IconButton
                       onClick={prevSlide}
                       sx={{
@@ -368,16 +368,19 @@ function Content() {
                       <ChevronLeftIcon />
                     </IconButton>
                     <Button
-                      component={Link}
-                      to={`?preview=${encodeURIComponent(projects[currentSlide]?.link)}&title=${encodeURIComponent(projects[currentSlide]?.title)}`}
+                      component={isMobile ? 'a' : Link}
+                      to={isMobile ? undefined : `?preview=${encodeURIComponent(projects[currentSlide]?.link)}&title=${encodeURIComponent(projects[currentSlide]?.title)}`}
+                      href={isMobile ? projects[currentSlide]?.link : undefined}
+                      target={isMobile ? '_blank' : undefined}
+                      rel={isMobile ? 'noopener noreferrer' : undefined}
                       variant="contained"
                       sx={{
                         flex: 1,
-                        py: 1.8,
+                        py: { xs: 1.2, sm: 1.8 },
                         borderRadius: 100,
                         background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                         fontWeight: 800,
-                        fontSize: '1rem',
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
                         boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
                         '&:hover': {
                           background: `linear-gradient(45deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,

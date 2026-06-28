@@ -52,7 +52,7 @@ const Contact = () => {
               animation: 'gradientShift 8s ease infinite',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              fontSize: { xs: '3rem', md: '5rem' },
+              fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5rem' },
               letterSpacing: '-0.02em'
             }}>
               GET IN TOUCH.
@@ -72,7 +72,7 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Box sx={{ 
-                p: { xs: 5, md: 8 }, 
+                p: { xs: 3, sm: 6, md: 8 }, 
                 textAlign: 'center',
                 borderRadius: 10, 
                 backgroundColor: 'rgba(20, 20, 25, 0.35)',
@@ -97,10 +97,10 @@ const Contact = () => {
                   size="large" 
                   endIcon={<ArrowForwardIcon />}
                   sx={{ 
-                    px: 6,
-                    py: 2.5, 
+                    px: { xs: 4, sm: 6 },
+                    py: { xs: 2, sm: 2.5 }, 
                     borderRadius: 100, 
-                    fontSize: '1.15rem', 
+                    fontSize: { xs: '0.95rem', sm: '1.15rem' }, 
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: 1.5,
@@ -121,7 +121,7 @@ const Contact = () => {
 
                 <Box sx={{ mt: 8, pt: 6, borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}` }}>
                   <Typography variant="subtitle2" sx={{ mb: 4, fontWeight: 700, opacity: 0.6, letterSpacing: 2 }}>OR CONNECT VIA</Typography>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 2, md: 4 }, flexWrap: 'wrap' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', gap: { xs: 2, sm: 4 }, flexWrap: 'wrap' }}>
                     {[
                       { icon: <EmailIcon />, label: 'Email', href: 'mailto:hello@pkwebworks.com', onClick: null },
                       { icon: <InstagramIcon />, label: 'Instagram', href: 'https://www.instagram.com/madebykrix/', onClick: null },
@@ -137,7 +137,7 @@ const Contact = () => {
                             border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.25)}`,
                             bgcolor: (theme) => alpha(theme.palette.primary.main, 0.05),
                             color: 'primary.main',
-                            p: 1.8,
+                            p: { xs: 1.5, sm: 1.8 },
                             transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                             '&:hover': { 
                               borderColor: 'primary.main',
