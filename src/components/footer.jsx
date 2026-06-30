@@ -94,7 +94,7 @@ function Footer() {
             <Grid size={{ xs: 12, md: 4 }}>
               <motion.div variants={itemVariants}>
                 <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '24px' }}>
-                  <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
+                  <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
                   <Box
                     sx={{
                       background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,

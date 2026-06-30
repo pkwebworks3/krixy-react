@@ -125,7 +125,7 @@ function Navbar() {
           {/* Desktop Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
+              <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
               <Box
                 sx={{
                   background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
@@ -151,7 +151,7 @@ function Navbar() {
           {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <img src="1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
+              <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
               <Box
                 sx={{
                   background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
