@@ -36,7 +36,8 @@ const ThemeAccents = () => {
       pointerEvents: 'none',
       background: 'transparent'
     }}>
-      {/* Vertical Tech Lines */}
+      {/* Old accents commented out to prevent clash with the new HeroBackground */}
+      {/* 
       <Box sx={{
         position: 'absolute',
         top: 0,
@@ -73,7 +74,6 @@ const ThemeAccents = () => {
         ))}
       </Box>
 
-      {/* Bottom Rising Glow Accent */}
       <Box
         sx={{
           position: 'absolute',
@@ -96,6 +96,7 @@ const ThemeAccents = () => {
           }
         }}
       />
+      */}
     </Box>
   );
 };

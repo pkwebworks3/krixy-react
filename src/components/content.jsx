@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Container, Grid, Typography, Button, IconButton, Card, useTheme, useMediaQuery, alpha, Snackbar, Alert } from '@mui/material';
+import HeroBackground from './HeroBackground';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import SendIcon from '@mui/icons-material/Send';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -48,6 +49,7 @@ function Content() {
         overflow: 'hidden',
         background: 'transparent'
       }}>
+        <HeroBackground />
         <Container disableGutters sx={{ position: 'relative', zIndex: 1, width: { xs: '94%', md: '88%' }, maxWidth: '1300px !important' }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
