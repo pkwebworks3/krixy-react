@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, IconButton, Tooltip, CircularProgress, useTheme, alpha, useMediaQuery } from '@mui/material';
+import { Box, Typography, IconButton, Tooltip, CircularProgress, useTheme, alpha, useMediaQuery, Button } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '@mui/icons-material/Close';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -40,14 +40,6 @@ const ProjectShowroom = () => {
     const searchStr = newParams.toString();
     navigate(location.pathname + (searchStr ? `?${searchStr}` : ''));
   };
-
-  // Redirect/close guard for mobile users
-  useEffect(() => {
-    if (previewUrl && isMobile) {
-      window.open(previewUrl, '_blank', 'noopener,noreferrer');
-      handleClose();
-    }
-  }, [previewUrl, isMobile]);
 
   const handleReload = () => {
     setIframeKey((prev) => prev + 1);
@@ -234,23 +226,26 @@ const ProjectShowroom = () => {
               </Box>
 
               {/* Actions */}
-              <Tooltip title="Reload Simulator" arrow>
-                <IconButton
-                  onClick={handleReload}
-                  sx={{
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-                    '&:hover': { color: 'primary.main', borderColor: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08) }
-                  }}
-                >
-                  <RefreshIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+              {!isMobile && (
+                <Tooltip title="Reload Simulator" arrow>
+                  <IconButton
+                    onClick={handleReload}
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                      '&:hover': { color: 'primary.main', borderColor: 'primary.main', bgcolor: (theme) => alpha(theme.palette.primary.main, 0.08) }
+                    }}
+                  >
+                    <RefreshIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
 
               <Tooltip title="Open in new tab" arrow>
                 <IconButton
                   href={previewUrl}
                   target="_blank"
+                  rel="noopener noreferrer"
                   sx={{
                     color: 'rgba(255, 255, 255, 0.6)',
                     border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
@@ -287,62 +282,126 @@ const ProjectShowroom = () => {
               overflow: 'hidden',
             }}
           >
-            {/* Loading Indicator */}
-            {isLoading && (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  bgcolor: '#0d0d0f',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 2,
-                  zIndex: 2,
-                }}
-              >
-                <CircularProgress color="primary" size={50} />
-                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)', fontFamily: '"Outfit", sans-serif', letterSpacing: 1 }}>
-                  LOADING SIMULATOR...
-                </Typography>
-              </Box>
-            )}
-
-            {/* Frame Container for Device width scaling */}
-            <Box
-              component={motion.div}
-              animate={{ width: getDeviceWidth() }}
-              transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-              sx={{
-                height: '100%',
-                maxWidth: '100%',
-                position: 'relative',
+            {isMobile ? (
+              <Box sx={{
+                p: 4,
+                textAlign: 'center',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: device !== 'desktop' ? '0 0 50px rgba(0, 0, 0, 0.8)' : 'none',
-                borderLeft: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
-                borderRight: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
-              }}
-            >
-              <iframe
-                key={iframeKey}
-                src={previewUrl}
-                title={previewTitle || 'Project Preview'}
-                onLoad={() => setIsLoading(false)}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: 'none',
-                  backgroundColor: '#ffffff',
-                }}
-                sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-modals"
-              />
-            </Box>
+                maxWidth: '450px',
+                width: '90%',
+                mx: 'auto'
+              }}>
+                <SmartphoneIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
+                <Typography variant="h5" sx={{ fontWeight: 800, color: '#fff', mb: 1.5, fontFamily: '"Outfit", sans-serif' }}>
+                  Mobile Device Notice
+                </Typography>
+                <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 4, lineHeight: 1.6, fontFamily: '"Inter", sans-serif' }}>
+                  This simulator layout and its sub-projects are optimized for desktop resolutions. You can open this project directly in a new tab for native mobile display.
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 2, width: '100%', flexDirection: 'column' }}>
+                  <Button
+                    variant="contained"
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      py: 1.5,
+                      borderRadius: 100,
+                      background: `linear-gradient(45deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                      fontWeight: 800,
+                      color: '#ffffff',
+                      boxShadow: `0 8px 24px ${alpha(theme.palette.primary.main, 0.35)}`,
+                      '&:hover': {
+                        background: `linear-gradient(45deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
+                        boxShadow: `0 12px 30px ${alpha(theme.palette.primary.main, 0.55)}`,
+                      }
+                    }}
+                  >
+                    Open Project in New Tab
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={handleClose}
+                    sx={{
+                      py: 1.2,
+                      borderRadius: 100,
+                      borderColor: 'rgba(255, 255, 255, 0.15)',
+                      color: 'rgba(255, 255, 255, 0.65)',
+                      fontWeight: 700,
+                      fontFamily: '"Outfit", sans-serif',
+                      '&:hover': {
+                        borderColor: '#ffffff',
+                        color: '#ffffff',
+                        background: 'rgba(255, 255, 255, 0.05)'
+                      }
+                    }}
+                  >
+                    Close Simulator
+                  </Button>
+                </Box>
+              </Box>
+            ) : (
+              <>
+                {/* Loading Indicator */}
+                {isLoading && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      bgcolor: '#0d0d0f',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 2,
+                      zIndex: 2,
+                    }}
+                  >
+                    <CircularProgress color="primary" size={50} />
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)', fontFamily: '"Outfit", sans-serif', letterSpacing: 1 }}>
+                      LOADING SIMULATOR...
+                    </Typography>
+                  </Box>
+                )}
+
+                {/* Frame Container for Device width scaling */}
+                <Box
+                  component={motion.div}
+                  animate={{ width: getDeviceWidth() }}
+                  transition={{ type: 'spring', damping: 30, stiffness: 200 }}
+                  sx={{
+                    height: '100%',
+                    maxWidth: '100%',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: device !== 'desktop' ? '0 0 50px rgba(0, 0, 0, 0.8)' : 'none',
+                    borderLeft: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
+                    borderRight: device !== 'desktop' ? (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}` : 'none',
+                  }}
+                >
+                  <iframe
+                    key={iframeKey}
+                    src={previewUrl}
+                    title={previewTitle || 'Project Preview'}
+                    onLoad={() => setIsLoading(false)}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      border: 'none',
+                      backgroundColor: '#ffffff',
+                    }}
+                  />
+                </Box>
+              </>
+            )}
           </Box>
         </Box>
       </Box>

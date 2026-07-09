@@ -135,7 +135,7 @@ function Testimonials() {
               >
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', textAlign: { xs: 'center', sm: 'left' }, mb: 4, gap: { xs: 2, sm: 3 } }}>
                   <Avatar
-                    src={testimonials[currentTestimonial].image}
+                    src={testimonials[currentTestimonial].image ? import.meta.env.BASE_URL + testimonials[currentTestimonial].image.replace(/^\//, '') : ''}
                     alt={testimonials[currentTestimonial].name}
                     sx={{ width: { xs: 70, sm: 80 }, height: { xs: 70, sm: 80 }, border: `2px solid ${theme.palette.primary.main}` }}
                   />

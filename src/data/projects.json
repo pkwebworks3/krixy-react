@@ -1,20 +1,26 @@
 [
   {
     "title": "Calculator v4",
-    "description": "a simple calulator website using glassmoprism effect",
+    "description": "a simple calculator website using glassmorphism effects and modern styling.",
     "project_thumb": "/pro_img/proj_thumb1.jpg",
-    "link": "/projects/calc%204/index.html"
+    "link": "/projects/calc%204/index.html",
+    "category": "Calculators",
+    "tags": ["HTML", "CSS", "JS", "Glassmorphism"]
   },
   {
     "title": "Read My Comic",
-    "description": "a simple website for reading comics ",
+    "description": "a simple interactive website for browsing and reading comics.",
     "project_thumb": "/pro_img/proj_thumb2.jpg",
-    "link": "/projects/readmycomic/index.html"
+    "link": "/projects/readmycomic/index.html",
+    "category": "Utilities & Apps",
+    "tags": ["HTML", "CSS", "JS", "Comics"]
   },
   {
     "title": "Krix Cases",
-    "description": "a simple website that changes the cases of text",
+    "description": "a neat text-manipulation tool for switching cases (UPPER, lower, Sentence, Title).",
     "project_thumb": "/pro_img/proj_thumb11.jpg",
-    "link": "/projects/switch%20case/index.html"
+    "link": "/projects/switch%20case/index.html",
+    "category": "Utilities & Apps",
+    "tags": ["HTML", "CSS", "JS", "Text Processing"]
   }
 ]

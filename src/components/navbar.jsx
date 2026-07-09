@@ -126,51 +126,45 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
-              <Box
+              <Typography
                 sx={{
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                   color: '#ffffff',
-                  fontSize: '0.55rem',
-                  fontWeight: 900,
-                  px: 1,
-                  py: 0.25,
-                  borderRadius: '12px',
-                  letterSpacing: '0.8px',
-                  textTransform: 'uppercase',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  boxShadow: `0 4px 10px ${alpha(theme.palette.primary.main, 0.35)}`,
+                  fontSize: '1.2rem',
+                  fontWeight: 950,
+                  letterSpacing: '1px',
                   fontFamily: '"Outfit", sans-serif',
+                  textTransform: 'uppercase',
+                  background: `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
                   pointerEvents: 'none',
                 }}
               >
-                Beta
-              </Box>
+                WEB
+              </Typography>
             </Link>
           </Box>
-
+ 
           {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
-              <Box
+              <Typography
                 sx={{
-                  background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                   color: '#ffffff',
-                  fontSize: '0.5rem',
-                  fontWeight: 900,
-                  px: 0.8,
-                  py: 0.2,
-                  borderRadius: '10px',
+                  fontSize: '1rem',
+                  fontWeight: 950,
                   letterSpacing: '0.8px',
-                  textTransform: 'uppercase',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  boxShadow: `0 4px 8px ${alpha(theme.palette.primary.main, 0.35)}`,
                   fontFamily: '"Outfit", sans-serif',
+                  textTransform: 'uppercase',
+                  background: `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
                   pointerEvents: 'none',
                 }}
               >
-                Beta
-              </Box>
+                WEB
+              </Typography>
             </Link>
           </Box>
 
