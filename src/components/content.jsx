@@ -15,6 +15,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, ea
 import { stacks } from '../data/stacks';
 
 import { TechStacks } from './TechStacks';
+import Services from './Services';
 
 function Content() {
   const theme = useTheme();
@@ -80,19 +81,20 @@ function Content() {
                   fontWeight: 950,
                   fontFamily: '"Outfit", sans-serif',
                   letterSpacing: '-0.03em',
+                  textTransform: 'uppercase',
                   mb: 3,
                   background: (theme) => `linear-gradient(270deg, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.6)}, ${theme.palette.secondary.main}, ${theme.palette.primary.main})`,
                   backgroundSize: '400% 400%',
-                  animation: 'gradientShift 6s ease infinite',
+                  animation: 'gradientShift 15s ease infinite',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   filter: (theme) => `drop-shadow(0 4px 20px ${alpha(theme.palette.primary.main, 0.15)})`
                 }}>
                   <TypeAnimation
-                    sequence={['krix', 1000]}
+                    sequence={['KRIX', 1000]}
                     wrapper="span"
-                    speed={20}
-                    cursor={true}
+                    speed={8}
+                    cursor={false}
                   />
                 </Typography>
 
@@ -239,6 +241,8 @@ function Content() {
       </Box>
 
       <TechStacks />
+
+      <Services />
 
       {/* Featured Projects Section */}
       <Box

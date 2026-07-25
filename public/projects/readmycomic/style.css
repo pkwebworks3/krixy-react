@@ -71,132 +71,185 @@ body{
     background-color: #323030;
     border-radius: 10px;
 }
-.banner .bannerimg{
+/* Banner Section */
+.banner {
+    position: relative;
+    margin-top: 60px; /* Clear fixed header */
     width: 100%;
-    height: 90%;
+    background: #000;
+}
+.banner .bannerimg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.banner a {
     position: absolute;
-    top: 8%;
-    left: 0;
+    bottom: 8%;
+    right: 5%;
+    background: #5c7dff;
+    color: #FFF;
+    border-radius: 10px;
+    padding: 12px 24px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0px 4px 15px rgba(92, 125, 255, 0.4);
 }
-.banner a{
-   position: absolute;
-   top: 80%;
-   right: 5%;
-   background: #5c7dff;
-   color: #FFF;
-   border-radius: 10px;
-   padding: 20px 30px;
-   cursor: pointer;
-   text-decoration: none;
-}
-.banner a:hover{
+.banner a:hover {
     background: #91a4f3;
+    transform: translateY(-2px);
 }
-.losbw{
-    position: absolute;
-    top: 110%;
-    left: 10%;
+@media (max-width: 600px) {
+    .banner a {
+        padding: 8px 16px;
+        font-size: 12px;
+        bottom: 5%;
+        right: 5%;
+    }
 }
-.item1{
+
+/* Comic Showcase Section */
+.comic {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 60px 5%;
+    flex-wrap: wrap;
+    background: #000;
+    box-sizing: border-box;
+}
+
+.losbw, .loscolor {
+    flex: 1 1 300px;
+    max-width: 360px;
+    margin-bottom: 20px;
+}
+
+.item1 {
     background: #252525;
     padding: 30px;
     border-radius: 10px;
 }
-.losbw h4{
+
+.losbw h4, .loscolor h4 {
     background: #5c7dff;
     color: #FFF;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
+    padding: 10px;
+    margin-top: 0;
+    transition: background-color 0.2s;
 }
-.losbw h4:hover{
+.losbw h4:hover, .loscolor h4:hover {
     background: #91a4f3;
-}
-.losbw table{
-    background-color: #252525;
-    padding: 30px;
-    border-radius: 30px;
-    box-shadow: 0px 5px 0px 0px rgb(33, 33, 33);
-}
-.losbw .poster{
-    width: 300px;
-    height: 500px;
-    border-radius: 10px;
-}
-.losbw a{
-    background: #5c7dff;
-    color: #FFF;
-    border-radius: 10px;
-    padding: 10px 10px;
-    cursor: pointer;
-    text-decoration: none;
 }
 
-.loscolor{
-    position: absolute;
-    top: 110%;
-    right: 10%;
-} 
-.loscolor table{
+.losbw table, .loscolor table {
     background-color: #252525;
-    padding: 30px;
+    padding: 20px;
     border-radius: 30px;
     box-shadow: 0px 5px 0px 0px rgb(33, 33, 33);
+    width: 100%;
+    box-sizing: border-box;
 }
-.loscolor .poster{
-    width: 300px;
-    height: 500px;
+
+.losbw .poster, .loscolor .poster {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
     border-radius: 10px;
+    display: block;
+    margin: 0 auto;
 }
-.loscolor a{
+
+.losbw p, .loscolor p {
+    font-size: 16px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.losbw th a, .loscolor th a {
+    display: inline-block;
     background: #5c7dff;
     color: #FFF;
     border-radius: 10px;
-    padding: 10px 10px;
+    padding: 10px 20px;
     cursor: pointer;
     text-decoration: none;
+    transition: background-color 0.2s, transform 0.2s;
 }
-.footer{
-    position: absolute;
-    top: 220%;
-    left: 0;
+.losbw th a:hover, .loscolor th a:hover {
+    background: #91a4f3;
+    transform: translateY(-1px);
+}
+
+/* Footer Section */
+.footer {
+    position: relative;
     background-color: #323030;
     width: 100%;
-    height: 20%;
     border-top: 10px solid rgb(36, 36, 36);
+    box-sizing: border-box;
+    padding: 30px 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
 }
+
 .footer .smedia {
-    position: relative;
-    top: 60%;
-    left: 10%;
-    width: fit-content;
+    position: static;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
 }
-.footer .smedia a{
+.footer .smedia a {
     background: #5c7dff;
     color: #FFF;
     border-radius: 10px;
-    padding: 10px 10px;
+    padding: 10px 15px;
     cursor: pointer;
     text-decoration: none;
-    margin: 10px;
+    transition: background-color 0.2s;
+    margin: 0;
 }
-.footer .smedia a:hover{
+.footer .smedia a:hover {
     background: #91a4f3;
 }
-.footer .copygiht{
-    position: relative;
-    left: 10%;
-    width: fit-content;
+
+.footer .copygiht {
+    position: static;
+    margin: 0;
 }
-.footer .logos{
-    width: 200px;
-    position: absolute;
-    top: 40%;
-    left: 70%;
+.footer .copygiht h3 {
+    margin: 0;
+    font-size: 16px;
 }
-.footer .logos .logo{
-    width: 200px;
+
+.footer .logos {
+    position: static;
+    width: 120px;
+    margin: 0;
 }
-@media (max-width: 1280px){
-    /* Allow body to display on smaller screens for the simulator preview */
+.footer .logos .logo {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 10%;
+    }
 }

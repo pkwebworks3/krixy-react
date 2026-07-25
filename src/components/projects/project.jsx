@@ -33,8 +33,8 @@ function Projects() {
           sx: {
             borderRadius: 4,
             p: 1,
-            bgcolor: 'rgba(24, 24, 27, 0.9)',
-            border: `1px solid ${alpha(theme.palette.warning.main, 0.3)}`,
+            bgcolor: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(24, 24, 27, 0.9)',
+            border: `1px solid ${alpha(theme.palette.warning.main, theme.palette.mode === 'light' ? 0.4 : 0.3)}`,
             boxShadow: `0 20px 60px ${alpha(theme.palette.warning.main, 0.15)}`,
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
@@ -219,17 +219,21 @@ function Projects() {
                       height: '100%',
                       display: 'flex',
                       flexDirection: 'column',
-                      background: 'rgba(20, 20, 25, 0.35)',
+                      background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.35)',
                       backdropFilter: 'blur(30px)',
                       WebkitBackdropFilter: 'blur(30px)',
-                      border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.03)',
+                      border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.18 : 0.12)}`,
+                      boxShadow: theme.palette.mode === 'light'
+                        ? '0 20px 40px rgba(0,0,0,0.04), inset 0 1px 1px rgba(255,255,255,0.8)'
+                        : '0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.03)',
                       transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
                       '&:hover': {
                         transform: 'translateY(-8px)',
                         borderColor: 'primary.main',
-                        background: 'rgba(25, 25, 30, 0.55)',
-                        boxShadow: (theme) => `0 30px 60px rgba(0, 0, 0, 0.5), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}`,
+                        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(25, 25, 30, 0.55)',
+                        boxShadow: (theme) => theme.palette.mode === 'light'
+                          ? `0 30px 60px rgba(0, 0, 0, 0.08), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}`
+                          : `0 30px 60px rgba(0, 0, 0, 0.5), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}`,
                         '& .thumb-img': {
                           transform: 'scale(1.08)',
                         },
@@ -289,7 +293,7 @@ function Projects() {
                         variant="h5" 
                         sx={{ 
                           fontWeight: 900, 
-                          color: '#ffffff', 
+                          color: theme.palette.text.primary, 
                           fontFamily: '"Outfit", sans-serif',
                           mb: 1.5,
                           fontSize: '1.4rem'
@@ -320,12 +324,12 @@ function Projects() {
                               px: 1.2,
                               py: 0.4,
                               borderRadius: '4px',
-                              bgcolor: 'rgba(255, 255, 255, 0.03)',
-                              color: 'rgba(255, 255, 255, 0.6)',
+                              bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.03)',
+                              color: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.6)',
                               fontSize: '0.7rem',
                               fontWeight: 650,
                               fontFamily: '"Outfit", sans-serif',
-                              border: '1px solid rgba(255, 255, 255, 0.05)',
+                              border: theme.palette.mode === 'light' ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(255, 255, 255, 0.05)',
                             }}
                           >
                             {t}
@@ -341,8 +345,8 @@ function Projects() {
                         sx={{
                           borderRadius: '12px',
                           py: 1.2,
-                          bgcolor: 'rgba(255, 255, 255, 0.03)',
-                          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                          bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.02)' : 'rgba(255, 255, 255, 0.03)',
+                          border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.2)}`,
                           color: theme.palette.primary.main,
                           fontWeight: 800,
                           fontSize: '0.85rem',

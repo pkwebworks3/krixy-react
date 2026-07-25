@@ -101,19 +101,23 @@ function Testimonials() {
         <Box sx={{ maxWidth: 800, mx: 'auto', position: 'relative' }}>
           <Card sx={{
             p: { xs: 2.5, sm: 4, md: 6 },
-            backgroundColor: 'rgba(20, 20, 25, 0.18)',
+            backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.18)',
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
             position: 'relative',
             overflow: 'visible',
             mb: 4,
             borderRadius: 8,
-            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
-            boxShadow: (theme) => `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
+            boxShadow: (theme) => theme.palette.mode === 'light'
+              ? '0 20px 40px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+              : `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             '&:hover': {
-              borderColor: (theme) => alpha(theme.palette.primary.main, 0.65),
-              boxShadow: (theme) => `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha(theme.palette.primary.main, 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
+              borderColor: (theme) => alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.45 : 0.65),
+              boxShadow: (theme) => theme.palette.mode === 'light'
+                ? `0 30px 60px rgba(0, 0, 0, 0.08), 0 0 35px ${alpha(theme.palette.primary.main, 0.25)}`
+                : `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha(theme.palette.primary.main, 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
             }
           }}>
             <FormatQuoteIcon sx={{

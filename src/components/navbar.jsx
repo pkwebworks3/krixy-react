@@ -94,17 +94,17 @@ function Navbar() {
         maxWidth: isScrolled ? 'none' : '1300px',
         borderRadius: isScrolled ? 0 : { xs: '16px', md: '30px' },
         background: isScrolled
-          ? 'rgba(10, 10, 12, 0.8)'
-          : 'rgba(20, 20, 25, 0.35)',
+          ? (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(10, 10, 12, 0.8)')
+          : (theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.4)' : 'rgba(20, 20, 25, 0.35)'),
         backdropFilter: 'blur(30px)',
         WebkitBackdropFilter: 'blur(30px)',
         borderBottom: isScrolled
-          ? `1px solid ${alpha(theme.palette.primary.main, 0.25)}`
+          ? `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.15 : 0.25)}`
           : 'none',
-        border: !isScrolled ? `1px solid ${alpha(theme.palette.primary.main, 0.12)}` : 'none',
+        border: !isScrolled ? `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.18 : 0.12)}` : 'none',
         boxShadow: isScrolled 
-          ? '0 20px 50px rgba(0, 0, 0, 0.5)' 
-          : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+          ? (theme.palette.mode === 'light' ? '0 10px 30px rgba(0, 0, 0, 0.05)' : '0 20px 50px rgba(0, 0, 0, 0.5)')
+          : (theme.palette.mode === 'light' ? '0 5px 20px rgba(0, 0, 0, 0.02), inset 0 1px 1px rgba(255, 255, 255, 0.8)' : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)'),
         transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         overflow: 'hidden',
         zIndex: 1100,
@@ -112,7 +112,7 @@ function Navbar() {
           content: '""',
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          background: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, ${alpha(theme.palette.primary.main, 0.18)}, transparent 100%)`,
+          background: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.12 : 0.18)}, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
           transition: 'opacity 0.3s ease',
@@ -169,7 +169,40 @@ function Navbar() {
           </Box>
 
           {/* Mobile Menu */}
-          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1.5 }}>
+            {/* Mobile Theme Toggle */}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'flex' }}>
+              <IconButton
+                onClick={colorMode.toggleColorMode}
+                sx={{
+                  color: theme.palette.mode === 'dark' ? '#ffdf00' : theme.palette.primary.main,
+                  bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                  borderRadius: '10px',
+                  p: 1,
+                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                  '&:hover': {
+                    bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)',
+                    borderColor: 'primary.main',
+                    boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.2)}`,
+                  }
+                }}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={theme.palette.mode}
+                    initial={{ y: -15, opacity: 0, rotate: -90 }}
+                    animate={{ y: 0, opacity: 1, rotate: 0 }}
+                    exit={{ y: 15, opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ display: 'flex' }}
+                  >
+                    {theme.palette.mode === 'dark' ? <Brightness7Icon fontSize="small" /> : <Brightness4Icon fontSize="small" />}
+                  </motion.div>
+                </AnimatePresence>
+              </IconButton>
+            </motion.div>
+
             <IconButton
               size="large"
               onClick={handleOpenNavMenu}
@@ -260,9 +293,11 @@ function Navbar() {
                         right: 0,
                         bottom: 0,
                         borderRadius: '100px',
-                        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)`,
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.35)}`,
-                        boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.15)}`,
+                        background: theme.palette.mode === 'light'
+                          ? `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.18)} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`
+                          : `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.secondary.main, 0.08)} 100%)`,
+                        border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
+                        boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.08 : 0.15)}`,
                         zIndex: 0
                       }}
                       transition={{ type: "spring", stiffness: 350, damping: 30 }}
@@ -273,7 +308,9 @@ function Navbar() {
                     to={page.path}
                     startIcon={page.icon}
                     sx={{ 
-                      color: isActive ? '#ffffff' : alpha(theme.palette.text.primary, 0.8), 
+                      color: isActive 
+                        ? (theme.palette.mode === 'light' ? theme.palette.primary.main : '#ffffff') 
+                        : alpha(theme.palette.text.primary, 0.7), 
                       fontWeight: isActive ? 800 : 650,
                       fontSize: '0.95rem',
                       fontFamily: '"Outfit", sans-serif',
@@ -287,12 +324,12 @@ function Navbar() {
                       transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                       background: 'transparent',
                       border: '1px solid transparent',
-                      textShadow: isActive ? `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}` : 'none',
+                      textShadow: isActive && theme.palette.mode === 'dark' ? `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}` : 'none',
                       '&:hover': { 
-                        color: '#ffffff',
-                        borderColor: isActive ? 'transparent' : 'rgba(255, 255, 255, 0.1)',
-                        background: isActive ? 'transparent' : 'rgba(255, 255, 255, 0.08)',
-                        boxShadow: isActive ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        color: theme.palette.mode === 'light' ? theme.palette.primary.main : '#ffffff',
+                        borderColor: isActive ? 'transparent' : (theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.1)'),
+                        background: isActive ? 'transparent' : (theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.08)'),
+                        boxShadow: isActive ? 'none' : '0 4px 12px rgba(0, 0, 0, 0.03)',
                       } 
                     }}
                   >
@@ -301,6 +338,41 @@ function Navbar() {
                 </Box>
               );
             })}
+
+            {/* Desktop Theme Toggle */}
+            <Box sx={{ ml: 1 }}>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: 'flex' }}>
+                <IconButton
+                  onClick={colorMode.toggleColorMode}
+                  sx={{
+                    color: theme.palette.mode === 'dark' ? '#ffdf00' : theme.palette.primary.main,
+                    bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.05)',
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                    borderRadius: '100px',
+                    p: 1.2,
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    '&:hover': {
+                      bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.12)',
+                      borderColor: 'primary.main',
+                      boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.25)}`,
+                    }
+                  }}
+                >
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={theme.palette.mode}
+                      initial={{ y: -20, opacity: 0, rotate: -90 }}
+                      animate={{ y: 0, opacity: 1, rotate: 0 }}
+                      exit={{ y: 20, opacity: 0, rotate: 90 }}
+                      transition={{ duration: 0.2 }}
+                      style={{ display: 'flex' }}
+                    >
+                      {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                    </motion.div>
+                  </AnimatePresence>
+                </IconButton>
+              </motion.div>
+            </Box>
           </Box>
 
 
