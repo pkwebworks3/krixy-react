@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, useTheme, useMediaQuery, alpha } from '@mui/material';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 
 // Helper to convert hex to RGB
 const hexToRgb = (hex) => {
@@ -27,6 +28,49 @@ const HeroBackground = () => {
   const secondaryHex = theme.palette.secondary.main;
   const primaryRgb = hexToRgb(primaryHex);
   const secondaryRgb = hexToRgb(secondaryHex);
+
+  // Motion tracking for mouse offset parallax
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const trailMouseX = useSpring(mouseX, { stiffness: 80, damping: 24 });
+  const trailMouseY = useSpring(mouseY, { stiffness: 80, damping: 24 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const xNorm = (e.clientX / window.innerWidth) - 0.5;
+      const yNorm = (e.clientY / window.innerHeight) - 0.5;
+      mouseX.set(xNorm);
+      mouseY.set(yNorm);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  const { scrollY } = useScroll();
+  
+  // Transform functions for Z-depth scroll effects
+  const bgScrollY = useTransform(scrollY, [0, 1000], [0, 220]);
+  const canvasScrollY = useTransform(scrollY, [0, 1000], [0, 110]);
+  const gridScrollY = useTransform(scrollY, [0, 1000], [0, 60]);
+
+  // Combined mouse and scroll translations
+  const bgX1 = useTransform(trailMouseX, (v) => v * -55);
+  const bgY1 = useTransform(trailMouseY, (v) => v * -55);
+  const blob1Y = useTransform([bgScrollY, bgY1], ([s, m]) => s + m);
+
+  const bgX2 = useTransform(trailMouseX, (v) => v * -40);
+  const bgY2 = useTransform(trailMouseY, (v) => v * -40);
+  const blob2Y = useTransform([bgScrollY, bgY2], ([s, m]) => s * 0.75 + m);
+
+  const bgX3 = useTransform(trailMouseX, (v) => v * -30);
+  const bgY3 = useTransform(trailMouseY, (v) => v * -30);
+  const blob3Y = useTransform([bgScrollY, bgY3], ([s, m]) => s * 0.85 + m);
+
+  const canvasX = useTransform(trailMouseX, (v) => v * -25);
+  const canvasY = useTransform([canvasScrollY, trailMouseY], ([s, m]) => s + m * -25);
+
+  const gridX = useTransform(trailMouseX, (v) => v * -18);
+  const gridY = useTransform([gridScrollY, trailMouseY], ([s, m]) => s + m * -18);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -214,73 +258,113 @@ const HeroBackground = () => {
       `}</style>
 
       {/* Floating Fluid Aurora Blobs */}
-      <Box sx={{
-        position: 'absolute',
-        top: '-15%',
-        left: '-10%',
-        width: '55vw',
-        height: '55vw',
-        borderRadius: '50%',
-        background: `radial-gradient(circle, ${alpha(primaryHex, 0.22)} 0%, transparent 68%)`,
-        filter: 'blur(100px)',
-        animation: 'driftBlob1 28s ease-in-out infinite',
-        pointerEvents: 'none'
-      }} />
-
-      <Box sx={{
-        position: 'absolute',
-        bottom: '-20%',
-        right: '-15%',
-        width: '65vw',
-        height: '65vw',
-        borderRadius: '50%',
-        background: `radial-gradient(circle, ${alpha(secondaryHex, 0.16)} 0%, transparent 65%)`,
-        filter: 'blur(120px)',
-        animation: 'driftBlob2 35s ease-in-out infinite',
-        pointerEvents: 'none'
-      }} />
-
-      <Box sx={{
-        position: 'absolute',
-        top: '25%',
-        left: '35%',
-        width: '40vw',
-        height: '40vw',
-        borderRadius: '50%',
-        background: `radial-gradient(circle, ${alpha(primaryHex, 0.12)} 0%, transparent 70%)`,
-        filter: 'blur(90px)',
-        animation: 'driftBlob3 22s ease-in-out infinite',
-        pointerEvents: 'none'
-      }} />
-
-      {/* Interactive Constellation Canvas */}
-      <canvas
-        ref={canvasRef}
+      <Box
+        component={motion.div}
         style={{
+          x: bgX1,
+          y: blob1Y
+        }}
+        sx={{
+          position: 'absolute',
+          top: '-15%',
+          left: '-10%',
+          width: '55vw',
+          height: '55vw',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(primaryHex, 0.22)} 0%, transparent 68%)`,
+          filter: 'blur(100px)',
+          animation: 'driftBlob1 28s ease-in-out infinite',
+          pointerEvents: 'none'
+        }}
+      />
+
+      <Box
+        component={motion.div}
+        style={{
+          x: bgX2,
+          y: blob2Y
+        }}
+        sx={{
+          position: 'absolute',
+          bottom: '-20%',
+          right: '-15%',
+          width: '65vw',
+          height: '65vw',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(secondaryHex, 0.16)} 0%, transparent 65%)`,
+          filter: 'blur(120px)',
+          animation: 'driftBlob2 35s ease-in-out infinite',
+          pointerEvents: 'none'
+        }}
+      />
+
+      <Box
+        component={motion.div}
+        style={{
+          x: bgX3,
+          y: blob3Y
+        }}
+        sx={{
+          position: 'absolute',
+          top: '25%',
+          left: '35%',
+          width: '40vw',
+          height: '40vw',
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(primaryHex, 0.12)} 0%, transparent 70%)`,
+          filter: 'blur(90px)',
+          animation: 'driftBlob3 22s ease-in-out infinite',
+          pointerEvents: 'none'
+        }}
+      />
+
+      {/* Interactive Constellation Canvas Wrapper */}
+      <Box
+        component={motion.div}
+        style={{
+          x: canvasX,
+          y: canvasY
+        }}
+        sx={{
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          display: 'block',
+          pointerEvents: 'none'
+        }}
+      >
+        <canvas
+          ref={canvasRef}
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+          }}
+        />
+      </Box>
+
+      {/* Digital Tech Grid Mask for Developer Aesthetic */}
+      <Box
+        component={motion.div}
+        style={{
+          x: gridX,
+          y: gridY
+        }}
+        sx={{
+          position: 'absolute',
+          top: -30,
+          left: -30,
+          right: -30,
+          bottom: -30,
+          backgroundImage: `linear-gradient(${alpha(theme.palette.text.primary, 0.05)} 1px, transparent 1px),
+                            linear-gradient(90deg, ${alpha(theme.palette.text.primary, 0.05)} 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          opacity: 0.15,
+          mixBlendMode: 'overlay',
           pointerEvents: 'none'
         }}
       />
-
-      {/* Digital Tech Grid Mask for Developer Aesthetic */}
-      <Box sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: `linear-gradient(${alpha(theme.palette.background.default, 0.05)} 1px, transparent 1px),
-                          linear-gradient(90deg, ${alpha(theme.palette.background.default, 0.05)} 1px, transparent 1px)`,
-        backgroundSize: '40px 40px',
-        opacity: 0.15,
-        mixBlendMode: 'overlay',
-        pointerEvents: 'none'
-      }} />
     </Box>
   );
 };

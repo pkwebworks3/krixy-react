@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Card, useTheme, alpha, useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
+import TiltCard from './TiltCard';
 import CodeIcon from '@mui/icons-material/Code';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import PaletteIcon from '@mui/icons-material/Palette';
@@ -58,7 +59,7 @@ const Timeline = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Box sx={{ py: 10, position: 'relative' }}>
+    <Box id="timeline" sx={{ py: 10, position: 'relative' }}>
       {/* Header */}
       <Box sx={{ mb: 10, textAlign: 'center' }}>
         <Typography variant="h3" sx={{
@@ -138,83 +139,91 @@ const Timeline = () => {
                   textAlign: 'left'
                 }}
               >
-                <Card 
-                  sx={{ 
-                    p: { xs: 3, sm: 4 },
-                    borderRadius: '24px',
-                    background: 'rgba(20, 20, 25, 0.35)',
-                    backdropFilter: 'blur(30px)',
-                    WebkitBackdropFilter: 'blur(30px)',
-                    border: `1.5px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-                    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
-                    transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                      borderColor: theme.palette.primary.main,
-                      background: alpha(theme.palette.primary.main, 0.04),
-                      boxShadow: `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}`
-                    }
-                  }}
-                >
-                  <Typography 
-                    variant="caption" 
+                <TiltCard maxTilt={5}>
+                  <Card 
                     sx={{ 
-                      color: theme.palette.primary.main, 
-                      fontWeight: 900, 
-                      letterSpacing: 2, 
-                      textTransform: 'uppercase',
-                      fontFamily: '"Outfit", sans-serif',
-                      mb: 1.5,
-                      display: 'block'
-                    }}
-                  >
-                    {event.year}
-                  </Typography>
-                  <Typography 
-                    variant="h5" 
-                    sx={{ 
-                      fontWeight: 800, 
-                      color: '#ffffff', 
-                      fontFamily: '"Outfit", sans-serif',
-                      mb: 2,
-                      fontSize: { xs: '1.25rem', sm: '1.5rem' }
-                    }}
-                  >
-                    {event.title}
-                  </Typography>
-                  <Typography 
-                    variant="body2" 
-                    sx={{ 
-                      color: theme.palette.text.secondary, 
-                      lineHeight: 1.7, 
-                      mb: 2,
-                      fontFamily: '"Inter", sans-serif'
-                    }}
-                  >
-                    {event.description}
-                  </Typography>
-                  <Box 
-                    sx={{ 
-                      p: 1.5, 
-                      bgcolor: 'rgba(255, 255, 255, 0.02)', 
-                      borderRadius: '12px',
-                      borderLeft: `3px solid ${theme.palette.secondary.main}`,
-                      display: 'flex',
-                      alignItems: 'center'
+                      p: { xs: 3, sm: 4 },
+                      borderRadius: '24px',
+                      background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.35)',
+                      backdropFilter: 'blur(30px)',
+                      WebkitBackdropFilter: 'blur(30px)',
+                      border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.22 : 0.15)}`,
+                      boxShadow: theme.palette.mode === 'light'
+                        ? '0 15px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                        : '0 20px 40px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transformStyle: 'preserve-3d',
+                      '&:hover': {
+                        borderColor: theme.palette.primary.main,
+                        background: alpha(theme.palette.primary.main, 0.04),
+                        boxShadow: `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}`
+                      }
                     }}
                   >
                     <Typography 
                       variant="caption" 
                       sx={{ 
-                        color: 'rgba(255,255,255,0.85)', 
-                        fontWeight: 600, 
-                        fontFamily: '"Inter", sans-serif' 
+                        color: theme.palette.primary.main, 
+                        fontWeight: 900, 
+                        letterSpacing: 2, 
+                        textTransform: 'uppercase',
+                        fontFamily: '"Outfit", sans-serif',
+                        mb: 1.5,
+                        display: 'block',
+                        transform: 'translateZ(18px)'
                       }}
                     >
-                      {event.highlight}
+                      {event.year}
                     </Typography>
-                  </Box>
-                </Card>
+                    <Typography 
+                      variant="h5" 
+                      sx={{ 
+                        fontWeight: 800, 
+                        color: theme.palette.text.primary, 
+                        fontFamily: '"Outfit", sans-serif',
+                        mb: 2,
+                        fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                        transform: 'translateZ(25px)'
+                      }}
+                    >
+                      {event.title}
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: theme.palette.text.secondary, 
+                        lineHeight: 1.7, 
+                        mb: 2,
+                        fontFamily: '"Inter", sans-serif',
+                        transform: 'translateZ(10px)'
+                      }}
+                    >
+                      {event.description}
+                    </Typography>
+                    <Box 
+                      sx={{ 
+                        p: 1.5, 
+                        bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.025)' : 'rgba(255, 255, 255, 0.02)', 
+                        borderRadius: '12px',
+                        borderLeft: `3px solid ${theme.palette.secondary.main}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        transform: 'translateZ(14px)'
+                      }}
+                    >
+                      <Typography 
+                        variant="caption" 
+                        sx={{ 
+                          color: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.65)' : 'rgba(255,255,255,0.85)', 
+                          fontWeight: 600, 
+                          fontFamily: '"Inter", sans-serif' 
+                        }}
+                      >
+                        {event.highlight}
+                      </Typography>
+                    </Box>
+                  </Card>
+                </TiltCard>
               </Box>
 
               {/* Timeline Center Node Button */}

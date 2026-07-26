@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
+import { useTheme } from '@mui/material';
 import Navbar from './components/navbar';
 import Content from './components/content';
 import Projects from './components/projects/project';
@@ -13,6 +14,8 @@ import About from './components/About';
 import projectsData from './data/projects_page.json';
 import ProjectShowroom from './components/ProjectShowroom';
 import DevTerminal from './components/DevTerminal';
+import InteractiveCursor from './components/InteractiveCursor';
+import ScrollProgress from './components/ScrollProgress';
 
 const fadeAnimation = {
   initial: { opacity: 0 },
@@ -36,10 +39,30 @@ function App() {
   const isFromProjects = prevPath.current === '/projects';
   const isProjects = location.pathname === '/projects';
 
+  const theme = useTheme();
+
   useEffect(() => {
     prevPath.current = location.pathname;
     window.scrollTo(0, 0);
-  }, [location.pathname]);
+
+    // Dynamic browser tab window title based on current page
+    const routeTitles = {
+      '/': 'Krix | Web Developer & Designer',
+      '/about': 'About | Krix',
+      '/projects': 'Projects | Krix',
+      '/contact': 'Contact | Krix'
+    };
+    document.title = routeTitles[location.pathname] || 'Krix';
+
+    // Update browser / mobile system status bar accent theme-color
+    let themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!themeMeta) {
+      themeMeta = document.createElement('meta');
+      themeMeta.setAttribute('name', 'theme-color');
+      document.head.appendChild(themeMeta);
+    }
+    themeMeta.setAttribute('content', theme.palette.background.default);
+  }, [location.pathname, theme.palette.background.default]);
 
   useEffect(() => {
     const criticalImages = [
@@ -103,6 +126,8 @@ function App() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
+          <InteractiveCursor />
+          <ScrollProgress />
           <ThemeAccents />
           <Navbar />
           <ProjectShowroom />

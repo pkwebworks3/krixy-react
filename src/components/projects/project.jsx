@@ -119,13 +119,15 @@ function Projects() {
               gap: 1.5,
               p: 1.2,
               borderRadius: '50px',
-              bgcolor: 'rgba(20, 20, 25, 0.25)',
+              bgcolor: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(20, 20, 25, 0.25)',
               border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
               maxWidth: 'fit-content',
               mx: 'auto',
-              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+              boxShadow: theme.palette.mode === 'light'
+                ? '0 10px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
             }}
           >
             {categories.map((category) => {

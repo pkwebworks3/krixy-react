@@ -4,6 +4,7 @@ import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { motion, AnimatePresence } from 'framer-motion';
+import TiltCard from './TiltCard';
 
 const testimonials = [
   {
@@ -51,6 +52,7 @@ function Testimonials() {
 
   return (
     <Box
+      id="testimonials"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       sx={{
@@ -99,27 +101,28 @@ function Testimonials() {
         </Box>
 
         <Box sx={{ maxWidth: 800, mx: 'auto', position: 'relative' }}>
-          <Card sx={{
-            p: { xs: 2.5, sm: 4, md: 6 },
-            backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.18)',
-            backdropFilter: 'blur(30px)',
-            WebkitBackdropFilter: 'blur(30px)',
-            position: 'relative',
-            overflow: 'visible',
-            mb: 4,
-            borderRadius: 8,
-            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
-            boxShadow: (theme) => theme.palette.mode === 'light'
-              ? '0 20px 40px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
-              : `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
-            transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            '&:hover': {
-              borderColor: (theme) => alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.45 : 0.65),
+          <TiltCard maxTilt={4} sx={{ width: '100%', mb: 4 }}>
+            <Card sx={{
+              p: { xs: 2.5, sm: 4, md: 6 },
+              backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.18)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              position: 'relative',
+              overflow: 'visible',
+              borderRadius: 8,
+              border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
               boxShadow: (theme) => theme.palette.mode === 'light'
-                ? `0 30px 60px rgba(0, 0, 0, 0.08), 0 0 35px ${alpha(theme.palette.primary.main, 0.25)}`
-                : `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha(theme.palette.primary.main, 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
-            }
-          }}>
+                ? '0 20px 40px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                : `0 30px 60px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+              transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              transformStyle: 'preserve-3d',
+              '&:hover': {
+                borderColor: (theme) => alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.45 : 0.65),
+                boxShadow: (theme) => theme.palette.mode === 'light'
+                  ? `0 30px 60px rgba(0, 0, 0, 0.08), 0 0 35px ${alpha(theme.palette.primary.main, 0.25)}`
+                  : `0 40px 80px rgba(0, 0, 0, 0.5), 0 0 45px ${alpha(theme.palette.primary.main, 0.45)}, inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
+              }
+            }}>
             <FormatQuoteIcon sx={{
               position: 'absolute',
               top: -20,
@@ -136,6 +139,7 @@ function Testimonials() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeIn" }}
+                style={{ transformStyle: 'preserve-3d', transform: 'translateZ(25px)' }}
               >
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', textAlign: { xs: 'center', sm: 'left' }, mb: 4, gap: { xs: 2, sm: 3 } }}>
                   <Avatar
@@ -159,7 +163,8 @@ function Testimonials() {
                 </Typography>
               </motion.div>
             </AnimatePresence>
-          </Card>
+            </Card>
+          </TiltCard>
 
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 3 }}>
             <IconButton onClick={prevTestimonial} sx={{ 

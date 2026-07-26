@@ -11,6 +11,15 @@ h1,h2,h3,h4,h5,h6{
     cursor: default;
 }
 
+/* Hide browser default scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }

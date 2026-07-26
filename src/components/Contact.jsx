@@ -14,7 +14,7 @@ const Contact = () => {
   const [openFbAlert, setOpenFbAlert] = useState(false);
 
   return (
-    <Box sx={{ 
+    <Box id="contact" sx={{ 
       minHeight: '100vh', 
       pt: { xs: 15, md: 20 }, 
       pb: 10,
@@ -75,11 +75,13 @@ const Contact = () => {
                 p: { xs: 3, sm: 6, md: 8 }, 
                 textAlign: 'center',
                 borderRadius: 10, 
-                backgroundColor: 'rgba(20, 20, 25, 0.35)',
+                backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(20, 20, 25, 0.35)',
                 backdropFilter: 'blur(35px)',
                 WebkitBackdropFilter: 'blur(35px)',
-                border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-                boxShadow: '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+                border: (theme) => `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.22 : 0.15)}`,
+                boxShadow: (theme) => theme.palette.mode === 'light'
+                  ? '0 30px 70px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                  : '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
                 position: 'relative',
                 overflow: 'hidden'
               }}>
@@ -150,7 +152,7 @@ const Contact = () => {
                         >
                           {item.icon}
                         </IconButton>
-                        <Typography variant="body1" sx={{ fontWeight: 700, color: 'rgba(255, 255, 255, 0.85)', display: { xs: 'none', sm: 'block' } }}>
+                        <Typography variant="body1" sx={{ fontWeight: 700, color: theme.palette.text.primary, display: { xs: 'none', sm: 'block' } }}>
                           {item.label}
                         </Typography>
                       </Box>

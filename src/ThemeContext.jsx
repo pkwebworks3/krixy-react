@@ -8,24 +8,38 @@ export const ColorModeContext = createContext({
 });
 
 export const ColorModeProvider = ({ children }) => {
-  const [mode] = useState('dark');
-  const [accent, setAccent] = useState('orange');
+  const [mode, setMode] = useState(() => {
+    const saved = localStorage.getItem('themeMode');
+    // Default to 'light' as requested, otherwise use saved mode
+    return saved === 'dark' ? 'dark' : 'light';
+  });
+  const [accent, setAccent] = useState(() => {
+    return localStorage.getItem('themeAccent') || 'orange';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('themeMode', mode);
+  }, [mode]);
+
+  useEffect(() => {
+    localStorage.setItem('themeAccent', accent);
+  }, [accent]);
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        // Only dark mode is supported
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
       },
       setAccentColor: (color) => {
         setAccent(color);
       },
-      mode: 'dark',
+      mode,
       accent,
     }),
-    [accent]
+    [mode, accent]
   );
 
-  const theme = useMemo(() => createTheme(getDesignTokens('dark', accent)), [accent]);
+  const theme = useMemo(() => createTheme(getDesignTokens(mode, accent)), [mode, accent]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

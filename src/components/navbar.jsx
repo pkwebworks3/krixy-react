@@ -125,16 +125,18 @@ function Navbar() {
           {/* Desktop Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '35px' }} />
+              <img src={theme.palette.mode === 'light' ? '/1x/1x/Asset 2@4x.png' : '/1x/1x/Asset 2.png'} alt="PK Webworks Logo" style={{ height: '35px' }} />
               <Typography
                 sx={{
-                  color: '#ffffff',
+                  color: theme.palette.mode === 'light' ? theme.palette.text.primary : '#ffffff',
                   fontSize: '1.2rem',
                   fontWeight: 950,
                   letterSpacing: '1px',
                   fontFamily: '"Outfit", sans-serif',
                   textTransform: 'uppercase',
-                  background: `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
+                  background: theme.palette.mode === 'light'
+                    ? `linear-gradient(135deg, ${theme.palette.text.primary} 40%, ${theme.palette.primary.main} 100%)`
+                    : `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   pointerEvents: 'none',
@@ -148,16 +150,18 @@ function Navbar() {
           {/* Mobile Logo */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <img src="/1x/1x/Asset 2.png" alt="PK Webworks Logo" style={{ height: '28px' }} />
+              <img src={theme.palette.mode === 'light' ? '/1x/1x/Asset 2@4x.png' : '/1x/1x/Asset 2.png'} alt="PK Webworks Logo" style={{ height: '28px' }} />
               <Typography
                 sx={{
-                  color: '#ffffff',
+                  color: theme.palette.mode === 'light' ? theme.palette.text.primary : '#ffffff',
                   fontSize: '1rem',
                   fontWeight: 950,
                   letterSpacing: '0.8px',
                   fontFamily: '"Outfit", sans-serif',
                   textTransform: 'uppercase',
-                  background: `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
+                  background: theme.palette.mode === 'light'
+                    ? `linear-gradient(135deg, ${theme.palette.text.primary} 40%, ${theme.palette.primary.main} 100%)`
+                    : `linear-gradient(135deg, #ffffff 40%, ${theme.palette.primary.main} 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   pointerEvents: 'none',

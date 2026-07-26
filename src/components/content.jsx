@@ -10,12 +10,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import projects from "../data/projects.json";
 import { TypeAnimation } from 'react-type-animation';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, easeInOut } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, easeInOut, useMotionValue, useSpring } from 'framer-motion';
 
 import { stacks } from '../data/stacks';
 
 import { TechStacks } from './TechStacks';
 import Services from './Services';
+import TiltCard from './TiltCard';
 
 function Content() {
   const theme = useTheme();
@@ -26,6 +27,44 @@ function Content() {
 
   const { scrollY } = useScroll();
   const contentOpacityValue = useTransform(scrollY, [0, 400], [1, 0.5], { ease: easeInOut });
+  const heroY = useTransform(scrollY, [0, 600], [0, -90]);
+  const heroOpacity = useTransform(scrollY, [0, 450], [1, 0]);
+  const titleScale = useTransform(scrollY, [0, 600], [1, 0.92]);
+
+  // Motion values for smooth 3D mouse tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 90, damping: 22 });
+  const springY = useSpring(mouseY, { stiffness: 90, damping: 22 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const xNorm = (e.clientX / window.innerWidth) - 0.5;
+      const yNorm = (e.clientY / window.innerHeight) - 0.5;
+      mouseX.set(xNorm);
+      mouseY.set(yNorm);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
+
+  // 3D displacement vectors (floating close to the screen)
+  const textParallaxX = useTransform(springX, (v) => v * 40);
+  const textParallaxY = useTransform(springY, (v) => v * 40);
+  const textRotateX = useTransform(springY, [-0.5, 0.5], [10, -10]);
+  const textRotateY = useTransform(springX, [-0.5, 0.5], [-10, 10]);
+
+  // Combined vertical scroll + mouse movement
+  const heroTextY = useTransform([heroY, textParallaxY], ([s, m]) => s + m);
+
+  // 3D scroll zoom-in settings for other sections
+  const techStacksScale = useTransform(scrollY, [150, 500], [0.92, 1.0]);
+  const techStacksOpacity = useTransform(scrollY, [150, 400], [0.3, 1.0]);
+  const techStacksRotateX = useTransform(scrollY, [150, 500], [8, 0]);
+
+  const servicesScale = useTransform(scrollY, [450, 850], [0.92, 1.0]);
+  const servicesOpacity = useTransform(scrollY, [450, 750], [0.3, 1.0]);
+  const servicesRotateX = useTransform(scrollY, [450, 850], [8, 0]);
 
   const nextSlide = () => {
     setDirection(1);
@@ -57,7 +96,16 @@ function Content() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            style={{ opacity: contentOpacityValue }}
+            style={{ 
+              y: heroTextY, 
+              x: textParallaxX, 
+              rotateX: textRotateX, 
+              rotateY: textRotateY, 
+              opacity: heroOpacity, 
+              scale: titleScale, 
+              transformStyle: 'preserve-3d',
+              perspective: 1000 
+            }}
           >
             <style>{`
               @keyframes gradientShift {
@@ -240,9 +288,32 @@ function Content() {
         </Container>
       </Box>
 
-      <TechStacks />
+      <Box
+        component={motion.div}
+        style={{
+          scale: techStacksScale,
+          opacity: techStacksOpacity,
+          rotateX: techStacksRotateX,
+          transformStyle: 'preserve-3d',
+          perspective: 1000
+        }}
+        id="tech-stacks"
+      >
+        <TechStacks />
+      </Box>
 
-      <Services />
+      <Box
+        component={motion.div}
+        style={{
+          scale: servicesScale,
+          opacity: servicesOpacity,
+          rotateX: servicesRotateX,
+          transformStyle: 'preserve-3d',
+          perspective: 1000
+        }}
+      >
+        <Services />
+      </Box>
 
       {/* Featured Projects Section */}
       <Box
@@ -282,22 +353,28 @@ function Content() {
             </Typography>
           </Box>
 
-          <Card sx={{
-            minHeight: { xs: 450, md: 650 },
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-start',
-            p: { xs: 2, sm: 5, md: 8 },
-            borderRadius: 8,
-            overflow: 'hidden',
-            backgroundColor: 'rgba(20, 20, 25, 0.15)',
-            backdropFilter: 'blur(35px)',
-            WebkitBackdropFilter: 'blur(35px)',
-            border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, 0.35)}`,
-            boxShadow: (theme) => `0 40px 100px rgba(0, 0, 0, 0.5), 0 0 30px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
-          }}>
+          <TiltCard maxTilt={5} sx={{ width: '100%', mb: 2 }}>
+            <Card sx={{
+              minHeight: { xs: 450, md: 650 },
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+              p: { xs: 2, sm: 5, md: 8 },
+              borderRadius: 8,
+              overflow: 'hidden',
+              backgroundColor: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.55)' : 'rgba(20, 20, 25, 0.15)',
+              backdropFilter: 'blur(35px)',
+              WebkitBackdropFilter: 'blur(35px)',
+              border: (theme) => `1.5px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
+              boxShadow: (theme) => theme.palette.mode === 'light'
+                ? `0 25px 60px rgba(0, 0, 0, 0.06), 0 0 30px ${alpha(theme.palette.primary.main, 0.15)}, inset 0 1px 1px rgba(255, 255, 255, 0.8)`
+                : `0 40px 100px rgba(0, 0, 0, 0.5), 0 0 30px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+              transformStyle: 'preserve-3d',
+            }}
+            data-cursor="carousel"
+            >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentSlide}
@@ -316,7 +393,9 @@ function Content() {
                 }} />
                 <Box sx={{
                   position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.15) 100%)',
+                  background: theme.palette.mode === 'light'
+                    ? 'linear-gradient(to top, rgba(250,250,250,0.95) 0%, rgba(250,250,250,0.45) 50%, rgba(250,250,250,0.15) 100%)'
+                    : 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.15) 100%)',
                 }} />
               </motion.div>
             </AnimatePresence>
@@ -327,12 +406,16 @@ function Content() {
               maxWidth: { md: 550 },
               p: { xs: 2.5, sm: 4, md: 5 },
               borderRadius: 6,
-              background: 'rgba(20, 20, 25, 0.22)',
+              background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(20, 20, 25, 0.22)',
               backdropFilter: 'blur(30px)',
               WebkitBackdropFilter: 'blur(30px)',
-              border: (theme) => `1px solid ${alpha(theme.palette.primary.main, 0.35)}`,
-              boxShadow: (theme) => `0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
+              border: (theme) => `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.35)}`,
+              boxShadow: (theme) => theme.palette.mode === 'light'
+                ? `0 15px 35px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8)`
+                : `0 12px 40px rgba(0, 0, 0, 0.4), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}, inset 0 1px 1px rgba(255, 255, 255, 0.05)`,
               transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              transform: 'translateZ(30px)',
+              transformStyle: 'preserve-3d',
             }}>
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
@@ -346,10 +429,10 @@ function Content() {
                   <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 900, letterSpacing: 3, mb: 1, display: 'block' }}>
                     FEATURED PROJECT
                   </Typography>
-                  <Typography variant="h3" sx={{ color: '#fff', mb: 2, fontWeight: 900, fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.5px', fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem' } }}>
+                  <Typography variant="h3" sx={{ color: theme.palette.text.primary, mb: 2, fontWeight: 900, fontFamily: '"Outfit", sans-serif', letterSpacing: '-0.5px', fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem' } }}>
                     {projects[currentSlide]?.title}
                   </Typography>
-                  <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)', mb: 4, lineHeight: 1.7, fontWeight: 450, fontSize: { xs: '0.95rem', md: '1.1rem' } }}>
+                  <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 4, lineHeight: 1.7, fontWeight: 450, fontSize: { xs: '0.95rem', md: '1.1rem' } }}>
                     {projects[currentSlide]?.description}
                   </Typography>
 
@@ -419,7 +502,8 @@ function Content() {
                 </motion.div>
               </AnimatePresence>
             </Box>
-          </Card>
+            </Card>
+          </TiltCard>
         </Container>
       </Box>
 

@@ -102,11 +102,13 @@ export const getDesignTokens = (mode, accent = 'orange') => {
         styleOverrides: {
           root: ({ theme }) => ({
             borderRadius: 30,
-            backgroundColor: 'rgba(20, 20, 25, 0.45)',
+            backgroundColor: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(20, 20, 25, 0.45)',
             backdropFilter: 'blur(30px)',
             WebkitBackdropFilter: 'blur(30px)',
-            border: `1px solid ${alpha(theme.palette.primary.main, 0.12)}`,
-            boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
+            border: `1px solid ${theme.palette.mode === 'light' ? alpha(theme.palette.primary.main, 0.16) : alpha(theme.palette.primary.main, 0.12)}`,
+            boxShadow: theme.palette.mode === 'light'
+              ? '0 20px 40px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+              : '0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05)',
             transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }),
         },

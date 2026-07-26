@@ -6,6 +6,9 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import PersonIcon from '@mui/icons-material/Person';
 import { TechStacks } from './TechStacks';
+import TiltCard from './TiltCard';
+import Achievements from './Achievements';
+import Timeline from './Timeline';
 const About = () => {
   const theme = useTheme();
 
@@ -16,7 +19,7 @@ const About = () => {
   ];
 
   return (
-    <Box sx={{ minHeight: '100vh', pt: { xs: 12, md: 15 }, pb: 10, position: 'relative', overflow: 'hidden' }}>
+    <Box id="about" sx={{ minHeight: '100vh', pt: { xs: 12, md: 15 }, pb: 10, position: 'relative', overflow: 'hidden' }}>
 
       <Container maxWidth="lg">
         {/* Header Section */}
@@ -84,34 +87,40 @@ const About = () => {
               <Grid container spacing={{ xs: 2, md: 3 }} sx={{ justifyContent: 'center' }}>
                 {stats.map((stat, i) => (
                   <Grid item xs={4} sm={4} key={i}>
-                    <Box sx={{
-                      p: { xs: 1.5, sm: 3 },
-                      borderRadius: '24px',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                      border: `1px solid ${alpha(theme.palette.primary.main, 0.18)}`,
-                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.02)',
-                      textAlign: 'center',
-                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        transform: 'translateY(-8px) scale(1.03)',
-                        borderColor: 'primary.main',
-                        background: alpha(theme.palette.primary.main, 0.08),
-                        boxShadow: `0 15px 35px ${alpha(theme.palette.primary.main, 0.25)}, 0 0 15px ${alpha(theme.palette.primary.main, 0.1)}`,
-                        '& .stat-val': {
-                          textShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.5)}`
+                    <TiltCard maxTilt={15}>
+                      <Box sx={{
+                        p: { xs: 1.5, sm: 3 },
+                        borderRadius: '24px',
+                        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.55)' : 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(16px)',
+                        WebkitBackdropFilter: 'blur(16px)',
+                        border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.25 : 0.18)}`,
+                        boxShadow: theme.palette.mode === 'light'
+                          ? '0 10px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                          : '0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.02)',
+                        textAlign: 'center',
+                        transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        cursor: 'pointer',
+                        transformStyle: 'preserve-3d',
+                        '&:hover': {
+                          borderColor: 'primary.main',
+                          background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.75)' : alpha(theme.palette.primary.main, 0.08),
+                          boxShadow: theme.palette.mode === 'light'
+                            ? `0 15px 35px rgba(0, 0, 0, 0.08), 0 0 15px ${alpha(theme.palette.primary.main, 0.2)}`
+                            : `0 15px 35px ${alpha(theme.palette.primary.main, 0.25)}, 0 0 15px ${alpha(theme.palette.primary.main, 0.1)}`,
+                          '& .stat-val': {
+                            textShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.5)}`
+                          }
                         }
-                      }
-                    }}>
-                      <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: 'primary.main', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s', fontSize: { xs: '1.5rem', sm: '2.125rem', md: '2.25rem' } }}>
-                        {stat.value}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.6rem', sm: '0.85rem' } }}>
-                        {stat.label}
-                      </Typography>
-                    </Box>
+                      }}>
+                        <Typography className="stat-val" variant="h4" sx={{ fontWeight: 900, color: 'primary.main', fontFamily: '"Outfit", sans-serif', transition: 'all 0.3s', fontSize: { xs: '1.5rem', sm: '2.125rem', md: '2.25rem' }, transform: 'translateZ(20px)' }}>
+                          {stat.value}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: alpha(theme.palette.text.secondary, 0.8), fontWeight: 700, textTransform: 'uppercase', letterSpacing: { xs: 0.5, sm: 1 }, fontSize: { xs: '0.6rem', sm: '0.85rem' }, transform: 'translateZ(15px)' }}>
+                          {stat.label}
+                        </Typography>
+                      </Box>
+                    </TiltCard>
                   </Grid>
                 ))}
               </Grid>
@@ -120,7 +129,7 @@ const About = () => {
         </Grid>
 
         {/* Reverted Core Principles to Grid Layout */}
-        <Grid container spacing={{ xs: 4, md: 8 }} alignItems="flex-start" sx={{ mt: { xs: 8, md: 15 }, mb: 10 }}>
+        <Grid id="principles" container spacing={{ xs: 4, md: 8 }} alignItems="flex-start" sx={{ mt: { xs: 8, md: 15 }, mb: 10 }}>
           {/* Left Side: Header */}
           <Grid item xs={12} md={4}>
             <motion.div
@@ -173,35 +182,37 @@ const About = () => {
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                     whileHover={{ y: -5, scale: 1.02 }}
                   >
-                    <Box
-                      sx={{
-                        p: { xs: 2.5, md: 4.5 },
-                        display: 'flex',
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        alignItems: 'center',
-                        textAlign: { xs: 'center', sm: 'left' },
-                        gap: { xs: 2, sm: 3.5 },
-                        borderRadius: { xs: '16px', md: '28px' },
-                        background: 'rgba(20, 20, 25, 0.35)',
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
-                        backdropFilter: 'blur(30px)',
-                        WebkitBackdropFilter: 'blur(30px)',
-                        boxShadow: '0 15px 35px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
-                        transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                        '&:hover': {
-                          background: 'rgba(25, 25, 30, 0.55)',
-                          borderColor: 'primary.main',
-                          boxShadow: `0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.06)`,
-                          '& .principle-icon': {
-                            transform: 'scale(1.18) rotate(6deg)',
-                            color: '#ffffff',
-                            background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                            boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.4)}`,
-                            borderColor: 'primary.main'
-                          }
+                    <Box sx={{
+                      p: { xs: 2.5, md: 4.5 },
+                      display: 'flex',
+                      flexDirection: { xs: 'column', sm: 'row' },
+                      alignItems: 'center',
+                      textAlign: { xs: 'center', sm: 'left' },
+                      gap: { xs: 2, sm: 3.5 },
+                      borderRadius: { xs: '16px', md: '28px' },
+                      background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.35)',
+                      border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.22 : 0.15)}`,
+                      backdropFilter: 'blur(30px)',
+                      WebkitBackdropFilter: 'blur(30px)',
+                      boxShadow: theme.palette.mode === 'light'
+                        ? '0 15px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                        : '0 15px 35px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
+                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                      '&:hover': {
+                        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(25, 25, 30, 0.55)',
+                        borderColor: 'primary.main',
+                        boxShadow: theme.palette.mode === 'light'
+                          ? `0 25px 45px rgba(0, 0, 0, 0.08), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.9)`
+                          : `0 25px 50px rgba(0, 0, 0, 0.4), 0 0 25px ${alpha(theme.palette.primary.main, 0.25)}, inset 0 1px 1px rgba(255, 255, 255, 0.06)`,
+                        '& .principle-icon': {
+                          transform: 'scale(1.18) rotate(6deg)',
+                          color: '#ffffff',
+                          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                          boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.4)}`,
+                          borderColor: 'primary.main'
                         }
-                      }}
-                    >
+                      }
+                    }}>
                       <Box 
                         className="principle-icon"
                         sx={{ 
@@ -233,11 +244,19 @@ const About = () => {
           </Grid>
         </Grid>
 
+        {/* Achievements Section */}
+        <Achievements />
+
+        {/* Timeline Section */}
+        <Timeline />
+
         {/* Tech Stacks Section */}
-        <TechStacks 
-          title="Expertise" 
-          subtitle="The professional toolkit I've mastered to build world-class digital products." 
-        />
+        <Box id="tech-stacks">
+          <TechStacks 
+            title="Expertise" 
+            subtitle="The professional toolkit I've mastered to build world-class digital products." 
+          />
+        </Box>
       </Container>
     </Box>
   );
