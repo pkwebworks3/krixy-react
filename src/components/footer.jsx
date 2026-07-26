@@ -100,10 +100,10 @@ function Footer() {
                     sx={{
                       background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                       color: '#ffffff',
-                      fontSize: '0.55rem',
+                      fontSize: '0.6rem',
                       fontWeight: 900,
-                      px: 1,
-                      py: 0.25,
+                      px: 1.2,
+                      py: 0.35,
                       borderRadius: '12px',
                       letterSpacing: '0.8px',
                       textTransform: 'uppercase',
@@ -112,7 +112,7 @@ function Footer() {
                       fontFamily: '"Outfit", sans-serif',
                     }}
                   >
-                    Beta
+                    v5.2
                   </Box>
                 </Link>
                 <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 3, lineHeight: 1.8, maxWidth: '340px' }}>
@@ -387,7 +387,7 @@ function Footer() {
           {/* Bottom Bar */}
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
             <Typography variant="body2" sx={{ color: theme.palette.text.secondary, fontFamily: '"Outfit", sans-serif', order: { xs: 2, sm: 1 } }}>
-              &copy; {currentYear} PK Webworks. All rights reserved.
+              &copy; {currentYear} PK Webworks. All rights reserved. &bull; v5.2
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, order: { xs: 1, sm: 2 } }}>

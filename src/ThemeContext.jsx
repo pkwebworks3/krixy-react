@@ -4,14 +4,15 @@ import { getDesignTokens } from './theme';
 
 export const ColorModeContext = createContext({ 
   toggleColorMode: () => {},
+  setColorMode: () => {},
   setAccentColor: () => {}
 });
 
 export const ColorModeProvider = ({ children }) => {
   const [mode, setMode] = useState(() => {
     const saved = localStorage.getItem('themeMode');
-    // Default to 'light' as requested, otherwise use saved mode
-    return saved === 'dark' ? 'dark' : 'light';
+    // Default to 'dark' as requested, otherwise use saved mode
+    return saved === 'light' ? 'light' : 'dark';
   });
   const [accent, setAccent] = useState(() => {
     return localStorage.getItem('themeAccent') || 'orange';
@@ -29,6 +30,11 @@ export const ColorModeProvider = ({ children }) => {
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+      setColorMode: (newMode) => {
+        if (newMode === 'light' || newMode === 'dark') {
+          setMode(newMode);
+        }
       },
       setAccentColor: (color) => {
         setAccent(color);

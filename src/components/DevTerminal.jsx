@@ -342,7 +342,7 @@ const DevTerminal = () => {
           { text: '  projects   - List completed engineering and design work', type: 'info' },
           { text: '  preview    - Test any project in the simulator (usage: preview [id])', type: 'info' },
           { text: '  contact    - Display social profiles and communication links', type: 'info' },
-          { text: '  theme      - Customize website & terminal accent color (usage: theme [color])', type: 'info' },
+          { text: '  theme      - Toggle website display mode (usage: theme [dark|white])', type: 'info' },
           { text: '  guess      - Play an interactive number-guessing game', type: 'info' },
           { text: '  history    - Show list of entered commands', type: 'info' },
           { text: '  screensaver- Launch the fullscreen background animation screensaver', type: 'info' },
@@ -352,25 +352,28 @@ const DevTerminal = () => {
         break;
 
       case 'theme':
-        const selectedColor = subCmd;
-        const validColors = ['orange', 'green', 'cyan', 'purple', 'pink'];
-        const isHexColor = /^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(selectedColor);
-
-        if (!selectedColor) {
+        const targetMode = subCmd;
+        if (!targetMode) {
           outputs.push(
-            { text: 'Usage: theme [color|hex]', type: 'system' },
-            { text: 'Available colors: orange, green, cyan, purple, pink, or any hex code (e.g., #00ff66, #000)', type: 'info' }
+            { text: 'Usage: theme [dark|white]', type: 'system' },
+            { text: `Current theme mode: ${colorMode.mode.toUpperCase()}`, type: 'info' }
           );
-        } else if (!validColors.includes(selectedColor) && !isHexColor) {
-          outputs.push({ text: `Error: Unknown theme color: "${selectedColor}". Try orange, green, cyan, purple, pink, or a hex code like #00ff66 or #000.`, type: 'error' });
+        } else if (targetMode === 'dark') {
+          if (colorMode.mode === 'dark') {
+            outputs.push({ text: 'System is already configured for DARK theme.', type: 'info' });
+          } else {
+            colorMode.setColorMode('dark');
+            outputs.push({ text: '🎉 Switched to DARK theme mode successfully.', type: 'success' });
+          }
+        } else if (targetMode === 'white' || targetMode === 'light') {
+          if (colorMode.mode === 'light') {
+            outputs.push({ text: 'System is already configured for LIGHT/WHITE theme.', type: 'info' });
+          } else {
+            colorMode.setColorMode('light');
+            outputs.push({ text: '🎉 Switched to LIGHT/WHITE theme mode successfully.', type: 'success' });
+          }
         } else {
-          const colorToApply = isHexColor && !selectedColor.startsWith('#') ? `#${selectedColor}` : selectedColor;
-          setPendingThemeColor(colorToApply);
-          setGameState('entering_password');
-          outputs.push(
-            { text: 'Authentication required to modify system theme.', type: 'system' },
-            { text: 'Please enter password: ', type: 'info' }
-          );
+          outputs.push({ text: `Error: Unknown theme mode option "${targetMode}". Try "theme dark" or "theme white".`, type: 'error' });
         }
         break;
 
