@@ -16,6 +16,7 @@ import ProjectShowroom from './components/ProjectShowroom';
 import DevTerminal from './components/DevTerminal';
 import InteractiveCursor from './components/InteractiveCursor';
 import ScrollProgress from './components/ScrollProgress';
+import NotFound from './components/NotFound';
 
 const fadeAnimation = {
   initial: { opacity: 0 },
@@ -177,6 +178,17 @@ function App() {
                   transition={pageTransition}
                 >
                   <Contact />
+                </motion.div>
+              } />
+              <Route path="*" element={
+                <motion.div
+                  initial="initial"
+                  animate="in"
+                  exit="out"
+                  variants={fadeAnimation}
+                  transition={pageTransition}
+                >
+                  <NotFound />
                 </motion.div>
               } />
             </Routes>

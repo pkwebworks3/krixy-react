@@ -1,11 +1,13 @@
-import React from 'react';
-import { Box, Container, Typography, Grid, Card, CardContent, useTheme, alpha } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Container, Typography, Card, CardContent, useTheme, alpha, useMediaQuery, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 import TiltCard from './TiltCard';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const servicesList = [
   {
@@ -38,22 +40,342 @@ const servicesList = [
   }
 ];
 
-const Services = () => {
+function ServicesCarousel({ items, activeIndex, setActiveIndex }) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-advance interval
+  useEffect(() => {
+    if (!isHovered) {
+      const interval = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % items.length);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isHovered, items.length, setActiveIndex]);
+
+  // Helper to map index to shortest path [-1, 0, 1, 2] for circular movement
+  const getDiff = (idx) => {
+    const N = items.length;
+    const rawDiff = idx - activeIndex;
+    let diff = rawDiff;
+    while (diff < -1) diff += N;
+    while (diff > 2) diff -= N;
+    return diff;
+  };
+
+  const getCardStyles = (diff, isMobileDevice) => {
+    if (diff === 0) {
+      return {
+        x: '0%',
+        scale: 1,
+        opacity: 1,
+        zIndex: 3,
+        rotateY: 0,
+        pointerEvents: 'auto',
+      };
+    } else if (diff === 1) {
+      return {
+        x: isMobileDevice ? '110%' : '105%',
+        scale: isMobileDevice ? 0.75 : 0.82,
+        opacity: isMobileDevice ? 0 : 0.28,
+        zIndex: 2,
+        rotateY: isMobileDevice ? 0 : -15,
+        pointerEvents: 'none',
+      };
+    } else if (diff === -1) {
+      return {
+        x: isMobileDevice ? '-110%' : '-105%',
+        scale: isMobileDevice ? 0.75 : 0.82,
+        opacity: isMobileDevice ? 0 : 0.28,
+        zIndex: 2,
+        rotateY: isMobileDevice ? 0 : 15,
+        pointerEvents: 'none',
+      };
+    } else {
+      return {
+        x: diff > 0 ? '200%' : '-200%',
+        scale: 0.65,
+        opacity: 0,
+        zIndex: 1,
+        rotateY: 0,
+        pointerEvents: 'none',
+      };
+    }
+  };
+
+  const transition = {
+    type: 'spring',
+    stiffness: 120,
+    damping: 14,
+    mass: 0.8
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + items.length) % items.length);
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % items.length);
+  };
 
   return (
-    <Box 
+    <Box
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      sx={{
+        position: 'relative',
+        width: '100%',
+        maxWidth: '700px',
+        mx: 'auto',
+        height: { xs: '450px', sm: '380px', md: '400px' },
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        perspective: 1200,
+        overflow: 'visible',
+      }}
+    >
+      {/* Navigation Arrows */}
+      <IconButton
+        onClick={handlePrev}
+        sx={{
+          position: 'absolute',
+          left: { xs: '-10px', sm: '-70px', md: '-100px' },
+          border: `1.5px solid ${alpha(theme.palette.primary.main, 0.4)}`,
+          color: 'primary.main',
+          background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.7)' : 'rgba(9,9,11,0.6)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          p: 1.5,
+          zIndex: 10,
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          '&:hover': {
+            borderColor: 'primary.main',
+            background: alpha(theme.palette.primary.main, 0.1),
+            transform: 'scale(1.1)',
+            boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.3)}`,
+          }
+        }}
+      >
+        <ChevronLeftIcon sx={{ fontSize: 24 }} />
+      </IconButton>
+
+      <IconButton
+        onClick={handleNext}
+        sx={{
+          position: 'absolute',
+          right: { xs: '-10px', sm: '-70px', md: '-100px' },
+          border: `1.5px solid ${alpha(theme.palette.primary.main, 0.4)}`,
+          color: 'primary.main',
+          background: theme.palette.mode === 'light' ? 'rgba(255,255,255,0.7)' : 'rgba(9,9,11,0.6)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          p: 1.5,
+          zIndex: 10,
+          transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          '&:hover': {
+            borderColor: 'primary.main',
+            background: alpha(theme.palette.primary.main, 0.1),
+            transform: 'scale(1.1)',
+            boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.3)}`,
+          }
+        }}
+      >
+        <ChevronRightIcon sx={{ fontSize: 24 }} />
+      </IconButton>
+
+      {/* Cards Stack */}
+      {items.map((service, idx) => {
+        const diff = getDiff(idx);
+        const styles = getCardStyles(diff, isMobile);
+
+        return (
+          <Box
+            key={idx}
+            component={motion.div}
+            animate={styles}
+            transition={transition}
+            sx={{
+              position: 'absolute',
+              width: { xs: '290px', sm: '360px', md: '440px' },
+              height: '100%',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            <TiltCard maxTilt={diff === 0 ? 8 : 0} sx={{ height: '100%' }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  p: 1.5,
+                  borderRadius: '12px',
+                  background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.35)',
+                  backdropFilter: 'blur(30px)',
+                  WebkitBackdropFilter: 'blur(30px)',
+                  border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.22 : 0.15)}`,
+                  boxShadow: theme.palette.mode === 'light'
+                    ? '0 15px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
+                    : '0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
+                  transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  '&:hover': {
+                    background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(25, 25, 30, 0.55)',
+                    borderColor: 'primary.main',
+                    boxShadow: theme.palette.mode === 'light'
+                      ? `0 25px 50px rgba(0, 0, 0, 0.08), 0 0 20px ${alpha(theme.palette.primary.main, 0.25)}`
+                      : `0 30px 60px rgba(0, 0, 0, 0.45), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}`,
+                    '& .srv-icon': {
+                      transform: 'scale(1.15) rotate(5deg) translateZ(30px)',
+                      color: '#ffffff',
+                      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                      boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.4)}`,
+                      borderColor: 'primary.main'
+                    }
+                  }
+                }}
+              >
+                <CardContent sx={{ p: { xs: 2.5, md: 4 }, flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', transformStyle: 'preserve-3d' }}>
+                  <Box sx={{
+                    position: 'absolute',
+                    top: '-15%',
+                    right: '-15%',
+                    width: '120px',
+                    height: '120px',
+                    background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.15)} 0%, transparent 70%)`,
+                    filter: 'blur(10px)',
+                    pointerEvents: 'none',
+                    transform: 'translateZ(10px)'
+                  }} />
+
+                  <Box
+                    className="srv-icon"
+                    sx={{
+                      color: 'primary.main',
+                      display: 'inline-flex',
+                      p: 2,
+                      borderRadius: '12px',
+                      background: alpha(theme.palette.primary.main, 0.08),
+                      border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                      width: 'fit-content',
+                      mb: { xs: 2, md: 3 },
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                      transform: 'translateZ(25px)'
+                    }}
+                  >
+                    {service.icon}
+                  </Box>
+
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'secondary.main',
+                      fontWeight: 800,
+                      letterSpacing: 1.5,
+                      textTransform: 'uppercase',
+                      mb: 1,
+                      display: 'block',
+                      fontFamily: '"Outfit", sans-serif',
+                      transform: 'translateZ(15px)'
+                    }}
+                  >
+                    {service.subtitle}
+                  </Typography>
+
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 900,
+                      color: theme.palette.text.primary,
+                      fontFamily: '"Outfit", sans-serif',
+                      lineHeight: 1.2,
+                      transform: 'translateZ(20px)',
+                      fontSize: { xs: '1.35rem', md: '1.6rem' },
+                      mb: { xs: 1.5, md: 2 }
+                    }}
+                  >
+                    {service.title}
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      fontFamily: '"Inter", sans-serif',
+                      fontSize: { xs: '0.82rem', md: '0.9rem' },
+                      lineHeight: 1.6,
+                      transform: 'translateZ(15px)',
+                      mb: { xs: 2, md: 3 },
+                      maxWidth: '90%',
+                      mx: 'auto'
+                    }}
+                  >
+                    {service.description}
+                  </Typography>
+
+                  {/* Tech Badges */}
+                  <Box sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: 1,
+                    transform: 'translateZ(10px)'
+                  }}>
+                    {service.techs.map((tech, tIdx) => (
+                      <Typography
+                        key={tIdx}
+                        variant="caption"
+                        sx={{
+                          px: 1.5,
+                          py: 0.5,
+                          borderRadius: '50px',
+                          border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                          background: theme.palette.mode === 'light' ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
+                          color: theme.palette.text.secondary,
+                          fontWeight: 600,
+                          fontSize: '0.72rem',
+                          fontFamily: '"Outfit", sans-serif'
+                        }}
+                      >
+                        {tech}
+                      </Typography>
+                    ))}
+                  </Box>
+                </CardContent>
+              </Card>
+            </TiltCard>
+          </Box>
+        );
+      })}
+    </Box>
+  );
+}
+
+const Services = () => {
+  const theme = useTheme();
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <Box
       id="services"
-      sx={{ 
-        py: { xs: 10, md: 15 }, 
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        py: { xs: 8, md: 0 },
         position: 'relative',
         background: 'transparent',
         overflow: 'hidden'
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ mb: 6 }}>
         {/* Section Header */}
-        <Box sx={{ mb: 10, textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center' }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -79,162 +401,46 @@ const Services = () => {
             </Typography>
           </motion.div>
         </Box>
-
-        {/* Services Grid */}
-        <Grid container spacing={4}>
-          {servicesList.map((service, idx) => (
-            <Grid item xs={12} sm={6} md={3} key={idx}>
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-              >
-                <TiltCard maxTilt={8} sx={{ height: '100%' }}>
-                  <Card
-                    sx={{
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      p: 1.5,
-                      borderRadius: '28px',
-                      background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(20, 20, 25, 0.35)',
-                      backdropFilter: 'blur(30px)',
-                      WebkitBackdropFilter: 'blur(30px)',
-                      border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'light' ? 0.22 : 0.15)}`,
-                      boxShadow: theme.palette.mode === 'light'
-                        ? '0 15px 30px rgba(0, 0, 0, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.8)'
-                        : '0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.03)',
-                      transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      transformStyle: 'preserve-3d',
-                      '&:hover': {
-                        background: theme.palette.mode === 'light' ? 'rgba(255, 255, 255, 0.75)' : 'rgba(25, 25, 30, 0.55)',
-                        borderColor: 'primary.main',
-                        boxShadow: theme.palette.mode === 'light'
-                          ? `0 25px 50px rgba(0, 0, 0, 0.08), 0 0 20px ${alpha(theme.palette.primary.main, 0.25)}`
-                          : `0 30px 60px rgba(0, 0, 0, 0.45), 0 0 20px ${alpha(theme.palette.primary.main, 0.2)}`,
-                        '& .srv-icon': {
-                          transform: 'scale(1.15) rotate(5deg) translateZ(30px)',
-                          color: '#ffffff',
-                          background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                          boxShadow: `0 0 15px ${alpha(theme.palette.primary.main, 0.4)}`,
-                          borderColor: 'primary.main'
-                        }
-                      }
-                    }}
-                  >
-                    <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column', transformStyle: 'preserve-3d' }}>
-                      {/* Floating Glow Indicator inside Card */}
-                      <Box sx={{
-                        position: 'absolute',
-                        top: '-15%',
-                        right: '-15%',
-                        width: '80px',
-                        height: '80px',
-                        background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.15)} 0%, transparent 70%)`,
-                        filter: 'blur(10px)',
-                        pointerEvents: 'none',
-                        transform: 'translateZ(10px)'
-                      }} />
-
-                      {/* Icon */}
-                      <Box
-                        className="srv-icon"
-                        sx={{
-                          color: 'primary.main',
-                          display: 'inline-flex',
-                          p: 1.8,
-                          borderRadius: '16px',
-                          background: alpha(theme.palette.primary.main, 0.08),
-                          border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                          width: 'fit-content',
-                          mb: 3,
-                          transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                          transform: 'translateZ(25px)'
-                        }}
-                      >
-                        {service.icon}
-                      </Box>
-
-                      {/* Subtitle */}
-                      <Typography 
-                        variant="caption" 
-                        sx={{ 
-                          color: 'secondary.main', 
-                          fontWeight: 800, 
-                          letterSpacing: 1.5, 
-                          textTransform: 'uppercase',
-                          mb: 0.5,
-                          display: 'block',
-                          fontFamily: '"Outfit", sans-serif',
-                          transform: 'translateZ(15px)'
-                        }}
-                      >
-                        {service.subtitle}
-                      </Typography>
-
-                      {/* Title */}
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          fontWeight: 900,
-                          color: theme.palette.text.primary,
-                          fontFamily: '"Outfit", sans-serif',
-                          mb: 2,
-                          lineHeight: 1.2,
-                          transform: 'translateZ(20px)'
-                        }}
-                      >
-                        {service.title}
-                      </Typography>
-
-                      {/* Description */}
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: theme.palette.text.secondary,
-                          lineHeight: 1.6,
-                          fontFamily: '"Inter", sans-serif',
-                          mb: 3,
-                          flexGrow: 1,
-                          transform: 'translateZ(10px)'
-                        }}
-                      >
-                        {service.description}
-                      </Typography>
-
-                      {/* Technologies list */}
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.8, mt: 'auto', transform: 'translateZ(12px)' }}>
-                        {service.techs.map((tech) => (
-                          <Typography
-                            key={tech}
-                            variant="caption"
-                            sx={{
-                              px: 1,
-                              py: 0.3,
-                              borderRadius: '6px',
-                              bgcolor: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.03)' : 'rgba(255, 255, 255, 0.02)',
-                              color: theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.5)',
-                              fontSize: '0.65rem',
-                              fontWeight: 700,
-                              fontFamily: '"Outfit", sans-serif',
-                              border: theme.palette.mode === 'light' ? '1px solid rgba(0, 0, 0, 0.05)' : '1px solid rgba(255, 255, 255, 0.04)',
-                            }}
-                          >
-                            {tech}
-                          </Typography>
-                        ))}
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </TiltCard>
-              </motion.div>
-            </Grid>
-          ))}
-        </Grid>
       </Container>
+
+      {/* Services Carousel */}
+      <Box sx={{ width: '100%', maxWidth: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <ServicesCarousel items={servicesList} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+
+        {/* Carousel Indicators */}
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 1.5,
+          mt: 4,
+          zIndex: 5
+        }}>
+          {servicesList.map((_, idx) => {
+            const isActive = idx === activeIndex;
+            return (
+              <Box
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                sx={{
+                  width: isActive ? '24px' : '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                  background: isActive
+                    ? `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`
+                    : alpha(theme.palette.text.secondary, 0.3),
+                  cursor: 'pointer',
+                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                  '&:hover': {
+                    background: isActive
+                      ? undefined
+                      : alpha(theme.palette.primary.main, 0.6)
+                  }
+                }}
+              />
+            );
+          })}
+        </Box>
+      </Box>
     </Box>
   );
 };
